@@ -1,6 +1,5 @@
 inmailparag.github.io/
-/
-├── index.html       ← must be here
+├── index.html       
 ├── style.css
 ├── script.js
 └── (other files)
