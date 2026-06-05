@@ -1,1 +1,1415 @@
+<meta>
+<meta>
+<title>Admin Panel - Parag's Portfolio</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--p:#6c63ff;--s:#f50057;--ok:#00c853;--warn:#ffd600;--err:#ff1744;--d1:#1a1a2e;--d2:#16213e;--sw:258px;}
+body{font-family:'Segoe UI',sans-serif;background:#0d0d1a;color:#e0e0e0;min-height:100vh;}
+/* LOGIN */
+.lp{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0d0d1a,#1a1a2e,#16213e);}
+.lb{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(108,99,255,0.3);border-radius:20px;padding:46px 36px;width:400px;box-shadow:0 25px 50px rgba(0,0,0,0.5);}
+.lav{width:76px;height:76px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:bold;color:white;margin:0 auto 13px;box-shadow:0 0 28px rgba(108,99,255,0.5);}
+.lb h1{text-align:center;font-size:22px;background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.lb>p{text-align:center;color:rgba(255,255,255,0.36);font-size:13px;margin:5px 0 20px;}
+.eb{background:rgba(255,23,68,0.13);border:1px solid rgba(255,23,68,0.28);border-radius:8px;padding:9px 13px;color:#ff5252;font-size:13px;margin-bottom:13px;display:none;}
+/* FORMS */
+.fg{margin-bottom:15px;}
+.fg label{display:block;margin-bottom:6px;color:rgba(255,255,255,0.65);font-size:13px;font-weight:500;}
+.fg input,.fg textarea,.fg select{width:100%;padding:10px 13px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:9px;color:white;font-size:13px;transition:all 0.3s;outline:none;font-family:inherit;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--p);background:rgba(108,99,255,0.1);box-shadow:0 0 14px rgba(108,99,255,0.2);}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,0.28);}
+.fg select option{background:#1a1a2e;}
+/* BUTTONS */
+.btn{padding:9px 17px;border:none;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.25s;display:inline-flex;align-items:center;gap:6px;font-family:inherit;text-decoration:none;}
+.btn:hover{transform:translateY(-2px);}
+.bfull{width:100%;justify-content:center;padding:13px;font-size:15px;}
+.bp{background:linear-gradient(135deg,var(--p),#8b5cf6);color:white;}
+.bp:hover{box-shadow:0 8px 20px rgba(108,99,255,0.4);}
+.bs{background:rgba(255,255,255,0.09);color:white;border:1px solid rgba(255,255,255,0.13);}
+.bd{background:linear-gradient(135deg,var(--err),#ff5252);color:white;}
+.bw{background:linear-gradient(135deg,var(--warn),#ffab00);color:#1a1a2e;}
+.bok{background:linear-gradient(135deg,var(--ok),#00e676);color:white;}
+.bsm{padding:5px 11px;font-size:12px;}
+/* LAYOUT */
+.aw{display:none;min-height:100vh;}
+/* SIDEBAR */
+.sb{width:var(--sw);background:linear-gradient(180deg,#1a1a2e,#16213e);border-right:1px solid rgba(108,99,255,0.13);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform 0.3s;}
+.sbh{padding:19px 15px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.sbl{display:flex;align-items:center;gap:10px;}
+.lic{width:37px;height:37px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;color:white;flex-shrink:0;}
+.ltx span{display:block;font-size:14px;font-weight:700;}
+.ltx small{font-size:11px;color:rgba(255,255,255,0.32);}
+.sbn{padding:14px 8px;flex:1;}
+.nst{font-size:10px;font-weight:700;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.4px;padding:0 9px;margin:13px 0 5px;}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;cursor:pointer;transition:all 0.22s;margin-bottom:2px;color:rgba(255,255,255,0.46);font-size:13px;font-weight:500;user-select:none;}
+.ni:hover{background:rgba(108,99,255,0.13);color:white;}
+.ni.active{background:linear-gradient(135deg,rgba(108,99,255,0.25),rgba(139,92,246,0.15));color:white;border:1px solid rgba(108,99,255,0.25);}
+.nic{font-size:16px;flex-shrink:0;}
+.nbg{margin-left:auto;background:var(--s);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;}
+.sbf{padding:11px 8px;border-top:1px solid rgba(255,255,255,0.05);}
+.ur{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:9px;}
+.uav{width:31px;height:31px;background:linear-gradient(135deg,var(--p),var(--s));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;flex-shrink:0;}
+.ui span{display:block;font-size:12px;font-weight:600;}
+.ui small{font-size:11px;color:rgba(255,255,255,0.33);}
+.lob{margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.32);cursor:pointer;font-size:16px;padding:4px;border-radius:5px;transition:all 0.2s;}
+.lob:hover{color:var(--err);background:rgba(255,23,68,0.11);}
+/* MAIN */
+.mn{margin-left:var(--sw);min-height:100vh;display:flex;flex-direction:column;}
+/* TOPBAR */
+.tb{background:rgba(22,22,46,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05);padding:0 24px;height:59px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.tbl h2{font-size:17px;font-weight:700;}
+.tbl p{font-size:11px;color:rgba(255,255,255,0.35);}
+.tbr{display:flex;align-items:center;gap:8px;}
+.tbb{padding:6px 12px;background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.25);border-radius:8px;color:white;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:5px;transition:all 0.22s;font-family:inherit;text-decoration:none;}
+.tbb:hover{background:rgba(108,99,255,0.27);}
+.hbg{display:none;background:none;border:none;color:white;font-size:20px;cursor:pointer;padding:4px;}
+.nw{position:relative;}
+.nd{position:absolute;top:-3px;right:-3px;background:var(--s);color:white;font-size:9px;font-weight:bold;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+/* PAGES */
+.pg{display:none;padding:22px;flex:1;}
+.pg.active{display:block;}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:19px;flex-wrap:wrap;gap:10px;}
+.pt{font-size:19px;font-weight:700;margin-bottom:3px;}
+.pst{color:rgba(255,255,255,0.35);font-size:13px;}
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:15px;margin-bottom:20px;}
+.sc{background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:13px;padding:19px;transition:all 0.3s;}
+.sc:hover{transform:translateY(-3px);border-color:rgba(108,99,255,0.25);box-shadow:0 10px 26px rgba(0,0,0,0.27);}
+.si{font-size:27px;margin-bottom:10px;}
+.sv{font-size:27px;font-weight:800;}
+.sl{font-size:12px;color:rgba(255,255,255,0.42);margin-top:4px;}
+.sch{font-size:12px;color:var(--ok);margin-top:5px;}
+.spkl{display:flex;align-items:flex-end;gap:2px;height:25px;margin-top:8px;}
+.spb{flex:1;background:rgba(108,99,255,0.35);border-radius:2px;min-height:4px;}
+/* CARD */
+.cd{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:13px;overflow:hidden;margin-bottom:19px;}
+.cdh{padding:15px 19px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.cdt{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.cdb{padding:19px;}
+/* TABLE */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 13px;background:rgba(108,99,255,0.08);border-bottom:1px solid rgba(108,99,255,0.15);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.5);text-align:left;white-space:nowrap;}
+tbody td{padding:11px 13px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;vertical-align:middle;}
+tbody tr:hover{background:rgba(255,255,255,0.025);}
+tbody tr:last-child td{border-bottom:none;}
+/* BADGES */
+.bg{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;}
+.bok2{background:rgba(0,200,83,0.12);color:#00e676;border:1px solid rgba(0,200,83,0.25);}
+.bwrn{background:rgba(255,214,0,0.12);color:#ffd600;border:1px solid rgba(255,214,0,0.25);}
+.bdn{background:rgba(255,23,68,0.12);color:#ff5252;border:1px solid rgba(255,23,68,0.25);}
+.bin{background:rgba(108,99,255,0.12);color:#a78bfa;border:1px solid rgba(108,99,255,0.25);}
+.bse{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.09);}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+/* QUICK */
+.qg{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:11px;margin-bottom:20px;}
+.qc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:11px;padding:16px;cursor:pointer;transition:all 0.22s;text-align:center;user-select:none;}
+.qc:hover{background:rgba(108,99,255,0.11);border-color:rgba(108,99,255,0.27);transform:translateY(-3px);}
+.qi{font-size:24px;margin-bottom:7px;}
+.ql{font-size:13px;font-weight:600;}
+/* ACTIVITY */
+.ai{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.ai:last-child{border-bottom:none;}
+.ad{width:9px;height:9px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.ap{font-size:13px;margin-bottom:2px;}
+.as{font-size:11px;color:rgba(255,255,255,0.35);}
+/* CHART */
+.cw{height:180px;background:rgba(255,255,255,0.02);border-radius:9px;display:flex;align-items:flex-end;padding:13px 13px 5px;gap:5px;}
+.cb{flex:1;background:linear-gradient(to top,var(--p),rgba(108,99,255,0.27));border-radius:4px 4px 0 0;min-height:7px;transition:all 0.5s;position:relative;cursor:pointer;}
+.cb:hover{opacity:0.74;}
+.cb::after{content:attr(data-v);position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.46);white-space:nowrap;}
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(5px);z-index:1000;display:none;align-items:center;justify-content:center;padding:15px;}
+.mov.open{display:flex;}
+.mo{background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid rgba(108,99,255,0.25);border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,0.56);}
+.moh{padding:19px 23px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
+.moh h3{font-size:16px;font-weight:700;}
+.moc{background:rgba(255,255,255,0.07);border:none;color:white;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.moc:hover{background:rgba(255,23,68,0.17);color:#ff5252;}
+.mob{padding:23px;}
+.mof{padding:15px 23px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:flex-end;gap:8px;}
+/* CONFIRM */
+.cfb{text-align:center;padding:25px;}
+.cfi{font-size:44px;margin-bottom:11px;}
+.cfb h3{font-size:16px;margin-bottom:6px;}
+.cfb p{color:rgba(255,255,255,0.43);font-size:13px;}
+/* TOGGLE */
+.tgl{width:39px;height:22px;background:rgba(255,255,255,0.09);border-radius:11px;position:relative;cursor:pointer;border:none;flex-shrink:0;transition:all 0.3s;}
+.tgl::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;transition:all 0.3s;}
+.tgl.on{background:linear-gradient(135deg,var(--p),#8b5cf6);}
+.tgl.on::after{left:20px;}
+/* TOAST */
+.tw2{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.ts{background:#1e2d40;border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:11px 16px;display:flex;align-items:center;gap:10px;min-width:255px;box-shadow:0 8px 25px rgba(0,0,0,0.37);animation:slin 0.3s ease;font-size:13px;}
+.ts.success{border-left:4px solid var(--ok);}
+.ts.error{border-left:4px solid var(--err);}
+.ts.info{border-left:4px solid var(--p);}
+@keyframes slin{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+/* SKILL BAR */
+.skr{margin-bottom:14px;}
+.skh{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px;}
+.skb{height:7px;background:rgba(255,255,255,0.07);border-radius:10px;overflow:hidden;}
+.skp{height:100%;background:linear-gradient(135deg,var(--p),var(--s));border-radius:10px;}
+/* MESSAGES */
+.mi{padding:12px 15px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background 0.18s;display:flex;gap:10px;}
+.mi:hover{background:rgba(255,255,255,0.03);}
+.mi.unread{background:rgba(108,99,255,0.06);}
+.mi.amsg{background:rgba(108,99,255,0.12);border-left:3px solid var(--p);}
+.mav{width:35px;height:35px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;flex-shrink:0;}
+.mn2{font-size:13px;font-weight:600;display:flex;justify-content:space-between;}
+.mpv{font-size:12px;color:rgba(255,255,255,0.41);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.mt2{font-size:11px;color:rgba(255,255,255,0.32);flex-shrink:0;}
+/* NOTIF */
+.np{position:absolute;right:0;top:59px;width:308px;background:#1a1a2e;border:1px solid rgba(108,99,255,0.25);border-radius:13px;box-shadow:0 15px 40px rgba(0,0,0,0.46);display:none;z-index:200;}
+.np.open{display:block;}
+.nph{padding:12px 15px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;}
+.npi{padding:11px 15px;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:9px;cursor:pointer;}
+.npi:hover{background:rgba(255,255,255,0.03);}
+.npi.unread{background:rgba(108,99,255,0.06);}
+.npic{width:33px;height:33px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+/* TIMELINE */
+.tli{display:flex;gap:15px;margin-bottom:17px;padding-bottom:17px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.tli:last-child{border-bottom:none;margin-bottom:0;}
+.tlic{width:41px;height:41px;background:linear-gradient(135deg,rgba(108,99,255,0.21),rgba(139,92,246,0.12));border:1px solid rgba(108,99,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tlt{font-size:14px;font-weight:700;}
+.tlsb{font-size:13px;color:rgba(255,255,255,0.5);margin:3px 0;}
+.tldt{font-size:12px;color:var(--p);font-weight:600;}
+.tlde{font-size:13px;color:rgba(255,255,255,0.46);margin-top:6px;line-height:1.5;}
+.tlac{display:flex;gap:5px;margin-top:8px;}
+/* MISC */
+.dv{height:1px;background:rgba(255,255,255,0.05);margin:15px 0;}
+.tm{color:rgba(255,255,255,0.35);font-size:13px;}
+.es{text-align:center;padding:44px 18px;color:rgba(255,255,255,0.25);}
+.es .ei{font-size:50px;margin-bottom:11px;}
+.es h3{font-size:15px;margin-bottom:6px;color:rgba(255,255,255,0.4);}
+.sbox{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:9px;padding:6px 11px;}
+.sbox input{background:none;border:none;color:white;font-size:13px;outline:none;width:165px;}
+.sbox input::placeholder{color:rgba(255,255,255,0.25);}
+.serp{background:white;border-radius:9px;padding:15px;}
+.stit{color:#1a0dab;font-size:16px;text-decoration:underline;cursor:pointer;font-family:arial;}
+.surl{color:#006621;font-size:13px;margin:3px 0;font-family:arial;}
+.sdesc{color:#545454;font-size:13px;line-height:1.5;font-family:arial;}
+.sbar{height:7px;background:rgba(255,255,255,0.07);border-radius:10px;margin:7px 0 5px;}
+.sfil{height:100%;border-radius:10px;background:linear-gradient(135deg,var(--ok),#69f0ae);}
+.ctry{margin-bottom:13px;}
+.ctrh{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+.ctrb{height:5px;background:rgba(255,255,255,0.06);border-radius:10px;}
+.ctrf{height:100%;background:linear-gradient(135deg,var(--p),var(--s));border-radius:10px;}
+.tag{display:inline-flex;align-items:center;gap:5px;background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.25);color:#a78bfa;padding:3px 9px;border-radius:20px;font-size:12px;margin:2px;}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr;}.sg{grid-template-columns:1fr 1fr;}}
+@media(max-width:700px){.sb{transform:translateX(-100%);}.sb.open{transform:translateX(0);}.mn{margin-left:0;}.hbg{display:block;}.sg{grid-template-columns:1fr;}.pg{padding:13px;}.tb{padding:0 13px;}}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(108,99,255,0.32);border-radius:3px;}
+</style>
+
+
+
+
+
+
+P
+Admin Panel
+Parag's Portfolio Dashboard
+❌ Invalid credentials. Please try again.
+<label>Username</label><input>
+<label>Password</label><input>
+<button>🔐 Sign In</button>
+Demo: admin / admin123
+
+
+
+
+
+
+<aside>
+PPortfolio CMSAdmin v2
+
+Overview
+📊Dashboard
+📈Analytics
+Portfolio
+💼Projects0
+⚡Skills
+🏢Experience
+🎓Education
+Communication
+💬Messages0
+📧Newsletter
+Website
+👤My Profile
+🎨Appearance
+🔍SEO
+⚙️Settings
+
+PParagAdministrator⬆
+</aside>
+
+
+<main>
+
+
+
+☰
+DashboardWelcome back! 👋
+
+
+🌐 View Site
+
+🔔3
+
+NotificationsClear all
+
+💬New message from Sarah J.5 min ago
+⭐Project got 10 new views1 hour ago
+📄Resume downloaded 5 times3 hours ago
+
+No more notifications
+
+
+
+
+
+
+
+
+👁️2,847Total Page Views↑ +12.5% this week
+💬0Total Messages↑ +3 today
+💼0Live Projects↑ +1 this month
+📄128Resume Downloads↑ +5 today
+
+
+➕Add Project
+📬Read Messages
+⚡Edit Skills
+👤Update Profile
+🎨Customize Theme
+📤Export Data
+
+
+📊 Weekly Traffic
+🕐 Recent Activity
+New message from Sarah K.2 min ago
+Project "E-Commerce App" updated15 min ago
+Resume downloaded1 hour ago
+New project "Chat App" added3 hours ago
+Skills section updatedYesterday
+
+
+
+
+
+
+💼 ProjectsManage your portfolio projects➕ Add Project
+
+
+🔍
+
+All CategoriesWebAppMLOther
+
+
+#NameCategoryTech StackStatusFeaturedActions
+
+
+
+
+
+⚡ SkillsManage technical skills➕ Add Skill
+
+🛠️ Skill List
+📊 Overview
+
+
+
+
+
+🏢 ExperienceWork history➕ Add Experience
+
+
+
+
+
+🎓 EducationEducational background➕ Add Education
+
+
+
+
+
+💬 MessagesContact form inbox
+✅ Mark All Read🗑️ Clear All
+
+
+
+📥 Inbox0 new
+
+
+
+Select a message
+📧No message selectedClick a message to read it
+
+
+
+
+
+
+📧 NewsletterSubscribers & campaigns
+
+👥0Subscribers
+📨8Emails Sent
+
+
+
+👥 Subscribers📤 Export CSV
+EmailDateAction
+
+
+
+➕ Add
+
+
+
+
+✉️ Compose Email
+
+Subject
+Message
+📨 Send to All Subscribers
+
+
+
+
+
+
+
+👤 My ProfileUpdate personal information
+
+
+
+P
+ParagFull Stack Developer
+
+
+📧 parag@example.com
+📍 India
+🌐 inmailparag.github.io
+
+
+
+🔗 Social Links
+
+GitHub
+LinkedIn
+Twitter
+💾 Save Links
+
+
+
+
+
+✏️ Edit Profile
+
+
+Full Name
+Title
+
+
+Email
+Phone
+
+
+Location
+Website
+
+BioPassionate Full Stack Developer with experience in building modern web applications.
+Resume URL
+💾 Save Profile
+
+
+
+🔐 Change Password
+
+
+Current
+New
+Confirm
+
+🔐 Update Password
+
+
+
+
+
+
+
+
+🎨 AppearanceCustomize your portfolio theme
+
+
+
+🎨 Colors
+
+Primary Color
+
+
+
+
+Secondary Color
+
+
+
+
+
+Preset Themes
+
+
+
+
+
+
+
+
+💾 Save Theme
+
+
+🔤 Typography
+
+Font FamilySegoe UIPoppinsRobotoInterMontserrat
+Font Size: 16px
+
+
+
+⚙️ Layout Options
+📱 Section Visibility
+
+
+
+
+
+
+🔍 SEO SettingsSearch engine optimization
+
+
+📄 Meta Tags
+
+Page Title
+Description (max 160)Full Stack Developer specializing in React, Node.js, and modern web technologies.
+Keywords
+Author
+💾 Save SEO
+
+
+
+👀 SERP Preview
+
+Parag - Full Stack Developer Portfoliohttps://inmailparag.github.io/index2.htmlFull Stack Developer specializing in React, Node.js, and modern web technologies.
+SEO Score78/100 — Good
+
+
+📱 Open Graph
+
+OG Title
+OG Description
+OG Image URL
+💾 Save OG Tags
+
+
+
+
+
+
+
+📈 AnalyticsPortfolio performance
+
+👆2,847Total Visits↑ 12.5%
+⏱️2:34Avg. Time↑ 8.2%
+📤68%Bounce Rate↓ -5.1%
+🌍23Countries↑ +2
+
+
+📊 Monthly Traffic
+🌍 Top Countries
+
+
+🔗 Top Pages
+PageViewsUniqueAvg TimeBounce
+
+🏠 Home1,2048561:4565%
+💼 Projects7895673:2042%
+📬 Contact4453322:1038%
+👤 About4092981:5558%
+
+
+
+
+
+
+⚙️ SettingsAdmin configuration
+
+
+🔔 Notifications
+🔒 Security🗑️ Clear All Sessions
+
+
+
+📦 Backup & Export
+
+Export or import your portfolio data.
+
+📤 Export All Data (JSON)
+📥 Import Data
+
+
+
+⚠️ Danger Zone
+
+
+🔄 Reset Analytics
+🗑️ Delete All Messages
+⚠️ Reset All Data
+
+
+ℹ️ System Info
+
+
+Versionv2.0.0
+Storage Used-
+Browser-
+Last Login-
+
+
+
+
+
+</main>
+
+
+
+
+➕ Add Project<button>✕
+
+<input>
+
+<label>Project Name *</label><input>
+<label>Category</label><select>Web DevApp DevMachine LearningOther</select>
+
+<label>Description *</label><textarea></textarea>
+<label>Tech Stack (comma separated)</label><input>
+
+<label>Demo URL</label><input>
+<label>GitHub URL</label><input>
+
+
+<label>Status</label><select>LiveIn DevelopmentArchived
+<label>Image URL</label><input>
+
+
+<button>
+Featured Project
+
+
+<button>Cancel<button>💾 Save Project
+
+
+
+
+➕ Add Skill<button>✕
+
+<input>
+
+<label>Skill Name *</label><input>
+<label>Category<select>FrontendBackendDatabaseDevOpsMobileOther
+
+<label>Proficiency: 80%</label><input>
+<label>Icon (emoji)</label><input>
+
+<button>Cancel<button>💾 Save Skill
+
+
+
+
+➕ Add Experience<button>✕
+
+<input>
+
+<label>Job Title *</label><input>
+<label>Company *</label><input>
+
+
+<label>Start Date</label><input>
+<label>End Date</label><input>
+
+<label>Location<input>
+<label>Description</label><textarea>
+
+<button>
+Currently working here
+
+
+<button>Cancel<button>💾 Save
+
+
+
+
+➕ Add Education<button>✕
+
+<input>
+
+<label>Degree *</label><input>
+<label>Institution *</label><input>
+
+
+<label>Start Year</label><input>
+<label>End Year</label><input>
+
+
+<label>Grade / CGPA</label><input>
+<label>Location</label><input>
+
+<label>Description</label><textarea>
+
+<button>Cancel<button>💾 Save
+
+
+
+
+⚠️Are you sure?This action cannot be undone.
+<button>Cancel<button>Confirm
+
+
+
+
+
+<script>
+// ═══════════════════════════
+//  DATABASE
+// ═══════════════════════════
+const DB={
+get:k=>JSON.parse(localStorage.getItem('pcms_'+k)||'null'),
+set:(k,v)=>localStorage.setItem('pcms_'+k,JSON.stringify(v)),
+init(){
+if(!DB.get('projects'))    DB.set('projects',    DEF.projects);
+if(!DB.get('skills'))      DB.set('skills',      DEF.skills);
+if(!DB.get('experience'))  DB.set('experience',  DEF.experience);
+if(!DB.get('education'))   DB.set('education',   DEF.education);
+if(!DB.get('messages'))    DB.set('messages',    DEF.messages);
+if(!DB.get('subscribers')) DB.set('subscribers', DEF.subscribers);
+if(!DB.get('credentials')) DB.set('credentials', {user:'admin',pass:'admin123'});
+if(!DB.get('profile'))     DB.set('profile',     DEF.profile);
+}};
+
+// ═══════════════════════════
+//  DEFAULT DATA
+// ═══════════════════════════
+const DEF={
+profile:{name:'Parag',title:'Full Stack Developer',email:'parag@example.com',phone:'',location:'India',website:'inmailparag.github.io',bio:'Passionate Full Stack Developer.',resume:''},
+projects:[
+{id:1,name:'E-Commerce Platform',category:'web',desc:'Full-featured online store with cart, payments & admin panel.',tech:'React, Node.js, MongoDB, Stripe',demo:'https://demo.com',github:'https://github.com',status:'live',featured:true},
+{id:2,name:'Social Media App',category:'app',desc:'Real-time social app with posts, likes, comments & chat.',tech:'React Native, Firebase, Redux',demo:'',github:'https://github.com',status:'live',featured:true},
+{id:3,name:'Task Manager',category:'web',desc:'Kanban project management with team collaboration.',tech:'Vue.js, Express, PostgreSQL',demo:'https://demo.com',github:'https://github.com',status:'development',featured:false},
+{id:4,name:'Weather Dashboard',category:'web',desc:'Real-time weather with forecasts and location detection.',tech:'JavaScript, OpenWeather API, Chart.js',demo:'https://demo.com',github:'https://github.com',status:'live',featured:false},
+{id:5,name:'Chat Application',category:'web',desc:'Real-time chat with rooms, file sharing & emoji support.',tech:'Socket.io, React, Node.js',demo:'',github:'https://github.com',status:'live',featured:true},
+{id:6,name:'Portfolio Website',category:'web',desc:'This portfolio with custom animations and CMS.',tech:'HTML, CSS, JavaScript',demo:'https://inmailparag.github.io',github:'https://github.com',status:'live',featured:false}
+],
+skills:[
+{id:1,name:'React.js',category:'Frontend',level:90,icon:'⚛️'},
+{id:2,name:'JavaScript',category:'Frontend',level:88,icon:'🟨'},
+{id:3,name:'Node.js',category:'Backend',level:85,icon:'🟢'},
+{id:4,name:'Python',category:'Backend',level:80,icon:'🐍'},
+{id:5,name:'MongoDB',category:'Database',level:82,icon:'🍃'},
+{id:6,name:'HTML/CSS',category:'Frontend',level:95,icon:'🎨'},
+{id:7,name:'Git/GitHub',category:'DevOps',level:88,icon:'🔧'},
+{id:8,name:'Express.js',category:'Backend',level:83,icon:'🚀'}
+],
+experience:[
+{id:1,title:'Full Stack Developer',company:'TechCorp Solutions',start:'2022-06',end:'',location:'Remote',desc:'Built full-stack web apps using React & Node.js. Led team of 3 developers. Improved performance by 40%.',current:true},
+{id:2,title:'Frontend Developer Intern',company:'StartupXYZ',start:'2021-12',end:'2022-05',location:'Mumbai, India',desc:'Built responsive UI with React. Implemented REST APIs. Collaborated with design team.',current:false}
+],
+education:[
+{id:1,degree:'B.Tech in Computer Science',institution:'Example University',start:2019,end:2023,grade:'8.7 CGPA',location:'Mumbai, India',desc:'Specialized in Full Stack Development.'},
+{id:2,degree:'Higher Secondary (12th)',institution:'ABC School',start:2017,end:2019,grade:'88%',location:'Mumbai, India',desc:'Science stream with Computer Science.'}
+],
+messages:[
+{id:1,name:'Sarah Johnson',email:'sarah@example.com',subject:'Collaboration Opportunity',message:'Hi Parag! I came across your portfolio and I am really impressed by your work. I would love to discuss a potential collaboration on a web development project. Would you be available for a quick call this week?',date:'2024-01-15 10:30',read:false,starred:false},
+{id:2,name:'Alex Chen',email:'alex@techfirm.com',subject:'Job Opportunity - Senior Developer',message:'Hello! We have an exciting Senior Full Stack Developer position at our company. Your portfolio shows exactly the skills we are looking for. Remote work option available. Please let me know if interested!',date:'2024-01-14 14:22',read:false,starred:true},
+{id:3,name:'Priya Sharma',email:'priya@startup.io',subject:'Freelance Project Inquiry',message:'Hi, I found your portfolio through GitHub. We need a developer to build an e-commerce platform. Budget is flexible. Can we schedule a discovery call?',date:'2024-01-13 09:15',read:false,starred:false},
+{id:4,name:'Michael Brown',email:'michael@email.com',subject:'Great Portfolio!',message:'Just wanted to say your portfolio is really well designed! The animations are smooth and the projects look impressive. Keep up the great work!',date:'2024-01-10 16:45',read:true,starred:false}
+],
+subscribers:[
+{id:1,email:'fan1@example.com',date:'2024-01-10'},
+{id:2,email:'dev@coding.com',date:'2024-01-11'},
+{id:3,email:'recruiter@company.com',date:'2024-01-12'}
+]};
+
+// ═══════════════════════════
+//  AUTH
+// ═══════════════════════════
+function doLogin(){
+const u=document.getElementById('lu').value.trim();
+const p=document.getElementById('lp2').value.trim();
+DB.init();
+const c=DB.get('credentials');
+if(u===c.user&&p===c.pass){
+document.getElementById('loginPage').style.display='none';
+document.getElementById('aw').style.display='flex';
+DB.set('lastLogin',new Date().toLocaleString());
+initAdmin();
+showToast('✅ Welcome back, '+c.user+'!','success');
+}else{
+const e=document.getElementById('loginErr');
+e.style.display='block';
+setTimeout(()=>e.style.display='none',3000);
+}}
+document.getElementById('lp2').onkeypress=e=>{if(e.key==='Enter')doLogin();};
+document.getElementById('lu').onkeypress=e=>{if(e.key==='Enter')doLogin();};
+
+function doLogout(){
+showConfirm('Logout?','Are you sure you want to logout?','⬆',()=>{
+document.getElementById('aw').style.display='none';
+document.getElementById('loginPage').style.display='flex';
+document.getElementById('lu').value='';
+document.getElementById('lp2').value='';
+showToast('👋 Logged out','info');
+});}
+
+// ═══════════════════════════
+//  INIT
+// ═══════════════════════════
+function initAdmin(){
+renderSparks();renderWChart();renderMChart();renderCtry();
+renderProjs();renderSkills();renderExp();renderEdu();
+renderMsgs();renderSubs();renderLtTgls();renderScTgls();
+renderNfSet();renderSecSet();loadProf();updSysInfo();
+}
+
+// ═══════════════════════════
+//  NAVIGATION
+// ═══════════════════════════
+const PI={
+dashboard:['Dashboard','👋 Welcome back, Parag!'],
+projects:['Projects','💼 Manage your portfolio projects'],
+skills:['Skills','⚡ Manage technical skills'],
+experience:['Experience','🏢 Work history'],
+education:['Education','🎓 Educational background'],
+messages:['Messages','💬 Contact form inbox'],
+newsletter:['Newsletter','📧 Subscribers & campaigns'],
+profile:['My Profile','👤 Personal information'],
+appearance:['Appearance','🎨 Theme customization'],
+seo:['SEO','🔍 Search optimization'],
+analytics:['Analytics','📈 Performance metrics'],
+settings:['Settings','⚙️ Configuration']
+};
+function gp(n,el){
+document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+const pg=document.getElementById('pg-'+n);
+if(pg)pg.classList.add('active');
+if(el)el.classList.add('active');
+const i=PI[n]||[n,''];
+document.getElementById('pgT').textContent=i[0];
+document.getElementById('pgS').textContent=i[1];
+document.getElementById('nPanel').classList.remove('open');
+if(window.innerWidth<=700)document.getElementById('sb').classList.remove('open');
+}
+
+// ═══════════════════════════
+//  SPARKLINES
+// ═══════════════════════════
+function renderSparks(){
+const s=[[40,60,45,80,65,90,75],[50,70,60,80,55,75,100],[30,50,50,70,70,90,100],[60,45,75,55,85,70,100]];
+s.forEach((d,i)=>{const el=document.getElementById('sp'+(i+1));if(el)el.innerHTML=d.map(v=>`<div class="spb" style="height:${v}%"></div>`).join('');});
+const msgs=DB.get('messages')||[];
+const projs=DB.get('projects')||[];
+const sm=document.getElementById('stM');const sp=document.getElementById('stP');
+if(sm)sm.textContent=msgs.length;
+if(sp)sp.textContent=projs.filter(p=>p.status==='live').length;
+}
+
+// ═══════════════════════════
+//  CHARTS
+// ═══════════════════════════
+function renderWChart(){
+const d=[120,190,85,240,178,320,210];
+const labels=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const mx=Math.max(...d);
+const el=document.getElementById('wChart');
+if(el)el.innerHTML=d.map((v,i)=>`<div class="cb" data-v="${v}" style="height:${v/mx*100}%" title="${labels[i]}: ${v}"></div>`).join('');
+}
+function renderMChart(){
+const d=[180,210,165,280,320,245,390,410,360,480,420,510];
+const labels=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const mx=Math.max(...d);
+const el=document.getElementById('mChart');
+if(el)el.innerHTML=d.map((v,i)=>`<div class="cb" data-v="${v}" style="height:${v/mx*100}%" title="${labels[i]}: ${v}"></div>`).join('');
+}
+function renderCtry(){
+const cs=[{n:'🇮🇳 India',v:1240,p:44},{n:'🇺🇸 USA',v:567,p:20},{n:'🇬🇧 UK',v:284,p:10},{n:'🇩🇪 Germany',v:198,p:7},{n:'🇨🇦 Canada',v:158,p:6},{n:'🌍 Others',v:400,p:13}];
+const el=document.getElementById('ctryL');
+if(!el)return;
+el.innerHTML=cs.map(c=>`<div class="ctry"><div class="ctrh"><span>${c.n}</span><span class="tm">${c.v} (${c.p}%)</span></div><div class="ctrb"><div class="ctrf" style="width:${c.p}%"></div></div></div>`).join('');
+}
+
+// ═══════════════════════════
+//  PROJECTS
+// ═══════════════════════════
+function renderProjs(f='',cat=''){
+let d=DB.get('projects')||[];
+if(f)d=d.filter(p=>p.name.toLowerCase().includes(f)||(p.tech||'').toLowerCase().includes(f));
+if(cat)d=d.filter(p=>p.category===cat);
+const sM={live:'bok2',development:'bwrn',archived:'bse'};
+const sL={live:'🟢 Live',development:'🟡 Dev',archived:'⚫ Archived'};
+const cM={web:'🌐 Web',app:'📱 App',ml:'🤖 ML',other:'⚙️ Other'};
+const all=DB.get('projects')||[];
+const pc=document.getElementById('pCnt');if(pc)pc.textContent=all.length;
+const tb=document.getElementById('pBody');if(!tb)return;
+if(d.length===0){tb.innerHTML=`<tr><td colspan="7"><div class="es"><div class="ei">💼</div><h3>No projects found</h3><p>Add your first project!</p></div></td></tr>`;return;}
+tb.innerHTML=d.map((p,i)=>`<tr>
+<td style="color:rgba(255,255,255,0.32);">${i+1}</td>
+<td><div style="font-weight:600;">${p.name}</div><div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">${(p.desc||'').substring(0,45)}...</div></td>
+<td>${cM[p.category]||p.category}</td>
+<td><div style="display:flex;flex-wrap:wrap;gap:3px;">${(p.tech||'').split(',').slice(0,3).map(t=>`<span class="bg bin">${t.trim()}</span>`).join('')}</div></td>
+<td><span class="bg ${sM[p.status]||'bse'}">${sL[p.status]||p.status}</span></td>
+<td>${p.featured?'⭐':'<span style="opacity:0.22;">—</span>'}</td>
+<td><div style="display:flex;gap:5px;">
+${p.demo?`<a href="${p.demo}" target="_blank" class="btn bs bsm">🔗</a>`:''}
+<button class="btn bs bsm" onclick="editProj(${p.id})">✏️</button>
+<button class="btn bd bsm" onclick="delProj(${p.id})">🗑️</button>
+</div></td>
+</tr>`).join('');
+}
+function filterProj(f=''){const c=document.getElementById('pCF').value;renderProjs(f.toLowerCase(),c);}
+function openProjModal(){
+document.getElementById('ePId').value='';
+document.getElementById('pMT').textContent='➕ Add Project';
+['pmN','pmD','pmT','pmDm','pmG','pmI'].forEach(id=>document.getElementById(id).value='');
+document.getElementById('pmS').value='live';document.getElementById('pmC').value='web';
+document.getElementById('pmF').className='tgl';
+openMod('pMod');
+}
+function editProj(id){
+const p=(DB.get('projects')||[]).find(x=>x.id===id);if(!p)return;
+document.getElementById('ePId').value=id;
+document.getElementById('pMT').textContent='✏️ Edit Project';
+document.getElementById('pmN').value=p.name;
+document.getElementById('pmD').value=p.desc;
+document.getElementById('pmT').value=p.tech;
+document.getElementById('pmDm').value=p.demo||'';
+document.getElementById('pmG').value=p.github||'';
+document.getElementById('pmI').value=p.image||'';
+document.getElementById('pmS').value=p.status;
+document.getElementById('pmC').value=p.category;
+document.getElementById('pmF').className='tgl'+(p.featured?' on':'');
+openMod('pMod');
+}
+function saveProj(){
+const n=document.getElementById('pmN').value.trim();
+const d=document.getElementById('pmD').value.trim();
+if(!n||!d){showToast('❌ Name and description required','error');return;}
+const data=DB.get('projects')||[];
+const eid=parseInt(document.getElementById('ePId').value);
+const p={id:eid||Date.now(),name:n,desc:d,category:document.getElementById('pmC').value,tech:document.getElementById('pmT').value,demo:document.getElementById('pmDm').value,github:document.getElementById('pmG').value,status:document.getElementById('pmS').value,image:document.getElementById('pmI').value,featured:document.getElementById('pmF').classList.contains('on')};
+if(eid){const i=data.findIndex(x=>x.id===eid);if(i!==-1)data[i]=p;}else data.push(p);
+DB.set('projects',data);closeMod('pMod');renderProjs();renderSparks();
+showToast(eid?'✅ Project updated!':'✅ Project added!','success');
+}
+function delProj(id){
+showConfirm('Delete Project?','This will permanently remove the project.','🗑️',()=>{
+DB.set('projects',(DB.get('projects')||[]).filter(p=>p.id!==id));
+renderProjs();renderSparks();showToast('🗑️ Project deleted','info');
+});}
+
+// ═══════════════════════════
+//  SKILLS
+// ═══════════════════════════
+function renderSkills(){
+const d=DB.get('skills')||[];
+const le=document.getElementById('skList');
+const pe=document.getElementById('skPrev');
+if(le)le.innerHTML=d.length===0?'<div class="es"><div class="ei">⚡</div><h3>No skills yet</h3></div>':
+d.map(s=>`<div style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+<span style="font-size:20px;">${s.icon||'💡'}</span>
+<div style="flex:1;"><div style="font-size:13px;font-weight:600;">${s.name}</div><div style="font-size:11px;color:rgba(255,255,255,0.35);">${s.category} • ${s.level}%</div></div>
+<button class="btn bs bsm" onclick="editSkill(${s.id})">✏️</button>
+<button class="btn bd bsm" onclick="delSkill(${s.id})">🗑️</button>
+</div>`).join('');
+if(pe)pe.innerHTML=d.map(s=>`<div class="skr"><div class="skh"><span>${s.icon||''} ${s.name}</span><span>${s.level}%</span></div><div class="skb"><div class="skp" style="width:${s.level}%"></div></div></div>`).join('');
+}
+function openSkillModal(){
+document.getElementById('eSId').value='';document.getElementById('skMT').textContent='➕ Add Skill';
+document.getElementById('smN').value='';document.getElementById('smI').value='';
+document.getElementById('smL').value=80;document.getElementById('smLV').textContent='80%';
+document.getElementById('smC').value='Frontend';openMod('skMod');
+}
+function editSkill(id){
+const s=(DB.get('skills')||[]).find(x=>x.id===id);if(!s)return;
+document.getElementById('eSId').value=id;document.getElementById('skMT').textContent='✏️ Edit Skill';
+document.getElementById('smN').value=s.name;document.getElementById('smI').value=s.icon||'';
+document.getElementById('smL').value=s.level;document.getElementById('smLV').textContent=s.level+'%';
+document.getElementById('smC').value=s.category;openMod('skMod');
+}
+function saveSkill(){
+const n=document.getElementById('smN').value.trim();
+if(!n){showToast('❌ Skill name required','error');return;}
+const d=DB.get('skills')||[];const eid=parseInt(document.getElementById('eSId').value);
+const sk={id:eid||Date.now(),name:n,icon:document.getElementById('smI').value,level:parseInt(document.getElementById('smL').value),category:document.getElementById('smC').value};
+if(eid){const i=d.findIndex(x=>x.id===eid);if(i!==-1)d[i]=sk;}else d.push(sk);
+DB.set('skills',d);closeMod('skMod');renderSkills();
+showToast(eid?'✅ Skill updated!':'✅ Skill added!','success');
+}
+function delSkill(id){
+showConfirm('Delete Skill?','Remove this skill.','🗑️',()=>{
+DB.set('skills',(DB.get('skills')||[]).filter(s=>s.id!==id));
+renderSkills();showToast('🗑️ Skill removed','info');
+});}
+
+// ═══════════════════════════
+//  EXPERIENCE
+// ═══════════════════════════
+function fmtD(d){if(!d)return'';const[y,m]=d.split('-');const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return(mn[parseInt(m)-1]||'')+' '+y;}
+function renderExp(){
+const d=DB.get('experience')||[];const el=document.getElementById('expL');if(!el)return;
+if(d.length===0){el.innerHTML='<div class="es"><div class="ei">🏢</div><h3>No experience added</h3></div>';return;}
+el.innerHTML=d.map(e=>`<div class="tli">
+<div class="tlic">🏢</div>
+<div style="flex:1;">
+<div class="tlt">${e.title}</div>
+<div class="tlsb">${e.company}${e.location?' • '+e.location:''}</div>
+<div class="tldt">${fmtD(e.start)} — ${e.current?'<span class="bg bok2">Present</span>':fmtD(e.end)}</div>
+<div class="tlde">${e.desc||''}</div>
+<div class="tlac">
+<button class="btn bs bsm" onclick="editExp(${e.id})">✏️ Edit</button>
+<button class="btn bd bsm" onclick="delExp(${e.id})">🗑️ Delete</button>
+</div></div></div>`).join('');
+}
+function openExpModal(){
+document.getElementById('eEId').value='';document.getElementById('exMT').textContent='➕ Add Experience';
+['emT','emC','emSt','emEn','emL','emD'].forEach(id=>document.getElementById(id).value='');
+document.getElementById('emCr').className='tgl';openMod('exMod');
+}
+function editExp(id){
+const e=(DB.get('experience')||[]).find(x=>x.id===id);if(!e)return;
+document.getElementById('eEId').value=id;document.getElementById('exMT').textContent='✏️ Edit Experience';
+document.getElementById('emT').value=e.title;document.getElementById('emC').value=e.company;
+document.getElementById('emSt').value=e.start||'';document.getElementById('emEn').value=e.end||'';
+document.getElementById('emL').value=e.location||'';document.getElementById('emD').value=e.desc||'';
+document.getElementById('emCr').className='tgl'+(e.current?' on':'');openMod('exMod');
+}
+function saveExp(){
+const t=document.getElementById('emT').value.trim();const c=document.getElementById('emC').value.trim();
+if(!t||!c){showToast('❌ Title and company required','error');return;}
+const d=DB.get('experience')||[];const eid=parseInt(document.getElementById('eEId').value);
+const e={id:eid||Date.now(),title:t,company:c,start:document.getElementById('emSt').value,end:document.getElementById('emEn').value,location:document.getElementById('emL').value,desc:document.getElementById('emD').value,current:document.getElementById('emCr').classList.contains('on')};
+if(eid){const i=d.findIndex(x=>x.id===eid);if(i!==-1)d[i]=e;}else d.push(e);
+DB.set('experience',d);closeMod('exMod');renderExp();
+showToast(eid?'✅ Experience updated!':'✅ Experience added!','success');
+}
+function delExp(id){
+showConfirm('Delete Experience?','Remove this work entry.','🗑️',()=>{
+DB.set('experience',(DB.get('experience')||[]).filter(e=>e.id!==id));
+renderExp();showToast('🗑️ Removed','info');
+});}
+
+// ═══════════════════════════
+//  EDUCATION
+// ═══════════════════════════
+function renderEdu(){
+const d=DB.get('education')||[];const el=document.getElementById('eduL');if(!el)return;
+if(d.length===0){el.innerHTML='<div class="es"><div class="ei">🎓</div><h3>No education added</h3></div>';return;}
+el.innerHTML=d.map(e=>`<div class="tli">
+<div class="tlic">🎓</div>
+<div style="flex:1;">
+<div class="tlt">${e.degree}</div>
+<div class="tlsb">${e.institution}${e.location?' • '+e.location:''}</div>
+<div class="tldt">${e.start||''} — ${e.end||''}${e.grade?' • <span style="color:var(--ok);">'+e.grade+'</span>':''}</div>
+<div class="tlde">${e.desc||''}</div>
+<div class="tlac">
+<button class="btn bs bsm" onclick="editEdu(${e.id})">✏️ Edit</button>
+<button class="btn bd bsm" onclick="delEdu(${e.id})">🗑️ Delete</button>
+</div></div></div>`).join('');
+}
+function openEduModal(){
+document.getElementById('eEdId').value='';document.getElementById('edMT').textContent='➕ Add Education';
+['edmDg','edmIn','edmSt','edmEn','edmGr','edmLo','edmDs'].forEach(id=>document.getElementById(id).value='');
+openMod('edMod');
+}
+function editEdu(id){
+const e=(DB.get('education')||[]).find(x=>x.id===id);if(!e)return;
+document.getElementById('eEdId').value=id;document.getElementById('edMT').textContent='✏️ Edit Education';
+document.getElementById('edmDg').value=e.degree;document.getElementById('edmIn').value=e.institution;
+document.getElementById('edmSt').value=e.start||'';document.getElementById('edmEn').value=e.end||'';
+document.getElementById('edmGr').value=e.grade||'';document.getElementById('edmLo').value=e.location||'';
+document.getElementById('edmDs').value=e.desc||'';openMod('edMod');
+}
+function saveEdu(){
+const dg=document.getElementById('edmDg').value.trim();const ins=document.getElementById('edmIn').value.trim();
+if(!dg||!ins){showToast('❌ Degree and institution required','error');return;}
+const d=DB.get('education')||[];const eid=parseInt(document.getElementById('eEdId').value);
+const e={id:eid||Date.now(),degree:dg,institution:ins,start:document.getElementById('edmSt').value,end:document.getElementById('edmEn').value,grade:document.getElementById('edmGr').value,location:document.getElementById('edmLo').value,desc:document.getElementById('edmDs').value};
+if(eid){const i=d.findIndex(x=>x.id===eid);if(i!==-1)d[i]=e;}else d.push(e);
+DB.set('education',d);closeMod('edMod');renderEdu();
+showToast(eid?'✅ Education updated!':'✅ Education added!','success');
+}
+function delEdu(id){
+showConfirm('Delete Education?','Remove this education entry.','🗑️',()=>{
+DB.set('education',(DB.get('education')||[]).filter(e=>e.id!==id));
+renderEdu();showToast('🗑️ Removed','info');
+});}
+
+// ═══════════════════════════
+//  MESSAGES
+// ═══════════════════════════
+let aMsg=null;
+function renderMsgs(){
+const d=DB.get('messages')||[];
+const u=d.filter(m=>!m.read).length;
+const mb=document.getElementById('mBdg');const ub=document.getElementById('uBdg');
+if(mb)mb.textContent=u;if(ub)ub.textContent=u+' new';
+const list=document.getElementById('mList');if(!list)return;
+if(d.length===0){list.innerHTML='<div class="es" style="padding:26px 16px;"><div class="ei">📭</div><h3>No messages</h3></div>';return;}
+list.innerHTML=d.map(m=>`<div class="mi ${m.read?'':'unread'} ${aMsg===m.id?'amsg':''}" onclick="viewMsg(${m.id})">
+<div class="mav">${m.name.charAt(0)}</div>
+<div style="flex:1;min-width:0;">
+<div class="mn2"><span style="font-weight:${m.read?'500':'700'};">${m.name}</span><span class="mt2">${m.date.split(' ')[0]}</span></div>
+<div class="mpv">${m.subject}</div>
+<div class="mpv">${m.message.substring(0,46)}...</div>
+</div></div>`).join('');
+}
+function viewMsg(id){
+const d=DB.get('messages')||[];const m=d.find(x=>x.id===id);if(!m)return;
+aMsg=id;m.read=true;DB.set('messages',d);renderMsgs();
+const h=document.getElementById('mVH');const v=document.getElementById('mView');
+if(h)h.innerHTML=`<div class="cdt"><div class="mav" style="width:29px;height:29px;font-size:11px;">${m.name.charAt(0)}</div>${m.name}</div>
+<div style="display:flex;gap:5px;">
+<button class="btn bsm ${m.starred?'bw':'bs'}" onclick="togStar(${id})">${m.starred?'★ Unstar':'☆ Star'}</button>
+<button class="btn bd bsm" onclick="delMsg(${id})">🗑️</button>
+</div>`;
+if(v)v.innerHTML=`<div style="margin-bottom:19px;padding-bottom:15px;border-bottom:1px solid rgba(255,255,255,0.05);">
+<h3 style="font-size:15px;margin-bottom:8px;">${m.subject}</h3>
+<div style="display:flex;flex-wrap:wrap;gap:13px;font-size:13px;color:rgba(255,255,255,0.46);">
+<span>👤 <strong style="color:white;">${m.name}</strong></span>
+<span>📧 <a href="mailto:${m.email}" style="color:var(--p);">${m.email}</a></span>
+<span>🕐 ${m.date}</span>
+</div></div>
+<div style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.76);">${m.message}</div>
+<div class="dv"></div>
+<div>
+<div style="font-size:13px;color:rgba(255,255,255,0.46);margin-bottom:8px;">Quick Reply</div>
+<textarea id="rTxt" rows="4" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:9px;color:white;font-size:13px;outline:none;font-family:inherit;resize:vertical;" placeholder="Type your reply..."></textarea>
+<div style="margin-top:8px;display:flex;gap:6px;">
+<button class="btn bp bsm" onclick="sendReply('${m.email}','${encodeURIComponent(m.subject)}')">📨 Send Reply</button>
+<a href="mailto:${m.email}?subject=Re: ${encodeURIComponent(m.subject)}" class="btn bs bsm">📧 Email App</a>
+</div></div>`;
+}
+function sendReply(email,subj){
+const t=document.getElementById('rTxt');
+if(!t||!t.value.trim()){showToast('❌ Reply is empty','error');return;}
+window.location.href=`mailto:${email}?subject=Re: ${subj}&body=${encodeURIComponent(t.value)}`;
+showToast('📨 Opening email client...','info');
+}
+function togStar(id){
+const d=DB.get('messages')||[];const m=d.find(x=>x.id===id);
+if(m){m.starred=!m.starred;DB.set('messages',d);}
+viewMsg(id);renderMsgs();
+}
+function delMsg(id){
+showConfirm('Delete Message?','This message will be permanently deleted.','🗑️',()=>{
+DB.set('messages',(DB.get('messages')||[]).filter(m=>m.id!==id));
+aMsg=null;
+const h=document.getElementById('mVH');const v=document.getElementById('mView');
+if(h)h.innerHTML='<div class="cdt">Select a message</div>';
+if(v)v.innerHTML='<div class="es"><div class="ei">📧</div><h3>No message selected</h3></div>';
+renderMsgs();showToast('🗑️ Message deleted','info');
+});}
+function markAllRead(){
+DB.set('messages',(DB.get('messages')||[]).map(m=>({...m,read:true})));
+renderMsgs();showToast('✅ All marked as read','success');
+}
+function clearAllMsgs(){
+showConfirm('Clear All Messages?','All messages will be permanently deleted.','⚠️',()=>{
+DB.set('messages',[]);aMsg=null;renderMsgs();
+const v=document.getElementById('mView');
+if(v)v.innerHTML='<div class="es"><div class="ei">📧</div><h3>No messages</h3></div>';
+showToast('🗑️ All messages cleared','info');
+});}
+
+// ═══════════════════════════
+//  NEWSLETTER
+// ═══════════════════════════
+function renderSubs(){
+const d=DB.get('subscribers')||[];
+const sc=document.getElementById('sbCnt');if(sc)sc.textContent=d.length;
+const list=document.getElementById('sbList');if(!list)return;
+if(d.length===0){list.innerHTML='<tr><td colspan="3"><div class="es" style="padding:22px;"><div class="ei">📭</div><h3>No subscribers</h3></div></td></tr>';return;}
+list.innerHTML=d.map(s=>`<tr><td>${s.email}</td><td>${s.date}</td><td><button class="btn bd bsm" onclick="delSub(${s.id})">🗑️</button></td></tr>`).join('');
+}
+function addSub(){
+const e=document.getElementById('nse').value.trim();
+if(!e||!e.includes('@')){showToast('❌ Enter a valid email','error');return;}
+const d=DB.get('subscribers')||[];
+if(d.find(s=>s.email===e)){showToast('❌ Already subscribed','error');return;}
+d.push({id:Date.now(),email:e,date:new Date().toISOString().split('T')[0]});
+DB.set('subscribers',d);document.getElementById('nse').value='';
+renderSubs();showToast('✅ Subscriber added!','success');
+}
+function delSub(id){
+showConfirm('Remove Subscriber?','This subscriber will be removed.','🗑️',()=>{
+DB.set('subscribers',(DB.get('subscribers')||[]).filter(s=>s.id!==id));
+renderSubs();showToast('🗑️ Subscriber removed','info');
+});}
+function exportSubs(){
+const d=DB.get('subscribers')||[];
+const csv='Email,Date\n'+d.map(s=>`${s.email},${s.date}`).join('\n');
+const b=new Blob([csv],{type:'text/csv'});
+const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='subscribers.csv';a.click();
+showToast('📤 Subscribers exported!','success');
+}
+function sendNL(){
+const s=document.getElementById('eSub').value.trim();const b=document.getElementById('eBody').value.trim();
+if(!s||!b){showToast('❌ Subject and message required','error');return;}
+const subs=DB.get('subscribers')||[];
+if(subs.length===0){showToast('❌ No subscribers found','error');return;}
+showToast(`📨 Email sent to ${subs.length} subscribers!`,'success');
+document.getElementById('eSub').value='';document.getElementById('eBody').value='';
+}
+
+// ═══════════════════════════
+//  PROFILE
+// ═══════════════════════════
+function loadProf(){
+const p=DB.get('profile')||DEF.profile;
+const sv=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v||'';};
+sv('pN',p.name);sv('pTi',p.title);sv('pE',p.email);sv('pPh',p.phone);
+sv('pLo',p.location);sv('pWb',p.website);sv('pBi',p.bio);sv('pRs',p.resume);
+const soc=DB.get('socials')||{};
+sv('sGH',soc.github);sv('sLI',soc.linkedin);sv('sTW',soc.twitter);
+updPrv();
+const u=document.getElementById('sbUname');if(u)u.textContent=p.name||'Admin';
+}
+function updPrv(){
+const g=(id,fb)=>{const e=document.getElementById(id);return e?e.value.trim()||fb:fb;};
+const pn=document.getElementById('pvN');const pt=document.getElementById('pvT');
+const pe=document.getElementById('pvE');const pl=document.getElementById('pvL');const pw=document.getElementById('pvW');
+if(pn)pn.textContent=g('pN','Parag');
+if(pt)pt.textContent=g('pTi','Full Stack Developer');
+if(pe)pe.textContent=g('pE','parag@example.com');
+if(pl)pl.textContent=g('pLo','India');
+if(pw)pw.textContent=g('pWb','inmailparag.github.io');
+}
+function saveProf(){
+const p={name:document.getElementById('pN').value,title:document.getElementById('pTi').value,email:document.getElementById('pE').value,phone:document.getElementById('pPh').value,location:document.getElementById('pLo').value,website:document.getElementById('pWb').value,bio:document.getElementById('pBi').value,resume:document.getElementById('pRs').value};
+DB.set('profile',p);
+const u=document.getElementById('sbUname');if(u)u.textContent=p.name||'Admin';
+showToast('✅ Profile saved!','success');
+}
+function saveSocials(){
+const s={github:document.getElementById('sGH').value,linkedin:document.getElementById('sLI').value,twitter:document.getElementById('sTW').value};
+DB.set('socials',s);showToast('✅ Social links saved!','success');
+}
+function chgPass(){
+const c=document.getElementById('cpC').value;const n=document.getElementById('cpN').value;const cf=document.getElementById('cpCf').value;
+const creds=DB.get('credentials');
+if(c!==creds.pass){showToast('❌ Current password is incorrect','error');return;}
+if(n.length<6){showToast('❌ New password must be at least 6 characters','error');return;}
+if(n!==cf){showToast('❌ Passwords do not match','error');return;}
+DB.set('credentials',{...creds,pass:n});
+document.getElementById('cpC').value='';document.getElementById('cpN').value='';document.getElementById('cpCf').value='';
+showToast('✅ Password updated!','success');
+}
+
+// ═══════════════════════════
+//  APPEARANCE
+// ═══════════════════════════
+function applyTheme(p,s){
+document.getElementById('cP').value=p;document.getElementById('cPT').value=p;
+document.getElementById('cS').value=s;document.getElementById('cST').value=s;
+document.documentElement.style.setProperty('--p',p);
+document.documentElement.style.setProperty('--s',s);
+}
+function saveAppearance(){
+const p=document.getElementById('cP').value;const s=document.getElementById('cS').value;
+document.documentElement.style.setProperty('--p',p);
+document.documentElement.style.setProperty('--s',s);
+DB.set('appearance',{primary:p,secondary:s,font:document.getElementById('fFam').value});
+showToast('✅ Theme saved!','success');
+}
+function renderLtTgls(){
+const opts=[{l:'Dark Mode',d:'Toggle dark/light theme',on:true},{l:'Animations',d:'Enable page animations',on:true},{l:'Particles Background',d:'Show animated particles',on:true},{l:'Cursor Effects',d:'Custom cursor animation',on:true},{l:'Scroll Progress Bar',d:'Show reading progress',on:false}];
+const el=document.getElementById('ltTgls');if(!el)return;
+el.innerHTML=opts.map((o,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;${i>0?'margin-top:13px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.05);':''}">
+<div><div style="font-size:13px;font-weight:600;">${o.l}</div><div class="tm">${o.d}</div></div>
+<button class="tgl ${o.on?'on':''}" onclick="this.classList.toggle('on')"></button>
+</div>`).join('');
+}
+function renderScTgls(){
+const secs=['Home','About','Skills','Projects','Experience','Education','Contact'];
+const el=document.getElementById('scTgls');if(!el)return;
+el.innerHTML=secs.map((s,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;${i>0?'margin-top:11px;padding-top:11px;border-top:1px solid rgba(255,255,255,0.05);':''}">
+<span style="font-size:13px;font-weight:500;">${s}</span>
+<button class="tgl on" onclick="this.classList.toggle('on')"></button>
+</div>`).join('');
+}
+
+// ═══════════════════════════
+//  SEO
+// ═══════════════════════════
+function updSerp(){
+const t=document.getElementById('seoT');const d=document.getElementById('seoD');
+const st=document.getElementById('sTitle');const sd=document.getElementById('sDesc');
+if(st&&t)st.textContent=t.value||'Page Title';
+if(sd&&d)sd.textContent=d.value||'Page description...';
+}
+function saveSEO(){
+DB.set('seo',{title:document.getElementById('seoT').value,desc:document.getElementById('seoD').value,keys:document.getElementById('seoK').value,author:document.getElementById('seoA').value});
+showToast('✅ SEO settings saved!','success');
+}
+function saveOG(){
+DB.set('og',{title:document.getElementById('ogT').value,desc:document.getElementById('ogD').value,img:document.getElementById('ogI').value});
+showToast('✅ OG tags saved!','success');
+}
+
+// ═══════════════════════════
+//  SETTINGS
+// ═══════════════════════════
+function renderNfSet(){
+const opts=[{l:'Email on new message',d:'Get notified via email',on:true},{l:'Weekly analytics report',d:'Weekly performance summary',on:true},{l:'Browser notifications',d:'Desktop push alerts',on:false}];
+const el=document.getElementById('nfSet');if(!el)return;
+el.innerHTML=opts.map((o,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;${i>0?'margin-top:13px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.05);':''}">
+<div><div style="font-size:13px;font-weight:600;">${o.l}</div><div class="tm">${o.d}</div></div>
+<button class="tgl ${o.on?'on':''}" onclick="this.classList.toggle('on')"></button>
+</div>`).join('');
+}
+function renderSecSet(){
+const opts=[{l:'Two-Factor Authentication',d:'Extra security layer',on:false},{l:'Login notifications',d:'Alert on new login',on:true}];
+const el=document.getElementById('secSet');if(!el)return;
+el.innerHTML=opts.map((o,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;${i>0?'margin-top:13px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.05);':''}">
+<div><div style="font-size:13px;font-weight:600;">${o.l}</div><div class="tm">${o.d}</div></div>
+<button class="tgl ${o.on?'on':''}" onclick="this.classList.toggle('on')"></button>
+</div>`).join('');
+}
+function updSysInfo(){
+const si=document.getElementById('storI');const bi=document.getElementById('brI');const ll=document.getElementById('llI');
+if(si){
+let total=0;
+for(let k in localStorage){if(k.startsWith('pcms_'))total+=localStorage[k].length;}
+si.textContent=(total/1024).toFixed(1)+' KB';
+}
+if(bi)bi.textContent=navigator.userAgent.includes('Chrome')?'Chrome':navigator.userAgent.includes('Firefox')?'Firefox':navigator.userAgent.includes('Safari')?'Safari':'Other';
+if(ll)ll.textContent=DB.get('lastLogin')||'Just now';
+}
+function exportData(){
+const data={projects:DB.get('projects'),skills:DB.get('skills'),experience:DB.get('experience'),education:DB.get('education'),messages:DB.get('messages'),subscribers:DB.get('subscribers'),profile:DB.get('profile'),exported:new Date().toISOString()};
+const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='portfolio-data.json';a.click();
+showToast('📤 Data exported successfully!','success');
+}
+function handleImport(input){
+const f=input.files[0];if(!f)return;
+const r=new FileReader();
+r.onload=e=>{
+try{
+const d=JSON.parse(e.target.result);
+if(d.projects)DB.set('projects',d.projects);
+if(d.skills)DB.set('skills',d.skills);
+if(d.experience)DB.set('experience',d.experience);
+if(d.education)DB.set('education',d.education);
+if(d.subscribers)DB.set('subscribers',d.subscribers);
+if(d.profile)DB.set('profile',d.profile);
+initAdmin();showToast('✅ Data imported successfully!','success');
+}catch(err){showToast('❌ Invalid JSON file','error');}
+};r.readAsText(f);input.value='';
+}
+function resetStats(){showToast('🔄 Analytics data reset','info');}
+function confirmReset(){
+showConfirm('Reset ALL Data?','This will delete all your portfolio data permanently!','⚠️',()=>{
+['projects','skills','experience','education','messages','subscribers','profile','socials','seo','og','appearance'].forEach(k=>DB.del(k));
+DB.init();initAdmin();showToast('🔄 All data reset to defaults','info');
+});}
+
+// ═══════════════════════════
+//  NOTIFICATIONS
+// ═══════════════════════════
+function toggleNotif(){document.getElementById('nPanel').classList.toggle('open');}
+function clearNotifs(){
+document.getElementById('nList').innerHTML='';
+document.getElementById('nDot').style.display='none';
+document.getElementById('nPanel').classList.remove('open');
+showToast('✅ Notifications cleared','info');
+}
+document.addEventListener('click',e=>{
+const np=document.getElementById('nPanel');const nw=np.closest('.nw');
+if(np&&np.classList.contains('open')&&!nw.contains(e.target))np.classList.remove('open');
+});
+
+// ═══════════════════════════
+//  MODAL HELPERS
+// ═══════════════════════════
+function openMod(id){document.getElementById(id).classList.add('open');}
+function closeMod(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mov').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}));
+
+// ═══════════════════════════
+//  CONFIRM
+// ═══════════════════════════
+function showConfirm(title,text,icon,cb){
+document.getElementById('cfTi').textContent=title;
+document.getElementById('cfTx').textContent=text;
+document.getElementById ('cfI').textContent=icon||'⚠️';
+const btn=document.getElementById('cfOk');
+btn.onclick=()=>{closeMod('cfMod');cb();};
+openMod('cfMod');
+}
+
+// ═══════════════════════════
+//  TOAST
+// ═══════════════════════════
+function showToast(msg,type='info'){
+const w=document.getElementById('toastW');
+const t=document.createElement('div');
+t.className='ts '+type;
+t.innerHTML=msg;
+w.appendChild(t);
+setTimeout(()=>{t.style.animation='slin 0.3s ease reverse';setTimeout(()=>t.remove(),300);},3500);
+}
+
+// ═══════════════════════════
+//  LOAD SAVED APPEARANCE
+// ═══════════════════════════
+function loadAppearance(){
+const a=DB.get('appearance');
+if(a){
+if(a.primary)document.documentElement.style.setProperty('--p',a.primary);
+if(a.secondary)document.documentElement.style.setProperty('--s',a.secondary);
+if(a.primary){document.getElementById('cP').value=a.primary;document.getElementById('cPT').value=a.primary;}
+if(a.secondary){document.getElementById('cS').value=a.secondary;document.getElementById('cST').value=a.secondary;}
+}
+}
+
+// ═══════════════════════════
+//  CLOSE SIDEBAR ON OUTSIDE CLICK
+// ═══════════════════════════
+document.addEventListener('click',e=>{
+const sb=document.getElementById('sb');
+if(window.innerWidth<=700&&sb.classList.contains('open')){
+if(!sb.contains(e.target)&&!e.target.classList.contains('hbg')){
+sb.classList.remove('open');
+}
+}
+});
+
+// ═══════════════════════════
+//  KEYBOARD SHORTCUTS
+// ═══════════════════════════
+document.addEventListener('keydown',e=>{
+if(e.key==='Escape'){
+document.querySelectorAll('.mov.open').forEach(m=>m.classList.remove('open'));
+document.getElementById('nPanel').classList.remove('open');
+}
+if(e.ctrlKey&&e.key==='k'){
+e.preventDefault();
+const s=document.getElementById('pSrch');
+if(s){gp('projects',document.querySelector('[onclick*=projects]'));s.focus();}
+}
+});
+
 
