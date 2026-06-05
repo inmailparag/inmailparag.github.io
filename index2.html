@@ -1,510 +1,864 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IrishMart B2B Marketplace</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<meta name="description" content="IrishMart - Ireland's Premier B2B Marketplace. Connect with Irish suppliers, manufacturers, and buyers.">
+<meta name="keywords" content="Ireland B2B marketplace, Irish suppliers, Irish manufacturers, buy sell Ireland">
+<title>IrishMart - Ireland's Premier B2B Marketplace 🍀</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --im-emerald:#0a6b3c;--im-emerald-light:#e8f5ee;--im-emerald-dark:#054d2b;
-    --im-gold:#c8922a;--im-gold-light:#fdf6e8;
-    --im-slate:#1a1f2e;--im-slate-mid:#4a5168;--im-slate-light:#f4f5f8;
-    --im-white:#ffffff;--im-border:#e2e6ec;
-    --font-display:'Playfair Display',serif;--font-body:'DM Sans',sans-serif;
-    --radius:10px;--radius-lg:16px;
-  }
-  body{font-family:var(--font-body);background:var(--im-slate-light);color:var(--im-slate);min-height:100vh}
-  .nav{background:var(--im-slate);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
-  .nav-brand{font-family:var(--font-display);color:#fff;font-size:20px;font-weight:700;letter-spacing:-0.3px;cursor:pointer}
-  .nav-brand span{color:var(--im-gold)}
-  .nav-links{display:flex;gap:4px}
-  .nav-btn{background:none;border:none;color:rgba(255,255,255,0.7);font-family:var(--font-body);font-size:13px;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all 0.15s}
-  .nav-btn:hover,.nav-btn.active{background:rgba(255,255,255,0.12);color:#fff}
-  .nav-btn.admin-btn{color:var(--im-gold);border:1px solid rgba(200,146,42,0.3)}
-  .nav-right{display:flex;align-items:center;gap:12px}
-  .cart-btn{background:var(--im-emerald);border:none;color:#fff;font-family:var(--font-body);font-size:13px;padding:7px 16px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:500}
-  .cart-count{background:var(--im-gold);color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
-  .view{display:none;padding:2rem}
-  .view.active{display:block}
-  .shop-hero{background:linear-gradient(135deg,var(--im-slate) 0%,var(--im-emerald-dark) 100%);border-radius:var(--radius-lg);padding:2.5rem 3rem;margin-bottom:2rem;color:#fff;display:flex;justify-content:space-between;align-items:center}
-  .shop-hero h1{font-family:var(--font-display);font-size:32px;font-weight:700;margin-bottom:8px}
-  .shop-hero p{color:rgba(255,255,255,0.7);font-size:15px}
-  .hero-badge{background:rgba(200,146,42,0.2);border:1px solid rgba(200,146,42,0.4);color:var(--im-gold);font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:12px;display:inline-block}
-  .search-bar{display:flex;gap:8px;margin-bottom:1.5rem}
-  .search-bar input{flex:1;padding:10px 16px;border:1.5px solid var(--im-border);border-radius:var(--radius);font-family:var(--font-body);font-size:14px;background:#fff;outline:none}
-  .search-bar input:focus{border-color:var(--im-emerald)}
-  .search-bar select{padding:10px 14px;border:1.5px solid var(--im-border);border-radius:var(--radius);font-family:var(--font-body);font-size:14px;background:#fff;color:var(--im-slate);cursor:pointer;outline:none}
-  .cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
-  .cat-pill{background:#fff;border:1.5px solid var(--im-border);color:var(--im-slate-mid);font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;cursor:pointer;transition:all 0.15s;font-family:var(--font-body)}
-  .cat-pill:hover,.cat-pill.active{background:var(--im-emerald);border-color:var(--im-emerald);color:#fff}
-  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-  .product-card{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;cursor:pointer}
-  .product-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-  .product-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
-  .product-badge{position:absolute;top:10px;right:10px;background:var(--im-emerald);color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;font-family:var(--font-body)}
-  .product-body{padding:14px}
-  .product-cat{color:var(--im-emerald);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-  .product-name{font-family:var(--font-display);font-size:15px;font-weight:600;margin-bottom:6px;line-height:1.3}
-  .product-desc{color:var(--im-slate-mid);font-size:12px;line-height:1.5;margin-bottom:12px}
-  .product-footer{display:flex;align-items:center;justify-content:space-between}
-  .product-price{font-size:17px;font-weight:700;color:var(--im-slate)}
-  .product-price span{font-size:11px;font-weight:400;color:var(--im-slate-mid)}
-  .add-btn{background:var(--im-emerald);border:none;color:#fff;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
-  .add-btn:hover{background:var(--im-emerald-dark)}
-  .page-title{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:1.5rem}
-  .cart-layout{display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start}
-  .cart-items{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);overflow:hidden}
-  .cart-item{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--im-border)}
-  .cart-item:last-child{border-bottom:none}
-  .cart-item-emoji{font-size:28px;text-align:center}
-  .cart-item-name{font-weight:600;font-size:14px;margin-bottom:3px}
-  .cart-item-cat{color:var(--im-slate-mid);font-size:12px}
-  .cart-item-right{text-align:right}
-  .cart-item-price{font-weight:700;font-size:15px;margin-bottom:6px}
-  .qty-ctrl{display:flex;align-items:center;gap:8px;justify-content:flex-end}
-  .qty-btn{background:var(--im-slate-light);border:1px solid var(--im-border);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;color:var(--im-slate);font-family:var(--font-body)}
-  .qty-val{font-size:14px;font-weight:600;min-width:20px;text-align:center}
-  .cart-remove{background:none;border:none;color:#ccc;cursor:pointer;font-size:16px;margin-left:8px}
-  .cart-remove:hover{color:#e74c3c}
-  .order-summary{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:1.5rem;position:sticky;top:80px}
-  .summary-title{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:1.25rem;padding-bottom:12px;border-bottom:1px solid var(--im-border)}
-  .summary-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px;color:var(--im-slate-mid)}
-  .summary-total{display:flex;justify-content:space-between;font-size:17px;font-weight:700;color:var(--im-slate);border-top:1px solid var(--im-border);padding-top:14px;margin-top:4px;margin-bottom:1.25rem}
-  .checkout-btn{width:100%;padding:13px;background:var(--im-emerald);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;margin-bottom:10px;transition:background 0.15s}
-  .checkout-btn:hover{background:var(--im-emerald-dark)}
-  .pay-options{display:flex;gap:8px}
-  .pay-opt{flex:1;padding:8px;border:1.5px solid var(--im-border);border-radius:8px;background:#fff;cursor:pointer;font-family:var(--font-body);font-size:12px;font-weight:600;transition:all 0.15s;text-align:center}
-  .pay-opt:hover,.pay-opt.selected{border-color:var(--im-emerald);color:var(--im-emerald);background:var(--im-emerald-light)}
-  .empty-cart{text-align:center;padding:3rem 2rem;color:var(--im-slate-mid)}
-  .checkout-layout{display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start}
-  .checkout-form{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:2rem}
-  .form-section{margin-bottom:1.5rem}
-  .form-section-title{font-weight:600;font-size:14px;color:var(--im-slate);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--im-border)}
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-  .form-row.full{grid-template-columns:1fr}
-  .form-group label{display:block;font-size:12px;font-weight:500;color:var(--im-slate-mid);margin-bottom:4px}
-  .form-group input,.form-group select{width:100%;padding:9px 12px;border:1.5px solid var(--im-border);border-radius:8px;font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.15s;background:#fff;color:var(--im-slate)}
-  .form-group input:focus,.form-group select:focus{border-color:var(--im-emerald)}
-  .pay-gateway{display:flex;gap:10px;margin-bottom:1.5rem}
-  .gateway-opt{flex:1;border:2px solid var(--im-border);border-radius:var(--radius);padding:12px;cursor:pointer;text-align:center;transition:all 0.15s}
-  .gateway-opt.selected{border-color:var(--im-emerald);background:var(--im-emerald-light)}
-  .gateway-name{font-size:15px;font-weight:700;margin-bottom:2px}
-  .gateway-desc{font-size:11px;color:var(--im-slate-mid)}
-  .stripe-color{color:#635bff}
-  .razor-color{color:#072654}
-  .place-order-btn{width:100%;padding:14px;background:var(--im-emerald);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font-display);font-size:16px;font-weight:700;cursor:pointer}
-  .auth-wrap{max-width:440px;margin:0 auto}
-  .auth-card{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:2.5rem}
-  .auth-logo{font-family:var(--font-display);font-size:22px;font-weight:700;text-align:center;margin-bottom:6px}
-  .auth-logo span{color:var(--im-emerald)}
-  .auth-sub{text-align:center;color:var(--im-slate-mid);font-size:14px;margin-bottom:2rem}
-  .auth-tabs{display:flex;background:var(--im-slate-light);border-radius:8px;padding:3px;margin-bottom:1.75rem}
-  .auth-tab{flex:1;padding:8px;text-align:center;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;transition:all 0.15s;font-family:var(--font-body);border:none;background:none;color:var(--im-slate-mid)}
-  .auth-tab.active{background:#fff;color:var(--im-slate);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
-  .auth-form-group{margin-bottom:14px}
-  .auth-form-group label{display:block;font-size:13px;font-weight:500;color:var(--im-slate);margin-bottom:5px}
-  .auth-form-group input{width:100%;padding:10px 14px;border:1.5px solid var(--im-border);border-radius:8px;font-family:var(--font-body);font-size:14px;outline:none}
-  .auth-submit{width:100%;padding:12px;background:var(--im-emerald);color:#fff;border:none;border-radius:8px;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;margin-top:6px}
-  .plan-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-  .plan-card{border:2px solid var(--im-border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all 0.15s}
-  .plan-card.selected{border-color:var(--im-emerald);background:var(--im-emerald-light)}
-  .plan-name{font-weight:700;font-size:14px;margin-bottom:2px}
-  .plan-price{font-size:13px;color:var(--im-slate-mid)}
-  .admin-layout{display:grid;grid-template-columns:200px 1fr;gap:1.5rem;align-items:start}
-  .admin-sidebar{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:1rem;position:sticky;top:80px}
-  .admin-sidebar-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--im-slate-mid);margin-bottom:10px;padding:0 8px}
-  .sidebar-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--im-slate-mid);transition:all 0.15s;border:none;background:none;width:100%;font-family:var(--font-body);text-align:left}
-  .sidebar-item:hover,.sidebar-item.active{background:var(--im-emerald-light);color:var(--im-emerald)}
-  .admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
-  .stat-card{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius);padding:1rem}
-  .stat-label{font-size:12px;color:var(--im-slate-mid);margin-bottom:4px}
-  .stat-val{font-size:22px;font-weight:700;color:var(--im-slate);margin-bottom:2px}
-  .stat-change{font-size:11px;color:#16a34a}
-  .admin-section{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem}
-  .admin-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
-  .admin-section-title{font-family:var(--font-display);font-size:17px;font-weight:700}
-  .add-product-btn{background:var(--im-emerald);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer}
-  .admin-table{width:100%;border-collapse:collapse;font-size:13px}
-  .admin-table th{text-align:left;padding:8px 12px;background:var(--im-slate-light);font-weight:600;font-size:12px;color:var(--im-slate-mid);text-transform:uppercase;letter-spacing:0.4px}
-  .admin-table td{padding:10px 12px;border-bottom:1px solid var(--im-border)}
-  .admin-table tr:last-child td{border-bottom:none}
-  .status-badge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px}
-  .status-active{background:#dcfce7;color:#16a34a}
-  .status-pending{background:#fef9c3;color:#a16207}
-  .status-processing{background:#dbeafe;color:#1d4ed8}
-  .table-action{background:none;border:1px solid var(--im-border);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--font-body);color:var(--im-slate-mid);margin-left:4px}
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center}
-  .modal-overlay.open{display:flex}
-  .modal{background:#fff;border-radius:var(--radius-lg);padding:2rem;width:480px;max-width:90vw;max-height:80vh;overflow-y:auto}
-  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-  .modal-title{font-family:var(--font-display);font-size:20px;font-weight:700}
-  .modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--im-slate-mid)}
-  .success-view{text-align:center;padding:3rem 2rem}
-  .success-icon{font-size:64px;margin-bottom:1rem}
-  .success-title{font-family:var(--font-display);font-size:28px;font-weight:700;margin-bottom:8px;color:var(--im-emerald)}
-  .success-sub{color:var(--im-slate-mid);font-size:15px;margin-bottom:2rem}
-  .success-btn{background:var(--im-emerald);color:#fff;border:none;padding:12px 28px;border-radius:var(--radius);font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer}
-  .toast{position:fixed;bottom:24px;right:24px;background:var(--im-slate);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:300;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none}
-  .toast.show{opacity:1;transform:translateY(0)}
+/* ============================================================
+   ORIGINAL SITE STYLES
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--green:#2e7d32;--light-green:#e8f5e9;--dark-green:#1b5e20;--gold:#f9a825;--white:#fff;--gray:#f5f5f5;--dark:#1a1a2e;--text:#333}
+body{font-family:'Segoe UI',sans-serif;color:var(--text);background:#fff}
+a{text-decoration:none;color:inherit}
+
+/* TOP BAR */
+.top-bar{background:var(--dark-green);color:#fff;padding:8px 20px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+.top-bar a{color:#ffd54f}
+
+/* MAIN NAV */
+.main-nav{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.1);padding:15px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
+.logo{font-size:28px;font-weight:800;color:var(--green)}
+.logo span{color:var(--gold)}
+.nav-search{display:flex;flex:1;max-width:500px;margin:0 30px}
+.nav-search select{padding:10px;border:2px solid var(--green);border-right:none;border-radius:5px 0 0 5px;background:#fff;font-size:13px}
+.nav-search input{flex:1;padding:10px 15px;border:2px solid var(--green);border-right:none;font-size:14px;outline:none}
+.nav-search button{padding:10px 20px;background:var(--green);color:#fff;border:none;border-radius:0 5px 5px 0;cursor:pointer;font-size:14px}
+.nav-actions{display:flex;align-items:center;gap:15px;font-size:13px}
+.nav-actions a{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--dark);cursor:pointer}
+.nav-actions a:hover{color:var(--green)}
+.btn-list{background:var(--green);color:#fff!important;padding:8px 15px;border-radius:5px;font-weight:600}
+
+/* SHOP NAV BUTTON - new addition */
+.btn-shop{background:var(--gold);color:#1a1a2e!important;padding:8px 15px;border-radius:5px;font-weight:700;cursor:pointer;border:none;font-family:'Segoe UI',sans-serif;font-size:13px}
+.btn-shop:hover{background:#f57f17;color:#fff!important}
+
+/* CATEGORY NAV */
+.cat-nav{background:var(--green);padding:10px 20px;display:flex;gap:5px;overflow-x:auto}
+.cat-nav a{color:#fff;padding:6px 15px;border-radius:20px;font-size:13px;white-space:nowrap;cursor:pointer}
+.cat-nav a:hover{background:rgba(255,255,255,0.2)}
+
+/* TICKER */
+.ticker-wrap{background:var(--dark);color:#fff;padding:8px 0;overflow:hidden}
+.ticker{display:flex;animation:ticker 30s linear infinite;width:max-content}
+.ticker span{padding:0 40px;font-size:13px;color:#ffd54f}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--dark-green),var(--green));color:#fff;padding:60px 20px;text-align:center}
+.hero h1{font-size:42px;font-weight:800;margin-bottom:15px}
+.hero p{font-size:18px;margin-bottom:30px;opacity:0.9}
+.hero-btns{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+.hero-btns a{padding:14px 30px;border-radius:5px;font-weight:600;font-size:15px;cursor:pointer}
+.btn-primary{background:var(--gold);color:var(--dark)!important}
+.btn-secondary{background:rgba(255,255,255,0.2);color:#fff!important;border:2px solid #fff}
+.hero-stats{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat h3{font-size:28px;font-weight:800;color:var(--gold)}
+.hero-stat p{font-size:13px;opacity:0.8}
+.quick-cats{display:flex;justify-content:center;gap:15px;margin-top:30px;flex-wrap:wrap}
+.quick-cats a{background:rgba(255,255,255,0.15);color:#fff!important;padding:10px 20px;border-radius:5px;font-size:13px;cursor:pointer}
+
+/* SECTIONS */
+.section{padding:50px 20px}
+.section-title{text-align:center;margin-bottom:40px}
+.section-title h2{font-size:32px;font-weight:700;color:var(--dark)}
+.section-title p{color:#666;margin-top:10px}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.view-all{color:var(--green);font-weight:600}
+
+/* CATEGORIES GRID */
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px}
+.cat-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.3s}
+.cat-card:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,0.1);border-color:var(--green)}
+.cat-card .icon{font-size:36px;margin-bottom:10px}
+.cat-card h3{font-size:13px;font-weight:600;color:var(--dark)}
+.cat-card p{font-size:11px;color:#888;margin-top:3px}
+
+/* PRODUCTS */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.prod-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden;transition:all 0.3s}
+.prod-card:hover{transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,0,0,0.1)}
+.prod-badge{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;display:inline-block;border-radius:0 0 8px 0}
+.prod-body{padding:15px}
+.prod-cat{font-size:11px;color:var(--green);font-weight:600;text-transform:uppercase;margin-bottom:5px}
+.prod-name{font-size:16px;font-weight:700;margin-bottom:5px}
+.prod-supplier{font-size:12px;color:#888;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.prod-price{font-size:20px;font-weight:700;color:var(--dark)}
+.prod-price span{font-size:12px;font-weight:400;color:#888}
+.prod-actions{display:flex;gap:10px;margin-top:15px}
+.btn-inquiry{flex:1;padding:8px;background:var(--green);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:13px;font-weight:600}
+.btn-save{padding:8px 12px;background:var(--light-green);border:none;border-radius:5px;cursor:pointer;font-size:16px}
+
+/* SUPPLIERS */
+.suppliers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.supplier-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:20px;transition:all 0.3s}
+.supplier-card:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+.supplier-header{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.supplier-logo{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--light-green)}
+.supplier-name{font-size:16px;font-weight:700}
+.supplier-badge{font-size:11px;color:var(--green);font-weight:600}
+.supplier-stats{display:flex;gap:15px;margin:10px 0;font-size:12px;color:#666}
+.supplier-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.tag{background:var(--light-green);color:var(--green);padding:3px 10px;border-radius:20px;font-size:11px}
+.stars{color:var(--gold)}
+.btn-contact{width:100%;padding:10px;background:var(--green);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600;margin-top:15px}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:30px;position:relative}
+.step{text-align:center}
+.step-num{width:50px;height:50px;background:var(--green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;margin:0 auto 15px}
+.step h3{font-weight:700;margin-bottom:8px}
+.step p{font-size:13px;color:#666}
+
+/* STATS */
+.stats-section{background:linear-gradient(135deg,var(--dark-green),var(--green));color:#fff;padding:50px 20px;text-align:center}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:30px;max-width:900px;margin:0 auto}
+.stat-item h3{font-size:36px;font-weight:800;color:var(--gold)}
+.stat-item p{font-size:14px;opacity:0.9}
+
+/* TRADE LEADS */
+.leads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.lead-card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:20px}
+.lead-badge{background:var(--light-green);color:var(--green);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+.lead-title{font-size:15px;font-weight:700;margin-bottom:8px}
+.lead-meta{display:flex;gap:15px;font-size:12px;color:#888;margin-bottom:10px;flex-wrap:wrap}
+.lead-quantity{font-size:16px;font-weight:700;color:var(--green);margin-bottom:10px}
+.btn-respond{width:100%;padding:10px;background:var(--green);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.price-card{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:25px;text-align:center}
+.price-card.popular{border-color:var(--green);position:relative}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:4px 15px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+.price-name{font-size:18px;font-weight:700;margin-bottom:5px}
+.price-amount{font-size:36px;font-weight:800;color:var(--green);margin:15px 0}
+.price-amount span{font-size:14px;color:#888}
+.price-features{list-style:none;margin:20px 0;text-align:left}
+.price-features li{padding:6px 0;font-size:13px;border-bottom:1px solid #f0f0f0;display:flex;gap:8px}
+.price-features li::before{content:"✓";color:var(--green);font-weight:700}
+.btn-price{width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600;font-size:14px;margin-top:10px}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.testimonial{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:25px;position:relative}
+.quote{font-size:40px;color:var(--light-green);font-weight:800;line-height:1;margin-bottom:10px}
+.testimonial p{font-size:14px;color:#555;line-height:1.6;margin-bottom:20px}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.author-avatar{width:45px;height:45px;border-radius:50%;background:var(--light-green);display:flex;align-items:center;justify-content:center;font-size:22px}
+.author-name{font-weight:700;font-size:14px}
+.author-company{font-size:12px;color:#888}
+
+/* PARTNERS */
+.partners-section{background:var(--gray);padding:40px 20px;text-align:center}
+.partners-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:30px;margin-top:25px}
+.partner{background:#fff;padding:15px 25px;border-radius:8px;font-weight:700;font-size:14px;color:#555;box-shadow:0 2px 5px rgba(0,0,0,0.05)}
+
+/* APP SECTION */
+.app-section{background:linear-gradient(135deg,var(--dark),#16213e);color:#fff;padding:50px 20px;display:flex;justify-content:center;align-items:center;gap:50px;flex-wrap:wrap}
+.app-content h2{font-size:28px;font-weight:700;margin-bottom:15px}
+.app-content p{opacity:0.8;margin-bottom:25px}
+.app-btns{display:flex;gap:15px;flex-wrap:wrap}
+.app-btn{background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.3);color:#fff;padding:12px 20px;border-radius:8px;cursor:pointer;font-size:14px}
+.app-icon{font-size:100px}
+
+/* NEWSLETTER */
+.newsletter{background:var(--light-green);padding:50px 20px;text-align:center}
+.newsletter h2{font-size:28px;font-weight:700;color:var(--dark-green);margin-bottom:10px}
+.newsletter p{color:#555;margin-bottom:25px}
+.newsletter-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.newsletter-form input{padding:12px 20px;border:2px solid var(--green);border-radius:5px;font-size:14px;width:300px;outline:none}
+.newsletter-form button{padding:12px 25px;background:var(--green);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600}
+
+/* FOOTER */
+footer{background:var(--dark);color:#fff;padding:50px 20px 20px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:30px;margin-bottom:30px}
+.footer-brand .logo{color:#fff;margin-bottom:10px;display:block}
+.footer-brand p{font-size:13px;opacity:0.7;margin-bottom:15px}
+.social-links{display:flex;gap:10px}
+.social-link{width:35px;height:35px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+footer h4{font-size:15px;font-weight:700;margin-bottom:15px;color:var(--gold)}
+footer ul{list-style:none}
+footer ul li{margin-bottom:8px}
+footer ul li a{font-size:13px;opacity:0.7;cursor:pointer}
+footer ul li a:hover{opacity:1;color:var(--gold)}
+.footer-contact p{font-size:13px;opacity:0.7;margin-bottom:8px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;font-size:12px;opacity:0.6}
+.footer-links{display:flex;gap:20px}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2000;justify-content:center;align-items:center}
+.modal-bg.open{display:flex}
+.modal-box{background:#fff;border-radius:15px;padding:40px;width:480px;max-width:95vw;position:relative}
+.modal-close-btn{position:absolute;top:15px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;color:#999}
+.modal-tabs{display:flex;gap:5px;background:#f5f5f5;border-radius:8px;padding:4px;margin-bottom:25px}
+.modal-tab{flex:1;padding:8px;text-align:center;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;border:none;background:none;color:#888;font-family:'Segoe UI',sans-serif}
+.modal-tab.active{background:#fff;color:var(--dark);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.form-field{margin-bottom:15px}
+.form-field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;color:var(--dark)}
+.form-field input{width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;font-family:'Segoe UI',sans-serif}
+.form-field input:focus{border-color:var(--green)}
+.btn-modal-submit{width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:5px}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.plan-opt{border:2px solid #ddd;border-radius:8px;padding:10px;cursor:pointer;text-align:center;transition:all 0.15s}
+.plan-opt.selected{border-color:var(--green);background:var(--light-green)}
+.plan-opt-name{font-weight:700;font-size:13px}
+.plan-opt-price{font-size:12px;color:#888}
+
+/* COOKIE */
+.cookie-bar{position:fixed;bottom:0;left:0;right:0;background:var(--dark);color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;z-index:3000;font-size:13px}
+.cookie-btns{display:flex;gap:10px}
+.btn-cookie{padding:8px 20px;border-radius:5px;cursor:pointer;font-weight:600;font-size:13px;border:none}
+.btn-cookie-accept{background:var(--green);color:#fff}
+.btn-cookie-decline{background:rgba(255,255,255,0.1);color:#fff}
+
+/* WHATSAPP */
+.whatsapp-float{position:fixed;bottom:80px;right:20px;background:#25d366;color:#fff;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;box-shadow:0 4px 15px rgba(37,211,102,0.4);z-index:999;text-decoration:none}
+
+/* ============================================================
+   NEW E-COMMERCE PANEL STYLES
+   ============================================================ */
+:root{
+  --im-emerald:#0a6b3c;--im-emerald-light:#e8f5ee;--im-emerald-dark:#054d2b;
+  --im-gold:#c8922a;--im-slate:#1a1f2e;--im-slate-mid:#4a5168;--im-slate-light:#f4f5f8;
+  --im-border:#e2e6ec;--radius:10px;--radius-lg:16px;
+  --font-display:'Georgia',serif;
+}
+
+/* Shop Panel Overlay */
+.shop-panel{display:none;position:fixed;inset:0;background:#f4f5f8;z-index:1500;overflow-y:auto}
+.shop-panel.open{display:block}
+.shop-panel-nav{background:var(--im-slate);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100}
+.shop-panel-brand{font-family:var(--font-display);color:#fff;font-size:18px;font-weight:700}
+.shop-panel-brand span{color:#c8922a}
+.shop-panel-links{display:flex;gap:4px}
+.sp-btn{background:none;border:none;color:rgba(255,255,255,0.7);font-size:13px;padding:6px 13px;border-radius:6px;cursor:pointer;transition:all 0.15s;font-family:'Segoe UI',sans-serif}
+.sp-btn:hover,.sp-btn.active{background:rgba(255,255,255,0.12);color:#fff}
+.sp-btn.admin-btn{color:#c8922a;border:1px solid rgba(200,146,42,0.3)}
+.sp-close{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:13px;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:'Segoe UI',sans-serif}
+.sp-cart-btn{background:var(--im-emerald);border:none;color:#fff;font-size:13px;padding:7px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:500;font-family:'Segoe UI',sans-serif}
+.sp-cart-count{background:#c8922a;color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* Views inside shop panel */
+.sp-view{display:none;padding:1.5rem 2rem}
+.sp-view.active{display:block}
+.sp-hero{background:linear-gradient(135deg,var(--im-slate),var(--im-emerald-dark));border-radius:var(--radius-lg);padding:2rem 2.5rem;margin-bottom:1.5rem;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.sp-hero h1{font-family:var(--font-display);font-size:28px;font-weight:700;margin-bottom:6px}
+.sp-hero p{color:rgba(255,255,255,0.7);font-size:14px}
+.sp-hero-badge{background:rgba(200,146,42,0.2);border:1px solid rgba(200,146,42,0.4);color:#c8922a;font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:10px;display:inline-block}
+.sp-search{display:flex;gap:8px;margin-bottom:1.25rem}
+.sp-search input{flex:1;padding:9px 14px;border:1.5px solid var(--im-border);border-radius:var(--radius);font-size:14px;background:#fff;outline:none;font-family:'Segoe UI',sans-serif}
+.sp-search input:focus{border-color:var(--im-emerald)}
+.sp-search select{padding:9px 12px;border:1.5px solid var(--im-border);border-radius:var(--radius);font-size:14px;background:#fff;cursor:pointer;outline:none;font-family:'Segoe UI',sans-serif}
+.sp-cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem}
+.sp-cat-pill{background:#fff;border:1.5px solid var(--im-border);color:var(--im-slate-mid);font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all 0.15s;font-family:'Segoe UI',sans-serif}
+.sp-cat-pill:hover,.sp-cat-pill.active{background:var(--im-emerald);border-color:var(--im-emerald);color:#fff}
+.sp-products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.sp-prod-card{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;cursor:pointer}
+.sp-prod-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+.sp-prod-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.sp-prod-badge{position:absolute;top:8px;right:8px;background:var(--im-emerald);color:#fff;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.sp-prod-body{padding:12px}
+.sp-prod-cat{color:var(--im-emerald);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.sp-prod-name{font-family:var(--font-display);font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.3}
+.sp-prod-desc{color:var(--im-slate-mid);font-size:11px;line-height:1.4;margin-bottom:10px}
+.sp-prod-footer{display:flex;align-items:center;justify-content:space-between}
+.sp-prod-price{font-size:16px;font-weight:700;color:var(--im-slate)}
+.sp-prod-price span{font-size:10px;font-weight:400;color:var(--im-slate-mid)}
+.sp-add-btn{background:var(--im-emerald);border:none;color:#fff;width:30px;height:30px;border-radius:7px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.sp-add-btn:hover{background:var(--im-emerald-dark)}
+
+/* Cart */
+.sp-page-title{font-family:var(--font-display);font-size:24px;font-weight:700;margin-bottom:1.25rem;color:var(--im-slate)}
+.sp-cart-layout{display:grid;grid-template-columns:1fr 300px;gap:1.25rem;align-items:start}
+.sp-cart-items{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);overflow:hidden}
+.sp-cart-item{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--im-border)}
+.sp-cart-item:last-child{border-bottom:none}
+.sp-ci-emoji{font-size:26px;text-align:center}
+.sp-ci-name{font-weight:600;font-size:13px;margin-bottom:2px}
+.sp-ci-cat{color:var(--im-slate-mid);font-size:11px}
+.sp-ci-right{text-align:right}
+.sp-ci-price{font-weight:700;font-size:14px;margin-bottom:5px}
+.sp-qty-ctrl{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.sp-qty-btn{background:var(--im-slate-light);border:1px solid var(--im-border);width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:600;color:var(--im-slate)}
+.sp-qty-val{font-size:13px;font-weight:600;min-width:18px;text-align:center}
+.sp-rm-btn{background:none;border:none;color:#ccc;cursor:pointer;font-size:15px;margin-left:6px}
+.sp-rm-btn:hover{color:#e74c3c}
+.sp-order-summary{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:1.25rem;position:sticky;top:70px}
+.sp-summary-title{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:1rem;padding-bottom:10px;border-bottom:1px solid var(--im-border)}
+.sp-summary-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;color:var(--im-slate-mid)}
+.sp-summary-total{display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:var(--im-slate);border-top:1px solid var(--im-border);padding-top:12px;margin-top:4px;margin-bottom:1rem}
+.sp-checkout-btn{width:100%;padding:12px;background:var(--im-emerald);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;transition:background 0.15s;font-family:'Segoe UI',sans-serif}
+.sp-checkout-btn:hover{background:var(--im-emerald-dark)}
+.sp-empty-cart{text-align:center;padding:2.5rem 1.5rem;color:var(--im-slate-mid)}
+
+/* Checkout */
+.sp-checkout-layout{display:grid;grid-template-columns:1fr 300px;gap:1.25rem;align-items:start}
+.sp-checkout-form{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:1.75rem}
+.sp-form-section{margin-bottom:1.25rem}
+.sp-form-section-title{font-weight:600;font-size:13px;color:var(--im-slate);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--im-border)}
+.sp-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.sp-form-row.full{grid-template-columns:1fr}
+.sp-form-group label{display:block;font-size:11px;font-weight:500;color:var(--im-slate-mid);margin-bottom:3px}
+.sp-form-group input{width:100%;padding:8px 11px;border:1.5px solid var(--im-border);border-radius:7px;font-size:13px;outline:none;background:#fff;font-family:'Segoe UI',sans-serif}
+.sp-form-group input:focus{border-color:var(--im-emerald)}
+.sp-pay-gateway{display:flex;gap:8px;margin-bottom:1.25rem}
+.sp-gateway-opt{flex:1;border:2px solid var(--im-border);border-radius:var(--radius);padding:10px;cursor:pointer;text-align:center;transition:all 0.15s}
+.sp-gateway-opt.selected{border-color:var(--im-emerald);background:var(--im-emerald-light)}
+.sp-gateway-name{font-size:14px;font-weight:700;margin-bottom:2px}
+.sp-gateway-desc{font-size:10px;color:var(--im-slate-mid)}
+.stripe-color{color:#635bff}
+.razor-color{color:#072654}
+.sp-place-order-btn{width:100%;padding:13px;background:var(--im-emerald);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font-display);font-size:15px;font-weight:700;cursor:pointer;transition:background 0.15s}
+.sp-place-order-btn:hover{background:var(--im-emerald-dark)}
+
+/* Auth */
+.sp-auth-wrap{max-width:420px;margin:0 auto}
+.sp-auth-card{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:2rem}
+.sp-auth-logo{font-family:var(--font-display);font-size:20px;font-weight:700;text-align:center;margin-bottom:5px}
+.sp-auth-logo span{color:var(--im-emerald)}
+.sp-auth-sub{text-align:center;color:var(--im-slate-mid);font-size:13px;margin-bottom:1.5rem}
+.sp-auth-tabs{display:flex;background:var(--im-slate-light);border-radius:7px;padding:3px;margin-bottom:1.5rem}
+.sp-auth-tab{flex:1;padding:7px;text-align:center;border-radius:5px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.15s;border:none;background:none;color:var(--im-slate-mid);font-family:'Segoe UI',sans-serif}
+.sp-auth-tab.active{background:#fff;color:var(--im-slate);box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.sp-auth-fg{margin-bottom:12px}
+.sp-auth-fg label{display:block;font-size:12px;font-weight:500;margin-bottom:4px}
+.sp-auth-fg input{width:100%;padding:9px 12px;border:1.5px solid var(--im-border);border-radius:7px;font-size:13px;outline:none;font-family:'Segoe UI',sans-serif}
+.sp-auth-submit{width:100%;padding:11px;background:var(--im-emerald);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;margin-top:5px;font-family:'Segoe UI',sans-serif}
+.sp-plan-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.sp-plan-card{border:2px solid var(--im-border);border-radius:var(--radius);padding:10px;cursor:pointer;transition:all 0.15s}
+.sp-plan-card.selected{border-color:var(--im-emerald);background:var(--im-emerald-light)}
+.sp-plan-name{font-weight:700;font-size:13px}
+.sp-plan-price{font-size:12px;color:var(--im-slate-mid)}
+
+/* Admin */
+.sp-admin-layout{display:grid;grid-template-columns:180px 1fr;gap:1.25rem;align-items:start}
+.sp-admin-sidebar{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:0.875rem;position:sticky;top:70px}
+.sp-sidebar-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--im-slate-mid);margin-bottom:8px;padding:0 6px}
+.sp-sidebar-item{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:500;color:var(--im-slate-mid);transition:all 0.15s;border:none;background:none;width:100%;font-family:'Segoe UI',sans-serif;text-align:left}
+.sp-sidebar-item:hover,.sp-sidebar-item.active{background:var(--im-emerald-light);color:var(--im-emerald)}
+.sp-admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+.sp-stat-card{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius);padding:0.875rem}
+.sp-stat-label{font-size:11px;color:var(--im-slate-mid);margin-bottom:3px}
+.sp-stat-val{font-size:20px;font-weight:700;color:var(--im-slate);margin-bottom:2px}
+.sp-stat-change{font-size:10px;color:#16a34a}
+.sp-admin-section{background:#fff;border:1px solid var(--im-border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1.25rem}
+.sp-admin-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.sp-admin-section-title{font-family:var(--font-display);font-size:16px;font-weight:700}
+.sp-add-prod-btn{background:var(--im-emerald);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Segoe UI',sans-serif}
+.sp-table{width:100%;border-collapse:collapse;font-size:12px}
+.sp-table th{text-align:left;padding:7px 10px;background:var(--im-slate-light);font-weight:600;font-size:11px;color:var(--im-slate-mid);text-transform:uppercase;letter-spacing:0.4px}
+.sp-table td{padding:9px 10px;border-bottom:1px solid var(--im-border)}
+.sp-table tr:last-child td{border-bottom:none}
+.sp-status{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.sp-status-active{background:#dcfce7;color:#16a34a}
+.sp-status-pending{background:#fef9c3;color:#a16207}
+.sp-status-processing{background:#dbeafe;color:#1d4ed8}
+.sp-tbl-action{background:none;border:1px solid var(--im-border);padding:3px 8px;border-radius:5px;font-size:11px;cursor:pointer;color:var(--im-slate-mid);margin-left:3px;font-family:'Segoe UI',sans-serif}
+
+/* Product modal inside panel */
+.sp-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center}
+.sp-modal-overlay.open{display:flex}
+.sp-modal{background:#fff;border-radius:var(--radius-lg);padding:1.75rem;width:460px;max-width:90vw;max-height:80vh;overflow-y:auto}
+.sp-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.sp-modal-title{font-family:var(--font-display);font-size:18px;font-weight:700}
+.sp-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--im-slate-mid)}
+
+/* Success */
+.sp-success{text-align:center;padding:3rem 2rem}
+.sp-success-icon{font-size:60px;margin-bottom:1rem}
+.sp-success-title{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:8px;color:var(--im-emerald)}
+.sp-success-sub{color:var(--im-slate-mid);font-size:14px;margin-bottom:1.5rem}
+.sp-success-btn{background:var(--im-emerald);color:#fff;border:none;padding:11px 26px;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;font-family:'Segoe UI',sans-serif}
+
+/* Toast */
+.sp-toast{position:fixed;bottom:24px;right:24px;background:var(--im-slate);color:#fff;padding:11px 18px;border-radius:9px;font-size:13px;z-index:3000;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none}
+.sp-toast.show{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-brand" onclick="showView('shop')">Irish<span>Mart</span> <small style="font-family:var(--font-body);font-size:10px;color:rgba(255,255,255,0.4);font-weight:300;letter-spacing:1px">B2B</small></div>
-  <div class="nav-links">
-    <button class="nav-btn active" id="nav-shop" onclick="showView('shop')">Marketplace</button>
-    <button class="nav-btn" id="nav-auth" onclick="showView('auth')">Account</button>
-    <button class="nav-btn admin-btn" id="nav-admin" onclick="showView('admin')">Admin Panel</button>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <span>🎉 Special Launch Offer! Get <a href="#">3 Months FREE</a> on Gold Plan | 🍀 Over 5,000 Irish Businesses Already Connected | 📞 Free consultation: <a href="tel:+35315551234">+353 1 555 1234</a></span>
+  <span>🇮🇪 Made in Ireland</span>
+</div>
+
+<!-- MAIN NAV -->
+<nav class="main-nav">
+  <div class="logo">🍀 Irish<span>Mart</span></div>
+  <div class="nav-search">
+    <select>
+      <option>All Categories</option>
+      <option>Agriculture & Food</option>
+      <option>Construction</option>
+      <option>Technology</option>
+      <option>Healthcare</option>
+      <option>Manufacturing</option>
+      <option>Retail</option>
+      <option>Hospitality</option>
+    </select>
+    <input type="text" placeholder="Search products, suppliers, services...">
+    <button>🔍 Search</button>
   </div>
-  <div class="nav-right">
-    <button class="cart-btn" onclick="showView('cart')">
-      🛒 Cart <span class="cart-count" id="cart-count">0</span>
-    </button>
+  <div class="nav-actions">
+    <a href="#" onclick="openAuthModal()"><span>👤</span><span>Sign In</span></a>
+    <a href="#"><span>🔔</span><span>Alerts</span></a>
+    <a href="#"><span>❤️</span><span>Saved</span></a>
+    <a href="#" class="btn-list">+ List Your Business</a>
+    <button class="btn-shop" onclick="openShopPanel()">🛒 Marketplace</button>
   </div>
 </nav>
 
-<!-- SHOP -->
-<div class="view active" id="view-shop">
-  <div class="shop-hero">
+<!-- CATEGORY NAV -->
+<nav class="cat-nav">
+  <a href="#">🏠 Home</a>
+  <a href="#">🌾 Agriculture</a>
+  <a href="#">🏗️ Construction</a>
+  <a href="#">💻 Technology</a>
+  <a href="#">🏭 Manufacturing</a>
+  <a href="#">🍺 Food & Drink</a>
+  <a href="#">🏥 Healthcare</a>
+  <a href="#">🚢 Import/Export</a>
+  <a href="#">📋 All Categories</a>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>🥩 Organic Irish Beef - Cork Supplier</span><span>🏗️ Construction Materials Wanted - Dublin</span><span>💻 Software Development Services - Galway</span><span>🧀 Dairy Products Export - Kerry</span><span>📦 Sustainable Packaging Solutions</span><span>💊 Pharma Equipment Required</span><span>🥃 Irish Whiskey Distributor Needed</span><span>🖥️ IT Infrastructure Services - Limerick</span><span>☀️ Renewable Energy Products</span><span>🐟 Seafood Export - Donegal</span><span>🪑 Office Furniture Wholesale</span><span>🏥 Medical Devices Manufacturer</span>
+    <span>🥩 Organic Irish Beef - Cork Supplier</span><span>🏗️ Construction Materials Wanted - Dublin</span><span>💻 Software Development Services - Galway</span><span>🧀 Dairy Products Export - Kerry</span><span>📦 Sustainable Packaging Solutions</span><span>💊 Pharma Equipment Required</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>🇮🇪 #1 Irish B2B Marketplace</h1>
+  <h1>Connect with Irish Businesses & Grow Together</h1>
+  <p>IrishMart is Ireland's premier online B2B marketplace connecting 5,000+ suppliers, manufacturers, and buyers across all industries.</p>
+  <div class="hero-btns">
+    <a href="#" class="btn-primary">Start for Free</a>
+    <a href="#" class="btn-secondary">Find Suppliers</a>
+    <a href="#" class="btn-secondary">Watch Demo</a>
+    <a href="#" class="btn-primary" onclick="openShopPanel();return false;" style="background:#1a1f2e;color:#c8922a">🛒 Shop Now</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><h3>5,000+</h3><p>Verified Suppliers</p></div>
+    <div class="hero-stat"><h3>50,000+</h3><p>Products Listed</p></div>
+    <div class="hero-stat"><h3>270+</h3><p>Industries Covered</p></div>
+  </div>
+  <div class="quick-cats">
+    <a href="#">🌾 Agriculture & Food<br><small>850+ Suppliers</small></a>
+    <a href="#">🏗️ Construction<br><small>620+ Suppliers</small></a>
+    <a href="#">💻 Technology & IT<br><small>940+ Suppliers</small></a>
+    <a href="#">🏭 Manufacturing<br><small>480+ Suppliers</small></a>
+    <a href="#">🍺 Food & Beverages<br><small>720+ Suppliers</small></a>
+    <a href="#">🚢 Import/Export<br><small>380+ Members</small></a>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section" style="background:#f9f9f9">
+  <div class="section-title"><h2>Browse by Industry</h2><p>Find suppliers and buyers across every Irish industry sector</p><h2>Explore All Categories</h2></div>
+  <div class="cats-grid">
+    <div class="cat-card"><div class="icon">🌾</div><h3>Agriculture & Farming</h3><p>850+ Products</p></div>
+    <div class="cat-card"><div class="icon">🏗️</div><h3>Construction & Building</h3><p>620+ Products</p></div>
+    <div class="cat-card"><div class="icon">💻</div><h3>Technology & IT</h3><p>940+ Products</p></div>
+    <div class="cat-card"><div class="icon">🏥</div><h3>Healthcare & Pharma</h3><p>520+ Products</p></div>
+    <div class="cat-card"><div class="icon">🍺</div><h3>Food & Beverages</h3><p>720+ Products</p></div>
+    <div class="cat-card"><div class="icon">🏭</div><h3>Manufacturing</h3><p>480+ Products</p></div>
+    <div class="cat-card"><div class="icon">🌊</div><h3>Marine & Seafood</h3><p>280+ Products</p></div>
+    <div class="cat-card"><div class="icon">🛒</div><h3>Retail & Wholesale</h3><p>1,200+ Products</p></div>
+    <div class="cat-card"><div class="icon">☀️</div><h3>Renewable Energy</h3><p>180+ Products</p></div>
+    <div class="cat-card"><div class="icon">🎓</div><h3>Education & Training</h3><p>320+ Services</p></div>
+    <div class="cat-card"><div class="icon">🚛</div><h3>Logistics & Transport</h3><p>410+ Services</p></div>
+    <div class="cat-card"><div class="icon">🏨</div><h3>Hospitality & Tourism</h3><p>560+ Businesses</p></div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <div class="section-header">
+    <div><small style="color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px">Trending Now</small><h2 style="font-size:28px;font-weight:700;color:var(--dark)">Featured Products & Services</h2><p style="color:#666">Verified products from trusted Irish suppliers</p></div>
+    <a href="#" class="view-all">View All Products →</a>
+  </div>
+  <div class="products-grid">
+    <div class="prod-card"><div style="background:#f0faf4"><span class="prod-badge">🥩 VERIFIED</span></div><div class="prod-body"><div class="prod-cat">Agriculture & Food</div><div class="prod-name">Premium Irish Grass-Fed Beef - Bulk Supply</div><div class="prod-supplier">🏭 Cork Valley Meats Ltd.</div><div class="prod-price">€8.50<span>/kg Min. 500kg Order</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#f0f4ff"><span class="prod-badge">💻 HOT</span></div><div class="prod-body"><div class="prod-cat">Technology</div><div class="prod-name">Custom Software Development Services</div><div class="prod-supplier">💼 Dublin Digital Solutions</div><div class="prod-price">€75<span>/hour Project-based</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#f5f0ea"><span class="prod-badge">🏗️ NEW</span></div><div class="prod-body"><div class="prod-cat">Construction</div><div class="prod-name">Sustainable Concrete Mix - Eco Grade A</div><div class="prod-supplier">🏗️ Galway Build Supplies</div><div class="prod-price">€145<span>/tonne Min. 10 tonnes</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#fff0f4"><span class="prod-badge">💊 VERIFIED</span></div><div class="prod-body"><div class="prod-cat">Healthcare & Pharma</div><div class="prod-name">Medical Grade PPE Equipment - Bulk Order</div><div class="prod-supplier">🏥 Shannon MedSupply</div><div class="prod-price">€2.40<span>/unit Min. 1000 units</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#fffbf0"><span class="prod-badge">🥛 EXPORT</span></div><div class="prod-body"><div class="prod-cat">Dairy Products</div><div class="prod-name">Irish Cheddar Cheese - Export Quality</div><div class="prod-supplier">🧀 Kerry Gold Dairy Co.</div><div class="prod-price">€12.50<span>/kg Min. 200kg</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#fffde8"><span class="prod-badge">☀️ GREEN</span></div><div class="prod-body"><div class="prod-cat">Renewable Energy</div><div class="prod-name">Solar Panel Installation - Commercial Grade</div><div class="prod-supplier">⚡ Wicklow Green Energy</div><div class="prod-price">€180<span>/panel Installation incl.</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#e8f6ff"><span class="prod-badge">🐟 FRESH</span></div><div class="prod-body"><div class="prod-cat">Marine & Seafood</div><div class="prod-name">Fresh Atlantic Salmon - Direct from Farm</div><div class="prod-supplier">🎣 Donegal Sea Farms</div><div class="prod-price">€9.80<span>/kg Min. 100kg</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+    <div class="prod-card"><div style="background:#f5f5f5"><span class="prod-badge">🚛 RELIABLE</span></div><div class="prod-body"><div class="prod-cat">Logistics</div><div class="prod-name">Nationwide Freight & Cold Chain Logistics</div><div class="prod-supplier">🚚 All-Ireland Transport</div><div class="prod-price">€0.85<span>/km Per vehicle</span></div><div class="prod-actions"><button class="btn-inquiry">Send Inquiry</button><button class="btn-save">❤️</button></div></div></div>
+  </div>
+</section>
+
+<!-- VERIFIED SUPPLIERS -->
+<section class="section" style="background:#f9f9f9">
+  <div class="section-header"><div><small style="color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px">🌟 Trusted Partners</small><h2 style="font-size:28px;font-weight:700;color:var(--dark)">Verified Irish Suppliers</h2><p style="color:#666">Connect directly with Ireland's most trusted and verified business suppliers</p></div></div>
+  <div class="suppliers-grid">
+    <div class="supplier-card"><div class="supplier-header"><div class="supplier-logo">🌾</div><div><div class="supplier-name">Cork Valley Meats Ltd. <span style="color:var(--green)">✓</span></div><div class="supplier-badge">Verified</div><div style="font-size:12px;color:#888">Cork, Munster</div></div></div><div class="supplier-stats"><span>24 Products</span><span>850+ Clients</span><span>15yrs Experience</span></div><div class="supplier-tags"><span class="tag">Beef</span><span class="tag">Lamb</span><span class="tag">Pork</span><span class="tag">Export Ready</span></div><div class="stars">★★★★★</div><div style="font-size:12px;color:#888">4.9 (128 reviews)</div><button class="btn-contact">Contact</button></div>
+    <div class="supplier-card"><div class="supplier-header"><div class="supplier-logo">💻</div><div><div class="supplier-name">Dublin Digital Solutions <span style="color:var(--green)">✓</span></div><div class="supplier-badge">Verified</div><div style="font-size:12px;color:#888">Dublin, Leinster</div></div></div><div class="supplier-stats"><span>45 Services</span><span>320+ Projects</span><span>8yrs Experience</span></div><div class="supplier-tags"><span class="tag">Web Dev</span><span class="tag">Mobile Apps</span><span class="tag">Cloud</span><span class="tag">AI/ML</span></div><div class="stars">★★★★★</div><div style="font-size:12px;color:#888">4.8 (96 reviews)</div><button class="btn-contact">Contact</button></div>
+    <div class="supplier-card"><div class="supplier-header"><div class="supplier-logo">🥛</div><div><div class="supplier-name">Kerry Gold Dairy Co. <span style="color:var(--green)">✓</span></div><div class="supplier-badge">Verified</div><div style="font-size:12px;color:#888">Tralee, Kerry</div></div></div><div class="supplier-stats"><span>38 Products</span><span>1,200+ Clients</span><span>25yrs Experience</span></div><div class="supplier-tags"><span class="tag">Cheese</span><span class="tag">Butter</span><span class="tag">Milk</span><span class="tag">EU Export</span></div><div class="stars">★★★★★</div><div style="font-size:12px;color:#888">4.9 (215 reviews)</div><button class="btn-contact">Contact</button></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-title"><small style="color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px">Simple Process</small><h2>How IrishMart Works</h2><p>Join thousands of Irish businesses in just 4 simple steps</p></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h3>Register Your Business</h3><p>Create a free account and set up your business profile with products, services, and company details in minutes.</p></div>
+    <div class="step"><div class="step-num">2</div><h3>Get Verified</h3><p>Complete our GDPR-compliant verification process to receive your trust badge and boost buyer confidence.</p></div>
+    <div class="step"><div class="step-num">3</div><h3>Connect & Communicate</h3><p>Receive genuine business inquiries from verified buyers across Ireland and internationally.</p></div>
+    <div class="step"><div class="step-num">4</div><h3>Close & Grow</h3><p>Finalise deals, build long-term partnerships, and track your business growth with analytics tools.</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-item"><h3>5,000+</h3><p>🏢 Registered Businesses</p></div>
+    <div class="stat-item"><h3>50,000+</h3><p>📦 Products & Services Listed</p></div>
+    <div class="stat-item"><h3>€12M+</h3><p>💰 Business Generated</p></div>
+    <div class="stat-item"><h3>32</h3><p>🌍 Export Countries Reached</p></div>
+  </div>
+</div>
+
+<!-- TRADE LEADS -->
+<section class="section" style="background:#f9f9f9">
+  <div class="section-header"><div><small style="color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px">Live Opportunities</small><h2 style="font-size:28px;font-weight:700;color:var(--dark)">Latest Trade Leads</h2><p style="color:#666">Real buying requirements from Irish and international businesses</p></div><a href="#" class="view-all">View All Leads →</a></div>
+  <div class="leads-grid">
+    <div class="lead-card"><span class="lead-badge">Food & Agriculture</span><div class="lead-title">Looking for Bulk Supply of Organic Irish Oats - Export Order</div><div class="lead-meta"><span>📍 Dublin, Ireland</span><span>⏰ Posted 2 hours ago</span></div><div class="lead-quantity">20 Tonnes</div><button class="btn-respond">Respond Now</button></div>
+    <div class="lead-card"><span class="lead-badge">Technology</span><div class="lead-title">Require Cloud IT Infrastructure Services - 2-Year Contract</div><div class="lead-meta"><span>📍 Galway, Ireland</span><span>⏰ Posted 4 hours ago</span></div><div class="lead-quantity">€150K Budget</div><button class="btn-respond">Respond Now</button></div>
+    <div class="lead-card"><span class="lead-badge">Construction</span><div class="lead-title">Urgent: Commercial Construction Contractor Needed - Cork City Centre</div><div class="lead-meta"><span>📍 Cork, Ireland</span><span>⏰ Posted 6 hours ago</span></div><div class="lead-quantity">€500K Project</div><button class="btn-respond">Respond Now</button></div>
+    <div class="lead-card"><span class="lead-badge">Beverages</span><div class="lead-title">Irish Whiskey Distributor Required - European Market Expansion</div><div class="lead-meta"><span>📍 Limerick, Ireland</span><span>⏰ Posted 1 day ago</span></div><div class="lead-quantity">500 Cases/Mo</div><button class="btn-respond">Respond Now</button></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section">
+  <div class="section-title"><small style="color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px">💰 Affordable Plans</small><h2>Simple, Transparent Pricing</h2><p>Choose the plan that's right for your Irish business</p></div>
+  <div class="pricing-grid">
+    <div class="price-card"><div class="price-name">FREE</div><div class="price-amount">€0<span>/forever</span></div><ul class="price-features"><li>Basic Company Profile</li><li>5 Product Listings</li><li>10 Buyer Inquiries/mo</li><li>Basic Analytics</li></ul><button class="btn-price">Get Started Free</button></div>
+    <div class="price-card"><div class="price-name">SILVER</div><div class="price-amount">€99<span>/month</span></div><ul class="price-features"><li>Enhanced Profile</li><li>50 Product Listings</li><li>Unlimited Inquiries</li><li>Contact Details Visible</li><li>Basic SEO Boost</li><li>Email Support</li></ul><button class="btn-price">Choose Silver</button></div>
+    <div class="price-card popular"><div class="popular-badge">🌟 Most Popular</div><div class="price-name">GOLD</div><div class="price-amount">€249<span>/month</span></div><ul class="price-features"><li>Premium Verified Profile</li><li>Unlimited Products</li><li>Priority Search Ranking</li><li>Lead Management Tools</li><li>Advanced Analytics</li><li>Phone & Email Support</li><li>Social Media Promotion</li></ul><button class="btn-price">Choose Gold 🍀</button></div>
+    <div class="price-card"><div class="price-name">PLATINUM</div><div class="price-amount">€499<span>/month</span></div><ul class="price-features"><li>Everything in Gold</li><li>Homepage Featured</li><li>Dedicated Account Manager</li><li>Export/Import Support</li><li>Custom Micro-Website</li><li>Trade Show Access</li><li>WhatsApp Integration</li></ul><button class="btn-price">Choose Platinum</button></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="background:#f9f9f9">
+  <div class="section-title"><small style="color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:1px">💬 Success Stories</small><h2>What Irish Businesses Say</h2><p>Real results from real Irish businesses using IrishMart</p></div>
+  <div class="testimonials-grid">
+    <div class="testimonial"><div class="quote">"</div><p>IrishMart completely transformed how we find new customers. Within 3 months of joining on the Gold plan, we had secured 12 new B2B clients worth over €180,000 in contracts.</p><div class="testimonial-author"><div class="author-avatar">👨‍💼</div><div><div class="author-name">Seamus O'Brien</div><div class="author-company">Cork Valley Meats Ltd., Cork</div><div class="stars">★★★★★</div></div></div></div>
+    <div class="testimonial"><div class="quote">"</div><p>As a tech startup in Galway, we needed visibility fast. IrishMart gave us that platform. The lead generation tools are excellent and the analytics help us understand which services are most in demand.</p><div class="testimonial-author"><div class="author-avatar">👩‍💻</div><div><div class="author-name">Aoife Murphy</div><div class="author-company">Galway Tech Innovations, Galway</div><div class="stars">★★★★★</div></div></div></div>
+    <div class="testimonial"><div class="quote">"</div><p>We export Irish dairy products to 14 countries and IrishMart helped us find 6 new international distributors. The export assistance in the Platinum plan is worth every cent.</p><div class="testimonial-author"><div class="author-avatar">🧑‍🌾</div><div><div class="author-name">Padraig Kelly</div><div class="author-company">Kerry Gold Dairy Co., Tralee</div><div class="stars">★★★★★</div></div></div></div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<div class="partners-section">
+  <h3 style="font-size:20px;font-weight:700;color:var(--dark)">🤝 Trusted Partners & Supported By</h3>
+  <div class="partners-grid">
+    <div class="partner">🏦 Bank of Ireland</div>
+    <div class="partner">🏦 AIB Group</div>
+    <div class="partner">🇮🇪 Enterprise Ireland</div>
+    <div class="partner">💼 IDA Ireland</div>
+    <div class="partner">📊 Revenue Commissioners</div>
+    <div class="partner">🏛️ Dublin Chamber</div>
+    <div class="partner">🎓 UCD Innovation</div>
+    <div class="partner">🌿 Bord Bia</div>
+  </div>
+</div>
+
+<!-- APP SECTION -->
+<div class="app-section">
+  <div class="app-content">
+    <small style="color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1px">📱 Mobile App</small>
+    <h2>Manage Your Business Anywhere in Ireland</h2>
+    <p>Download the IrishMart app to receive instant buyer inquiries, manage your listings, and track your business — all from your phone.</p>
+    <div class="app-btns">
+      <button class="app-btn">Download on the <strong>App Store</strong></button>
+      <button class="app-btn">Get it on <strong>Google Play</strong></button>
+    </div>
+  </div>
+  <div class="app-icon">📱</div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <h2>🍀 Stay Connected with Irish Business</h2>
+  <p>Get weekly trade leads, market insights, and exclusive offers. Join 10,000+ Irish business professionals.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="Enter your business email">
+    <button>Subscribe Free</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">🍀 Irish<span style="color:var(--gold)">Mart</span></span>
+      <p>Ireland's premier B2B marketplace connecting buyers and sellers across all 32 counties.</p>
+      <div class="social-links">
+        <div class="social-link">📘</div>
+        <div class="social-link">🐦</div>
+        <div class="social-link">💼</div>
+      </div>
+    </div>
     <div>
-      <div class="hero-badge">🍀 Ireland's #1 B2B Platform</div>
-      <h1>Source. Connect. Trade.</h1>
-      <p>5,000+ verified Irish suppliers across every sector</p>
+      <h4>For Sellers</h4>
+      <ul>
+        <li><a href="#">List Your Business</a></li>
+        <li><a href="#">Pricing Plans</a></li>
+        <li><a href="#">Get Verified</a></li>
+        <li><a href="#">Seller Guide</a></li>
+      </ul>
     </div>
-    <div style="text-align:right;color:rgba(255,255,255,0.6);font-size:13px">
-      <div style="font-size:28px;font-weight:700;color:#fff">€12M+</div>
-      <div>Business generated</div>
+    <div>
+      <h4>For Buyers</h4>
+      <ul>
+        <li><a href="#">Browse Products</a></li>
+        <li><a href="#">Find Suppliers</a></li>
+        <li><a href="#">Post Trade Lead</a></li>
+        <li><a href="#">Buyer Protection</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About IrishMart</a></li>
+        <li><a href="#">Careers 🇮🇪</a></li>
+        <li><a href="#">Blog & News</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+      <p>📞 +353 1 555 1234</p>
+      <p>📧 hello@irishmart.ie</p>
+      <p>📍 Dublin 8, Ireland</p>
     </div>
   </div>
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Search products & services..." oninput="filterProducts()">
-    <select id="sort-select" onchange="filterProducts()">
-      <option value="">Sort by relevance</option>
-      <option value="price-asc">Price: Low to High</option>
-      <option value="price-desc">Price: High to Low</option>
-    </select>
+  <div class="footer-bottom">
+    <span>© 2026 IrishMart Ireland Ltd. All rights reserved. | Registered in Ireland</span>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">GDPR</a><a href="#">Cookies</a>
+    </div>
   </div>
-  <div class="cats" id="cat-filters"></div>
-  <div class="products-grid" id="products-grid"></div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/35315551234" class="whatsapp-float" target="_blank">💬</a>
+
+<!-- COOKIE BAR -->
+<div class="cookie-bar" id="cookie-bar">
+  <span>🍪 We use cookies to enhance your experience. <a href="#" style="color:var(--gold)">Cookie Policy</a></span>
+  <div class="cookie-btns">
+    <button class="btn-cookie btn-cookie-accept" onclick="document.getElementById('cookie-bar').style.display='none'">Accept</button>
+    <button class="btn-cookie btn-cookie-decline" onclick="document.getElementById('cookie-bar').style.display='none'">Decline</button>
+  </div>
 </div>
 
-<!-- CART -->
-<div class="view" id="view-cart">
-  <div class="page-title">Shopping Cart</div>
-  <div id="cart-body"></div>
-</div>
-
-<!-- CHECKOUT -->
-<div class="view" id="view-checkout">
-  <div class="page-title">Checkout</div>
-  <div class="checkout-layout">
-    <div class="checkout-form">
-      <div class="form-section">
-        <div class="form-section-title">Business Information</div>
-        <div class="form-row">
-          <div class="form-group"><label>Company Name</label><input type="text" placeholder="Acme Ltd."></div>
-          <div class="form-group"><label>VAT Number</label><input type="text" placeholder="IE1234567T"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Contact Name</label><input type="text" placeholder="John Murphy"></div>
-          <div class="form-group"><label>Email</label><input type="email" placeholder="john@acme.ie"></div>
-        </div>
-        <div class="form-row full">
-          <div class="form-group"><label>Billing Address</label><input type="text" placeholder="123 Business Park, Dublin 2"></div>
+<!-- AUTH MODAL -->
+<div class="modal-bg" id="auth-modal">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeAuthModal()">×</button>
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:22px;font-weight:800;color:var(--green)">🍀 IrishMart</div>
+      <div style="color:#888;font-size:13px">Ireland's Premier B2B Marketplace</div>
+    </div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchModalTab('login',this)">Sign In</button>
+      <button class="modal-tab" onclick="switchModalTab('signup',this)">Create Account</button>
+    </div>
+    <div id="modal-login">
+      <div class="form-field"><label>Email</label><input type="email" placeholder="you@company.ie"></div>
+      <div class="form-field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-modal-submit" onclick="closeAuthModal();spShowToast('Signed in successfully!')">Sign In</button>
+    </div>
+    <div id="modal-signup" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-field"><label>First Name</label><input type="text" placeholder="Seamus"></div>
+        <div class="form-field"><label>Last Name</label><input type="text" placeholder="O'Brien"></div>
+      </div>
+      <div class="form-field"><label>Business Email</label><input type="email" placeholder="seamus@company.ie"></div>
+      <div class="form-field"><label>Company Name</label><input type="text" placeholder="Your Company Ltd."></div>
+      <div class="form-field"><label>Select Plan</label>
+        <div class="plan-grid">
+          <div class="plan-opt selected" onclick="selectPlanOpt(this)"><div class="plan-opt-name">Free</div><div class="plan-opt-price">€0/mo</div></div>
+          <div class="plan-opt" onclick="selectPlanOpt(this)"><div class="plan-opt-name">Silver</div><div class="plan-opt-price">€99/mo</div></div>
+          <div class="plan-opt" onclick="selectPlanOpt(this)"><div class="plan-opt-name">Gold</div><div class="plan-opt-price">€249/mo</div></div>
+          <div class="plan-opt" onclick="selectPlanOpt(this)"><div class="plan-opt-name">Platinum</div><div class="plan-opt-price">€499/mo</div></div>
         </div>
       </div>
-      <div class="form-section">
-        <div class="form-section-title">Payment Gateway</div>
-        <div class="pay-gateway">
-          <div class="gateway-opt selected" onclick="selectGateway('stripe',this)">
-            <div class="gateway-name stripe-color">Stripe</div>
-            <div class="gateway-desc">Cards, SEPA, Apple Pay</div>
+      <button class="btn-modal-submit" style="margin-top:14px" onclick="closeAuthModal();spShowToast('Account created! Welcome to IrishMart.')">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SHOP PANEL (NEW E-COMMERCE FEATURES)
+     ============================================================ -->
+<div class="shop-panel" id="shop-panel">
+  <!-- Shop Panel Nav -->
+  <nav class="shop-panel-nav">
+    <div class="shop-panel-brand">Irish<span>Mart</span> <small style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:300;letter-spacing:1px">Marketplace</small></div>
+    <div class="shop-panel-links">
+      <button class="sp-btn active" id="sp-nav-shop" onclick="spShowView('shop')">Products</button>
+      <button class="sp-btn" id="sp-nav-auth" onclick="spShowView('auth')">Account</button>
+      <button class="sp-btn admin-btn" id="sp-nav-admin" onclick="spShowView('admin')">Admin</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="sp-cart-btn" onclick="spShowView('cart')">🛒 Cart <span class="sp-cart-count" id="sp-cart-count">0</span></button>
+      <button class="sp-close" onclick="closeShopPanel()">✕ Back to Site</button>
+    </div>
+  </nav>
+
+  <!-- SHOP VIEW -->
+  <div class="sp-view active" id="sp-view-shop">
+    <div class="sp-hero">
+      <div>
+        <div class="sp-hero-badge">🍀 Ireland's #1 B2B Platform</div>
+        <h1>Source. Connect. Trade.</h1>
+        <p>5,000+ verified Irish suppliers across every sector</p>
+      </div>
+      <div style="text-align:right;color:rgba(255,255,255,0.6);font-size:13px">
+        <div style="font-size:26px;font-weight:700;color:#fff">€12M+</div>
+        <div>Business generated</div>
+      </div>
+    </div>
+    <div class="sp-search">
+      <input type="text" id="sp-search-input" placeholder="Search products & services..." oninput="spFilterProducts()">
+      <select id="sp-sort-select" onchange="spFilterProducts()">
+        <option value="">Sort by relevance</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+      </select>
+    </div>
+    <div class="sp-cats" id="sp-cat-filters"></div>
+    <div class="sp-products-grid" id="sp-products-grid"></div>
+  </div>
+
+  <!-- CART VIEW -->
+  <div class="sp-view" id="sp-view-cart">
+    <div class="sp-page-title">Shopping Cart</div>
+    <div id="sp-cart-body"></div>
+  </div>
+
+  <!-- CHECKOUT VIEW -->
+  <div class="sp-view" id="sp-view-checkout">
+    <div class="sp-page-title">Checkout</div>
+    <div class="sp-checkout-layout">
+      <div class="sp-checkout-form">
+        <div class="sp-form-section">
+          <div class="sp-form-section-title">Business Information</div>
+          <div class="sp-form-row">
+            <div class="sp-form-group"><label>Company Name</label><input type="text" placeholder="Acme Ltd."></div>
+            <div class="sp-form-group"><label>VAT Number</label><input type="text" placeholder="IE1234567T"></div>
           </div>
-          <div class="gateway-opt" onclick="selectGateway('razorpay',this)">
-            <div class="gateway-name razor-color">Razorpay</div>
-            <div class="gateway-desc">UPI, Cards, Netbanking</div>
+          <div class="sp-form-row">
+            <div class="sp-form-group"><label>Contact Name</label><input type="text" placeholder="John Murphy"></div>
+            <div class="sp-form-group"><label>Email</label><input type="email" placeholder="john@acme.ie"></div>
+          </div>
+          <div class="sp-form-row full">
+            <div class="sp-form-group"><label>Billing Address</label><input type="text" placeholder="123 Business Park, Dublin 2"></div>
           </div>
         </div>
-        <div id="payment-fields">
-          <div class="form-row">
-            <div class="form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19"></div>
-            <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="John Murphy"></div>
+        <div class="sp-form-section">
+          <div class="sp-form-section-title">Payment Gateway</div>
+          <div class="sp-pay-gateway">
+            <div class="sp-gateway-opt selected" onclick="spSelectGateway('stripe',this)">
+              <div class="sp-gateway-name stripe-color">Stripe</div>
+              <div class="sp-gateway-desc">Cards, SEPA, Apple Pay</div>
+            </div>
+            <div class="sp-gateway-opt" onclick="spSelectGateway('razorpay',this)">
+              <div class="sp-gateway-name razor-color">Razorpay</div>
+              <div class="sp-gateway-desc">UPI, Cards, Netbanking</div>
+            </div>
           </div>
-          <div class="form-row">
-            <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
-            <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3"></div>
-          </div>
-        </div>
-      </div>
-      <button class="place-order-btn" onclick="placeOrder()">Place Order & Pay</button>
-    </div>
-    <div class="order-summary" id="checkout-summary"></div>
-  </div>
-</div>
-
-<!-- AUTH -->
-<div class="view" id="view-auth">
-  <div class="auth-wrap">
-    <div class="auth-card">
-      <div class="auth-logo">Irish<span>Mart</span></div>
-      <div class="auth-sub">Ireland's Premier B2B Marketplace</div>
-      <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuth('login',this)">Sign In</button>
-        <button class="auth-tab" onclick="switchAuth('signup',this)">Create Account</button>
-      </div>
-      <div id="auth-login">
-        <div class="auth-form-group"><label>Email</label><input type="email" placeholder="you@company.ie"></div>
-        <div class="auth-form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
-        <button class="auth-submit" onclick="showToast('Signed in successfully!')">Sign In</button>
-        <div style="text-align:center;color:var(--im-slate-mid);font-size:12px;margin:16px 0">— or continue as guest —</div>
-        <button class="auth-submit" style="background:var(--im-slate-light);color:var(--im-slate)" onclick="showView('shop')">Browse Marketplace</button>
-      </div>
-      <div id="auth-signup" style="display:none">
-        <div class="form-row">
-          <div class="auth-form-group"><label>First Name</label><input type="text" placeholder="Seamus"></div>
-          <div class="auth-form-group"><label>Last Name</label><input type="text" placeholder="O'Brien"></div>
-        </div>
-        <div class="auth-form-group"><label>Business Email</label><input type="email" placeholder="seamus@company.ie"></div>
-        <div class="auth-form-group"><label>Company Name</label><input type="text" placeholder="Your Company Ltd."></div>
-        <div class="auth-form-group"><label>Select Plan</label>
-          <div class="plan-cards">
-            <div class="plan-card selected" onclick="selectPlan(this)"><div class="plan-name">Free</div><div class="plan-price">€0/mo</div></div>
-            <div class="plan-card" onclick="selectPlan(this)"><div class="plan-name">Silver</div><div class="plan-price">€99/mo</div></div>
-            <div class="plan-card" onclick="selectPlan(this)"><div class="plan-name">Gold</div><div class="plan-price">€249/mo</div></div>
-            <div class="plan-card" onclick="selectPlan(this)"><div class="plan-name">Platinum</div><div class="plan-price">€499/mo</div></div>
+          <div id="sp-payment-fields">
+            <div class="sp-form-row">
+              <div class="sp-form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+              <div class="sp-form-group"><label>Cardholder Name</label><input type="text" placeholder="John Murphy"></div>
+            </div>
+            <div class="sp-form-row">
+              <div class="sp-form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+              <div class="sp-form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3"></div>
+            </div>
           </div>
         </div>
-        <button class="auth-submit" style="margin-top:14px" onclick="showToast('Account created! Welcome to IrishMart.')">Create Account</button>
+        <button class="sp-place-order-btn" onclick="spPlaceOrder()">Place Order & Pay</button>
       </div>
+      <div class="sp-order-summary" id="sp-checkout-summary"></div>
     </div>
   </div>
-</div>
 
-<!-- ADMIN -->
-<div class="view" id="view-admin">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.5rem">
-    <div style="background:var(--im-emerald);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600">Admin Panel</div>
-    <span class="page-title" style="margin:0">Dashboard</span>
-  </div>
-  <div class="admin-layout">
-    <div class="admin-sidebar">
-      <div class="admin-sidebar-title">Management</div>
-      <button class="sidebar-item active" onclick="adminTab('dashboard',this)">📊 Dashboard</button>
-      <button class="sidebar-item" onclick="adminTab('products',this)">📦 Products</button>
-      <button class="sidebar-item" onclick="adminTab('orders',this)">🧾 Orders</button>
-      <button class="sidebar-item" onclick="adminTab('users',this)">👥 Users</button>
-      <button class="sidebar-item" onclick="adminTab('payments',this)">💳 Payments</button>
-    </div>
-    <div class="admin-content" id="admin-content"></div>
-  </div>
-</div>
-
-<!-- SUCCESS -->
-<div class="view" id="view-success">
-  <div class="success-view">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">Order Placed!</div>
-    <div class="success-sub">Your order has been received. A confirmation has been sent to your business email.</div>
-    <button class="success-btn" onclick="showView('shop');cart=[];renderCart();updateCartCount()">Continue Shopping</button>
-  </div>
-</div>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="product-modal" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title"></div>
-      <button class="modal-close" onclick="document.getElementById('product-modal').classList.remove('open')">&times;</button>
-    </div>
-    <div id="modal-body"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const products=[
-  {id:1,name:"Cloud ERP Suite",cat:"Technology",emoji:"💻",price:1200,unit:"mo",desc:"Full enterprise resource planning with Irish compliance built-in. Covers finance, HR, inventory.",badge:"Popular"},
-  {id:2,name:"Organic Grass-Fed Beef",cat:"Agriculture",emoji:"🥩",price:8.50,unit:"kg",desc:"Premium bulk supply from Cork Valley. Min. 500kg orders. EU export certified.",badge:"Verified"},
-  {id:3,name:"Commercial CCTV Install",cat:"Security",emoji:"🔒",price:2400,unit:"project",desc:"Nationwide installation of IP camera systems for commercial premises. Includes 2-year warranty.",badge:""},
-  {id:4,name:"Managed Cyber Security",cat:"Technology",emoji:"🛡️",price:850,unit:"mo",desc:"24/7 SOC monitoring, threat detection, and incident response for Irish SMEs.",badge:"New"},
-  {id:5,name:"Atlantic Salmon (Farm)",cat:"Seafood",emoji:"🐟",price:9.80,unit:"kg",desc:"Fresh from Donegal Sea Farms. Cold chain logistics included. Min. 100kg.",badge:"Export"},
-  {id:6,name:"Solar Panel Installation",cat:"Energy",emoji:"☀️",price:180,unit:"panel",desc:"Commercial grade PV panels with full installation. SEAI grant eligible.",badge:"Green"},
-  {id:7,name:"Irish Cheddar Cheese",cat:"Dairy",emoji:"🧀",price:12.50,unit:"kg",desc:"Export quality cheddar from Kerry. Min. 200kg. Available in 12 and 24-month aged.",badge:""},
-  {id:8,name:"Nationwide Cold Freight",cat:"Logistics",emoji:"🚛",price:0.85,unit:"km",desc:"Temperature-controlled transport across all 32 counties. GPS tracked.",badge:"Reliable"},
-  {id:9,name:"Custom Software Dev",cat:"Technology",emoji:"⚙️",price:75,unit:"hr",desc:"Full-stack development by Dublin-based team. Web, mobile, cloud. Agile delivery.",badge:""},
-  {id:10,name:"Medical PPE Bulk",cat:"Healthcare",emoji:"🏥",price:2.40,unit:"unit",desc:"Medical grade PPE. CE certified. Min. 1000 units. Next-day dispatch available.",badge:"Verified"},
-  {id:11,name:"Sustainable Concrete Mix",cat:"Construction",emoji:"🏗️",price:145,unit:"tonne",desc:"Eco Grade A concrete from Galway. Low carbon mix. Min. 10 tonnes.",badge:""},
-  {id:12,name:"HR & Payroll SaaS",cat:"Technology",emoji:"📊",price:320,unit:"mo",desc:"Irish payroll compliance, PAYE, PRSI and USC calculations. Auto-submit to Revenue.",badge:"New"},
-];
-
-const cats=["All",...new Set(products.map(p=>p.cat))];
-let cart=[];
-let activeCat="All";
-
-function init(){renderCats();renderProducts();renderAdmin('dashboard');updateCartCount();}
-
-function renderCats(){
-  document.getElementById('cat-filters').innerHTML=cats.map(c=>`<button class="cat-pill${c===activeCat?' active':''}" onclick="setCat('${c}')">${c}</button>`).join('');
-}
-
-function setCat(c){activeCat=c;renderCats();filterProducts();}
-
-function filterProducts(){
-  const q=document.getElementById('search-input').value.toLowerCase();
-  const sort=document.getElementById('sort-select').value;
-  let filtered=products.filter(p=>{
-    const matchCat=activeCat==='All'||p.cat===activeCat;
-    const matchQ=p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q);
-    return matchCat&&matchQ;
-  });
-  if(sort==='price-asc')filtered.sort((a,b)=>a.price-b.price);
-  if(sort==='price-desc')filtered.sort((a,b)=>b.price-a.price);
-  renderProducts(filtered);
-}
-
-function renderProducts(list){
-  const p=list||products;
-  const grid=document.getElementById('products-grid');
-  if(!p.length){grid.innerHTML='<div style="color:var(--im-slate-mid);padding:2rem;grid-column:1/-1;text-align:center">No products found</div>';return;}
-  grid.innerHTML=p.map(prod=>`
-    <div class="product-card" onclick="openModal(${prod.id})">
-      <div class="product-img" style="background:${catColor(prod.cat)}">
-        <span>${prod.emoji}</span>
-        ${prod.badge?`<span class="product-badge">${prod.badge}</span>`:''}
-      </div>
-      <div class="product-body">
-        <div class="product-cat">${prod.cat}</div>
-        <div class="product-name">${prod.name}</div>
-        <div class="product-desc">${prod.desc.substring(0,70)}...</div>
-        <div class="product-footer">
-          <div class="product-price">€${prod.price.toFixed(2)}<span>/${prod.unit}</span></div>
-          <button class="add-btn" onclick="event.stopPropagation();addToCart(${prod.id})">+</button>
+  <!-- AUTH VIEW -->
+  <div class="sp-view" id="sp-view-auth">
+    <div class="sp-auth-wrap">
+      <div class="sp-auth-card">
+        <div class="sp-auth-logo">Irish<span>Mart</span></div>
+        <div class="sp-auth-sub">Ireland's Premier B2B Marketplace</div>
+        <div class="sp-auth-tabs">
+          <button class="sp-auth-tab active" onclick="spSwitchAuth('login',this)">Sign In</button>
+          <button class="sp-auth-tab" onclick="spSwitchAuth('signup',this)">Create Account</button>
+        </div>
+        <div id="sp-auth-login">
+          <div class="sp-auth-fg"><label>Email</label><input type="email" placeholder="you@company.ie"></div>
+          <div class="sp-auth-fg"><label>Password</label><input type="password" placeholder="••••••••"></div>
+          <button class="sp-auth-submit" onclick="spShowToast('Signed in successfully!')">Sign In</button>
+          <div style="text-align:center;color:var(--im-slate-mid);font-size:12px;margin:14px 0">— or continue as guest —</div>
+          <button class="sp-auth-submit" style="background:var(--im-slate-light);color:var(--im-slate)" onclick="spShowView('shop')">Browse Marketplace</button>
+        </div>
+        <div id="sp-auth-signup" style="display:none">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="sp-auth-fg"><label>First Name</label><input type="text" placeholder="Seamus"></div>
+            <div class="sp-auth-fg"><label>Last Name</label><input type="text" placeholder="O'Brien"></div>
+          </div>
+          <div class="sp-auth-fg"><label>Business Email</label><input type="email" placeholder="seamus@company.ie"></div>
+          <div class="sp-auth-fg"><label>Company Name</label><input type="text" placeholder="Your Company Ltd."></div>
+          <div class="sp-auth-fg"><label>Select Plan</label>
+            <div class="sp-plan-cards">
+              <div class="sp-plan-card selected" onclick="spSelectPlan(this)"><div class="sp-plan-name">Free</div><div class="sp-plan-price">€0/mo</div></div>
+              <div class="sp-plan-card" onclick="spSelectPlan(this)"><div class="sp-plan-name">Silver</div><div class="sp-plan-price">€99/mo</div></div>
+              <div class="sp-plan-card" onclick="spSelectPlan(this)"><div class="sp-plan-name">Gold</div><div class="sp-plan-price">€249/mo</div></div>
+              <div class="sp-plan-card" onclick="spSelectPlan(this)"><div class="sp-plan-name">Platinum</div><div class="sp-plan-price">€499/mo</div></div>
+            </div>
+          </div>
+          <button class="sp-auth-submit" style="margin-top:12px" onclick="spShowToast('Account created! Welcome to IrishMart.')">Create Account</button>
         </div>
       </div>
-    </div>`).join('');
-}
+    </div>
+  </div>
 
-function catColor(c){
-  const m={Technology:'#f0f4ff',Agriculture:'#f0faf4',Seafood:'#e8f6ff',Energy:'#fffde8',Dairy:'#fffbf0',Logistics:'#f5f5f5',Healthcare:'#fff0f4',Construction:'#f5f0ea',Security:'#f0f0f5'};
-  return m[c]||'#f5f5f5';
-}
+  <!-- ADMIN VIEW -->
+  <div class="sp-view" id="sp-view-admin">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem">
+      <div style="background:var(--im-emerald);color:#fff;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600">Admin Panel</div>
+      <span class="sp-page-title" style="margin:0">Dashboard</span>
+    </div>
+    <div class="sp-admin-layout">
+      <div class="sp-admin-sidebar">
+        <div class="sp-sidebar-title">Management</div>
+        <button class="sp-sidebar-item active" onclick="spAdminTab('dashboard',this)">📊 Dashboard</button>
+        <button class="sp-sidebar-item" onclick="spAdminTab('products',this)">📦 Products</button>
+        <button class="sp-sidebar-item" onclick="spAdminTab('orders',this)">🧾 Orders</button>
+        <button class="sp-sidebar-item" onclick="spAdminTab('users',this)">👥 Users</button>
+        <button class="sp-sidebar-item" onclick="spAdminTab('payments',this)">💳 Payments</button>
+      </div>
+      <div id="sp-admin-content"></div>
+    </div>
+  </div>
 
-function addToCart(id){
-  const p=products.find(x=>x.id===id);
-  const ex=cart.find(x=>x.id===id);
-  if(ex)ex.qty++;else cart.push({...p,qty:1});
-  updateCartCount();
-  showToast(p.emoji+' '+p.name+' added to cart');
-}
-
-function updateCartCount(){
-  document.getElementById('cart-count').textContent=cart.reduce((s,i)=>s+i.qty,0);
-}
-
-function renderCart(){
-  const el=document.getElementById('cart-body');
-  if(!cart.length){
-    el.innerHTML='<div class="empty-cart"><div style="font-size:48px;margin-bottom:1rem">🛒</div><p>Your cart is empty</p><br><button class="checkout-btn" style="width:auto;padding:10px 24px" onclick="showView(\'shop\')">Browse Marketplace</button></div>';
-    return;
-  }
-  const subtotal=cart.reduce((s,i)=>s+(i.price*i.qty),0);
-  const vat=subtotal*0.23;
-  const total=subtotal+vat;
-  el.innerHTML=`<div class="cart-layout"><div class="cart-items">${cart.map(i=>`<div class="cart-item"><div class="cart-item-emoji">${i.emoji}</div><div><div class="cart-item-name">${i.name}</div><div class="cart-item-cat">${i.cat}</div></div><div class="cart-item-right"><div class="cart-item-price">€${(i.price*i.qty).toFixed(2)}</div><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button><span class="qty-val">${i.qty}</span><button class="qty-btn" onclick="changeQty(${i.id},1)">+</button><button class="cart-remove" onclick="removeItem(${i.id})">✕</button></div></div></div>`).join('')}</div><div class="order-summary"><div class="summary-title">Order Summary</div><div class="summary-row"><span>Subtotal</span><span>€${subtotal.toFixed(2)}</span></div><div class="summary-row"><span>VAT (23%)</span><span>€${vat.toFixed(2)}</span></div><div class="summary-row"><span>Shipping</span><span style="color:#16a34a">Free</span></div><div class="summary-total"><span>Total</span><span>€${total.toFixed(2)}</span></div><button class="checkout-btn" onclick="showView('checkout');renderCheckoutSummary()">Proceed to Checkout</button></div></div>`;
-}
-
-function changeQty(id,d){
-  const i=cart.find(x=>x.id===id);
-  if(!i)return;
-  i.qty+=d;
-  if(i.qty<=0)cart=cart.filter(x=>x.id!==id);
-  updateCartCount();renderCart();
-}
-function removeItem(id){cart=cart.filter(x=>x.id!==id);updateCartCount();renderCart();}
-
-function renderCheckoutSummary(){
-  const subtotal=cart.reduce((s,i)=>s+(i.price*i.qty),0);
-  const vat=subtotal*0.23;
-  const total=subtotal+vat;
-  document.getElementById('checkout-summary').innerHTML=`<div class="order-summary"><div class="summary-title">Order (${cart.length} items)</div>${cart.map(i=>`<div class="summary-row"><span>${i.emoji} ${i.name} ×${i.qty}</span><span>€${(i.price*i.qty).toFixed(2)}</span></div>`).join('')}<div class="summary-row"><span>VAT 23%</span><span>€${vat.toFixed(2)}</span></div><div class="summary-total"><span>Total</span><span>€${total.toFixed(2)}</span></div></div>`;
-}
-
-function selectGateway(gw,el){
-  document.querySelectorAll('.gateway-opt').forEach(x=>x.classList.remove('selected'));
-  el.classList.add('selected');
-  const pf=document.getElementById('payment-fields');
-  if(gw==='razorpay'){
-    pf.innerHTML='<div class="form-row"><div class="form-group"><label>UPI ID</label><input placeholder="yourname@upi"></div><div class="form-group"><label>Mobile</label><input placeholder="+91 9999999999"></div></div><div style="color:var(--im-slate-mid);font-size:12px;margin-top:8px">You will be redirected to Razorpay secure checkout</div>';
-  }else{
-    pf.innerHTML='<div class="form-row"><div class="form-group"><label>Card Number</label><input placeholder="4242 4242 4242 4242" maxlength="19"></div><div class="form-group"><label>Cardholder Name</label><input placeholder="John Murphy"></div></div><div class="form-row"><div class="form-group"><label>Expiry</label><input placeholder="MM/YY" maxlength="5"></div><div class="form-group"><label>CVV</label><input placeholder="123" maxlength="3"></div></div>';
-  }
-}
-
-function placeOrder(){showView('success');}
-
-function switchAuth(tab,btn){
-  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('auth-login').style.display=tab==='login'?'block':'none';
-  document.getElementById('auth-signup').style.display=tab==='signup'?'block':'none';
-}
-
-function selectPlan(el){
-  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-function renderAdmin(tab){
-  const el=document.getElementById('admin-content');
-  if(tab==='dashboard'){
-    el.innerHTML=`<div class="admin-stats"><div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-val">€248K</div><div class="stat-change">↑ 14% this month</div></div><div class="stat-card"><div class="stat-label">Active Orders</div><div class="stat-val">84</div><div class="stat-change">↑ 6 today</div></div><div class="stat-card"><div class="stat-label">Registered Users</div><div class="stat-val">5,241</div><div class="stat-change">↑ 128 this week</div></div><div class="stat-card"><div class="stat-label">Products Listed</div><div class="stat-val">50,382</div><div class="stat-change">↑ 340 this month</div></div></div><div class="admin-section"><div class="admin-section-header"><div class="admin-section-title">Recent Orders</div></div><table class="admin-table"><thead><tr><th>Order ID</th><th>Company</th><th>Amount</th><th>Gateway</th><th>Status</th></tr></thead><tbody><tr><td>#IM-4821</td><td>Cork Valley Meats</td><td>€4,250</td><td>Stripe</td><td><span class="status-badge status-active">Paid</span></td></tr><tr><td>#IM-4820</td><td>Galway Tech Ltd</td><td>€18,000</td><td>Stripe</td><td><span class="status-badge status-processing">Processing</span></td></tr><tr><td>#IM-4819</td><td>Donegal Sea Farms</td><td>€980</td><td>Razorpay</td><td><span class="status-badge status-active">Paid</span></td></tr><tr><td>#IM-4818</td><td>Shannon MedSupply</td><td>€2,400</td><td>Razorpay</td><td><span class="status-badge status-pending">Pending</span></td></tr></tbody></table></div>`;
-  }else if(tab==='products'){
-    el.innerHTML=`<div class="admin-section"><div class="admin-section-header"><div class="admin-section-title">Product Catalog</div><button class="add-product-btn" onclick="showToast('Add product form coming soon!')">+ Add Product</button></div><table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody>${products.slice(0,8).map(p=>`<tr><td>${p.emoji} ${p.name}</td><td>${p.cat}</td><td>€${p.price.toFixed(2)}/${p.unit}</td><td><span class="status-badge status-active">Active</span></td><td><button class="table-action">Edit</button><button class="table-action">Delete</button></td></tr>`).join('')}</tbody></table></div>`;
-  }else if(tab==='orders'){
-    el.innerHTML=`<div class="admin-section"><div class="admin-section-header"><div class="admin-section-title">All Orders</div></div><table class="admin-table"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th></tr></thead><tbody><tr><td>#IM-4821</td><td>Cork Valley Meats</td><td>3</td><td>€4,250</td><td>Stripe</td><td><span class="status-badge status-active">Fulfilled</span></td></tr><tr><td>#IM-4820</td><td>Galway Tech Ltd</td><td>1</td><td>€18,000</td><td>Stripe</td><td><span class="status-badge status-processing">Processing</span></td></tr><tr><td>#IM-4819</td><td>Donegal Sea Farms</td><td>2</td><td>€980</td><td>Razorpay</td><td><span class="status-badge status-active">Fulfilled</span></td></tr><tr><td>#IM-4818</td><td>Shannon MedSupply</td><td>5</td><td>€2,400</td><td>Razorpay</td><td><span class="status-badge status-pending">Awaiting Payment</span></td></tr></tbody></table></div>`;
-  }else if(tab==='users'){
-    el.innerHTML=`<div class="admin-section"><div class="admin-section-header"><div class="admin-section-title">Registered Users</div></div><table class="admin-table"><thead><tr><th>Name</th><th>Company</th><th>Plan</th><th>Joined</th><th>Status</th></tr></thead><tbody><tr><td>Seamus O'Brien</td><td>Cork Valley Meats</td><td><span class="status-badge status-active">Gold</span></td><td>Jan 2025</td><td><span class="status-badge status-active">Active</span></td></tr><tr><td>Aoife Murphy</td><td>Galway Tech Innovations</td><td><span class="status-badge status-processing">Platinum</span></td><td>Mar 2025</td><td><span class="status-badge status-active">Active</span></td></tr><tr><td>Padraig Kelly</td><td>Kerry Gold Dairy Co</td><td><span class="status-badge status-active">Gold</span></td><td>Feb 2024</td><td><span class="status-badge status-active">Active</span></td></tr><tr><td>Niamh Walsh</td><td>Shannon MedSupply</td><td><span class="status-badge">Silver</span></td><td>May 2025</td><td><span class="status-badge status-pending">Pending</span></td></tr></tbody></table></div>`;
-  }else if(tab==='payments'){
-    el.innerHTML=`<div class="admin-stats" style="grid-template-columns:1fr 1fr"><div class="stat-card"><div class="stat-label">Stripe Revenue</div><div class="stat-val">€184K</div><div class="stat-change">↑ 18% this month</div></div><div class="stat-card"><div class="stat-label">Razorpay Revenue</div><div class="stat-val">€64K</div><div class="stat-change">↑ 9% this month</div></div></div><div class="admin-section"><div class="admin-section-header"><div class="admin-section-title">Payment Transactions</div></div><table class="admin-table"><thead><tr><th>Txn ID</th><th>Order</th><th>Gateway</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody><tr><td>txn_3NxA2K...</td><td>#IM-4821</td><td>Stripe</td><td>€4,250</td><td>05 Jun 2026</td><td><span class="status-badge status-active">Success</span></td></tr><tr><td>pay_NxB2K1...</td><td>#IM-4819</td><td>Razorpay</td><td>€980</td><td>05 Jun 2026</td><td><span class="status-badge status-active">Success</span></td></tr><tr><td>txn_3NxA1J...</td><td>#IM-4820</td><td>Stripe</td><td>€18,000</td><td>04 Jun 2026</td><td><span class="status-badge status-processing">Processing</span></td></tr><tr><td>pay_NxB1K0...</td><td>#IM-4818</td><td>Razorpay</td><td>€2,400</td><td>04 Jun 2026</td><td><span class="status-badge status-pending">Pending</span></td></tr></tbody></table></div>`;
-  }
-}
-
-function adminTab(tab,btn){
-  document.querySelectorAll('.sidebar-item').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAdmin(tab);
-}
-
-function openModal(id){
-  const p=products.find(x=>x.id===id);
-  document.getElementById('modal-title').textContent=p.emoji+' '+p.name;
-  document.getElementById('modal-body').innerHTML=`<div style="background:${catColor(p.cat)};border-radius:var(--radius);padding:1.5rem;text-align:center;font-size:56px;margin-bottom:1.25rem">${p.emoji}</div><div style="display:inline-block;background:var(--im-emerald-light);color:var(--im-emerald);font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px">${p.cat}</div><p style="color:var(--im-slate-mid);font-size:14px;line-height:1.7;margin-bottom:1.25rem">${p.desc}</p><div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--im-border);padding-top:1.25rem"><div><div style="font-size:24px;font-weight:700">€${p.price.toFixed(2)}</div><div style="color:var(--im-slate-mid);font-size:12px">per ${p.unit}</div></div><button style="background:var(--im-emerald);color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer" onclick="addToCart(${p.id});document.getElementById('product-modal').classList.remove('open')">Add to Cart</button></div>`;
-  document.getElementById('product-modal').classList.add('open');
-}
-
-function closeModal(e){if(e.target.id==='product-modal')document.getElementById('product-modal').classList.remove('open');}
-
-function showView(v){
-  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const nb=document.getElementById('nav-'+v);
-  if(nb)nb.classList.add('active');
-  if(v==='cart')renderCart();
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-init();
-</script>
-</body>
-</html>
+  <!-- SUCCESS VIEW -->
+  <div class="sp-view" id="sp-view-success">
+    <div class="sp-success">
+      <div class="sp-success-icon">🎉</div>
+      <div class="sp-success-title">Order Placed!</div>
+      <div class="sp-success-sub">Your order has been received. A confirmation has been se
