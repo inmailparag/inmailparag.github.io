@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IrishMart — Ireland's Premier B2B Marketplace. Connect with Irish suppliers, manufacturers, and buyers.">
+<title>IrishMart 🍀 — Ireland's Premier B2B Marketplace</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍀</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --green: #169b62;
+  --green-d: #0d7a4e;
+  --green-l: #e6f7f0;
+  --green-xl: #f0faf5;
+  --orange: #ff6b35;
+  --gold: #f59e0b;
+  --dark: #0f1923;
+  --dark2: #1a2637;
+  --dark3: #243044;
+  --body: #3d4f63;
+  --muted: #6b7e96;
+  --border: #dde5ef;
+  --bg: #f5f8fc;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.06);
+  --shadow: 0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,.12);
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --t: all .25s ease;
+  /* Admin tokens */
+  --ap: #6c63ff;
+  --as: #f50057;
+  --aok: #00c853;
+  --adark: #0d0d1a;
+  --adark2: #1a1a2e;
+  --adark3: #16213e;
+}
+
+/* ═══════════════════════════════════════════════
+   BASE RESET
+═══════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;color:var(--body);background:var(--white);line-height:1.65;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+button{cursor:pointer;font-family:inherit;border:none;background:none;}
+ul{list-style:none;}
+.container{width:100%;max-width:1240px;margin:0 auto;padding:0 24px;}
+
+/* ═══════════════════════════════════════════════
+   VIEW SWITCHER — top bar
+═══════════════════════════════════════════════ */
+#view-switcher {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: var(--dark); color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 24px; font-size: 12px; font-weight: 600; letter-spacing: .04em;
+}
+#view-switcher .vs-left { display: flex; align-items: center; gap: 10px; }
+#view-switcher .vs-logo { font-size: 15px; font-weight: 800; color: var(--green); font-family:'Syne',sans-serif; }
+#view-switcher .vs-sep { color: rgba(255,255,255,.25); }
+.vs-tabs { display: flex; gap: 4px; background: rgba(255,255,255,.07); border-radius: 8px; padding: 3px; }
+.vs-tab {
+  padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,.6); transition: var(--t); cursor: pointer; border: none; background: none;
+  letter-spacing: .04em;
+}
+.vs-tab.active { background: var(--green); color: #fff; }
+.vs-tab:hover:not(.active){ background: rgba(255,255,255,.12); color: #fff; }
+body { padding-top: 44px; }
+
+/* ═══════════════════════════════════════════════
+   PAGE WRAPPER
+═══════════════════════════════════════════════ */
+#storefront, #admin-panel { display: none; }
+#storefront.active, #admin-panel.active { display: block; }
+
+/* ═══════════════════════════════════════════════
+   ████  STOREFRONT  ████
+═══════════════════════════════════════════════ */
+
+/* NAV */
+.nav {
+  position: sticky; top: 44px; z-index: 900;
+  background: rgba(255,255,255,.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.nav-inner { display: flex; align-items: center; gap: 32px; height: 68px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-family:'Syne',sans-serif; font-weight: 800; font-size: 22px; color: var(--dark); white-space: nowrap; }
+.nav-logo span { color: var(--green); }
+.nav-logo .leaf { font-size: 24px; }
+.nav-links { display: flex; gap: 4px; flex: 1; }
+.nav-links a { padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--body); transition: var(--t); }
+.nav-links a:hover, .nav-links a.active { background: var(--green-l); color: var(--green-d); }
+.nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.nav-search-box {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 8px 14px; min-width: 220px; transition: var(--t);
+}
+.nav-search-box:focus-within { border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px var(--green-l); }
+.nav-search-box input { background: none; border: none; outline: none; font-size: 13px; color: var(--dark); font-family: inherit; width: 100%; }
+.nav-search-box i { color: var(--muted); font-size: 13px; }
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; transition: var(--t); cursor: pointer; border: none; }
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: var(--green-d); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(22,155,98,.3); }
+.btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+.btn-outline:hover { background: var(--green-l); }
+.btn-orange { background: var(--orange); color: #fff; }
+.btn-orange:hover { background: #e55a28; transform: translateY(-1px); }
+.nav-cart { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--bg); border: 1.5px solid var(--border); color: var(--dark); transition: var(--t); }
+.nav-cart:hover { border-color: var(--green); color: var(--green); }
+.cart-badge { position: absolute; top: -5px; right: -5px; background: var(--orange); color: #fff; font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 50%, #0f2a1a 100%);
+  padding: 80px 0 70px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(22,155,98,.18) 0%, transparent 60%);
+}
+.hero::after {
+  content: ''; position: absolute; top: -100px; right: -100px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(22,155,98,.1) 0%, transparent 70%);
+}
+.hero-grid { display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: center; position: relative; z-index: 1; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(22,155,98,.15); border: 1px solid rgba(22,155,98,.3); color: #4ade80; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 20px; }
+.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(36px, 5vw, 58px); font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 20px; }
+.hero h1 em { color: var(--green); font-style: normal; }
+.hero-desc { color: rgba(255,255,255,.7); font-size: 17px; line-height: 1.7; margin-bottom: 32px; max-width: 520px; }
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.hero-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius); padding: 16px; text-align: center; backdrop-filter: blur(4px); }
+.hero-stat-num { font-family:'Syne',sans-serif; font-size: 26px; font-weight: 800; color: var(--green); }
+.hero-stat-label { font-size: 11px; color: rgba(255,255,255,.5); font-weight: 500; margin-top: 2px; text-transform: uppercase; letter-spacing: .06em; }
+.hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hero-cat-card {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius);
+  padding: 20px 16px; text-align: center; transition: var(--t); cursor: pointer; backdrop-filter: blur(4px);
+}
+.hero-cat-card:hover { background: rgba(22,155,98,.2); border-color: rgba(22,155,98,.4); transform: translateY(-3px); }
+.hero-cat-card .icon { font-size: 28px; margin-bottom: 8px; }
+.hero-cat-card .name { color: #fff; font-size: 13px; font-weight: 600; }
+.hero-cat-card .count { color: rgba(255,255,255,.45); font-size: 11px; margin-top: 3px; }
+
+/* SEARCH BAR */
+.search-bar-section { background: #fff; padding: 24px 0; border-bottom: 1px solid var(--border); }
+.search-bar-wrap { display: flex; gap: 0; border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--t); }
+.search-bar-wrap:focus-within { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-l); }
+.search-cat-select { padding: 14px 18px; border: none; border-right: 1.5px solid var(--border); background: var(--bg); font-size: 14px; font-weight: 500; color: var(--dark); font-family: inherit; outline: none; min-width: 160px; }
+.search-main-input { flex: 1; padding: 14px 18px; border: none; outline: none; font-size: 15px; color: var(--dark); font-family: inherit; }
+.search-submit { padding: 14px 28px; background: var(--green); color: #fff; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: var(--t); display: flex; align-items: center; gap: 8px; }
+.search-submit:hover { background: var(--green-d); }
+
+/* SECTION HEADERS */
+.sec-header { text-align: center; margin-bottom: 48px; }
+.sec-badge { display: inline-block; background: var(--green-l); color: var(--green-d); padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
+.sec-title { font-family:'Syne',sans-serif; font-size: clamp(26px,3.5vw,38px); font-weight: 800; color: var(--dark); margin-bottom: 14px; }
+.sec-sub { font-size: 16px; color: var(--muted); max-width: 560px; margin: 0 auto; }
+section { padding: 72px 0; }
+section:nth-child(even) { background: var(--bg); }
+
+/* CATEGORY CARDS */
+.cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 16px; }
+.cat-card {
+  background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  padding: 28px 20px; text-align: center; transition: var(--t); cursor: pointer; position: relative; overflow: hidden;
+}
+.cat-card::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--green-xl) 0%, transparent 60%); opacity:0; transition: var(--t); }
+.cat-card:hover { border-color: var(--green); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.cat-card:hover::before { opacity: 1; }
+.cat-card .c-icon { font-size: 36px; margin-bottom: 12px; }
+.cat-card h3 { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+.cat-card p { font-size: 12px; color: var(--muted); }
+
+/* PRODUCT CARDS */
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 24px; }
+.product-card {
+  background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; transition: var(--t); cursor: pointer;
+}
+.product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: transparent; }
+.product-img {
+  height: 200px; background: linear-gradient(135deg, #e8f3ee, #d4eade);
+  display: flex; align-items: center; justify-content: center; font-size: 60px; position: relative;
+}
+.product-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--orange); color: #fff; font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px;
+}
+.product-verified {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--green); color: #fff; font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: 100px; display: flex; align-items: center; gap: 4px;
+}
+.product-body { padding: 18px; }
+.product-cat { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.product-name { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 6px; line-height: 1.3; }
+.product-company { font-size: 13px; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+.product-price { font-size: 18px; font-weight: 800; color: var(--dark); }
+.product-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
+.product-moq { font-size: 11px; color: var(--muted); }
+.product-action { width: 36px; height: 36px; border-radius: 8px; background: var(--green-l); color: var(--green-d); display: flex; align-items: center; justify-content: center; transition: var(--t); border: none; cursor: pointer; }
+.product-action:hover { background: var(--green); color: #fff; }
+.product-stars { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--gold); margin-bottom: 8px; }
+.product-stars span { color: var(--muted); }
+
+/* SUPPLIER CARDS */
+.suppliers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 24px; }
+.supplier-card {
+  background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  padding: 24px; transition: var(--t); display: flex; flex-direction: column; gap: 16px;
+}
+.supplier-card:hover { box-shadow: var(--shadow-lg); border-color: var(--green); transform: translateY(-3px); }
+.supplier-header { display: flex; gap: 14px; align-items: center; }
+.supplier-logo { width: 56px; height: 56px; border-radius: 12px; background: var(--green-l); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.supplier-info h3 { font-size: 15px; font-weight: 700; color: var(--dark); }
+.supplier-info .location { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.supplier-info .loc-badge { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; background: var(--green-l); color: var(--green-d); padding: 2px 8px; border-radius: 100px; font-size: 10px; font-weight: 600; }
+.supplier-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.supplier-tag { background: var(--bg); border: 1px solid var(--border); color: var(--body); padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 500; }
+.supplier-meta { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.supplier-meta-item { background: var(--bg); border-radius: 10px; padding: 10px; text-align: center; }
+.supplier-meta-item .val { font-size: 16px; font-weight: 800; color: var(--dark); }
+.supplier-meta-item .key { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+/* WHY US */
+.why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 24px; }
+.why-card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px; transition: var(--t); }
+.why-card:hover { box-shadow: var(--shadow-lg); border-color: var(--green); transform: translateY(-3px); }
+.why-icon { width: 52px; height: 52px; border-radius: var(--radius); background: var(--green-l); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+.why-card h3 { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+.why-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* PRICING */
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 20px; }
+.pricing-card {
+  background: #fff; border: 2px solid var(--border); border-radius: var(--radius-xl);
+  padding: 32px 24px; position: relative; transition: var(--t);
+}
+.pricing-card:hover { box-shadow: var(--shadow-lg); }
+.pricing-card.popular {
+  border-color: var(--green); background: linear-gradient(135deg, var(--green-xl) 0%, #fff 100%);
+  transform: scale(1.03);
+}
+.popular-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--green); color: #fff; padding: 4px 16px; border-radius: 100px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.pricing-name { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.pricing-price { margin-bottom: 24px; }
+.pricing-price .amount { font-family:'Syne',sans-serif; font-size: 48px; font-weight: 800; color: var(--dark); line-height: 1; }
+.pricing-price .currency { font-size: 22px; font-weight: 600; vertical-align: super; color: var(--muted); }
+.pricing-price .period { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.pricing-features { margin-bottom: 24px; }
+.pricing-features li { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--body); padding: 7px 0; border-bottom: 1px solid var(--border); }
+.pricing-features li:last-child { border: none; }
+.pricing-features li i.fa-check { color: var(--green); font-size: 12px; }
+.pricing-features li i.fa-times { color: var(--border); font-size: 12px; }
+.pricing-features li.off { color: var(--muted); opacity: .6; }
+
+/* TESTIMONIALS */
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 24px; }
+.testimonial-card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 28px; transition: var(--t); position: relative; }
+.testimonial-card:hover { box-shadow: var(--shadow-lg); border-color: var(--green); }
+.testimonial-card .quote-mark { font-size: 64px; font-family:'Syne',sans-serif; font-weight: 800; color: var(--green-l); line-height: 1; position: absolute; top: 12px; right: 20px; }
+.testimonial-text { font-size: 15px; color: var(--body); line-height: 1.7; margin-bottom: 20px; font-style: italic; position: relative; z-index: 1; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.author-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--green-l); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.author-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+.author-company { font-size: 12px; color: var(--muted); }
+.stars { color: var(--gold); font-size: 12px; }
+
+/* PARTNERS */
+.partners-strip { background: var(--dark); padding: 32px 0; }
+.partners-label { text-align: center; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.4); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 24px; }
+.partners-logos { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+.partner-logo { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 10px 20px; color: rgba(255,255,255,.6); font-size: 13px; font-weight: 600; white-space: nowrap; transition: var(--t); }
+.partner-logo:hover { background: rgba(22,155,98,.2); color: #fff; border-color: rgba(22,155,98,.4); }
+
+/* APP CTA */
+.app-section {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 100%);
+  padding: 72px 0; position: relative; overflow: hidden;
+}
+.app-section::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(22,155,98,.15) 0%, transparent 60%); }
+.app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+.app-grid h2 { font-family:'Syne',sans-serif; font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 16px; }
+.app-grid p { color: rgba(255,255,255,.65); font-size: 16px; margin-bottom: 28px; }
+.app-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.app-btn { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.15); border-radius: var(--radius); padding: 12px 20px; color: #fff; transition: var(--t); }
+.app-btn:hover { background: rgba(255,255,255,.18); border-color: var(--green); }
+.app-btn i { font-size: 24px; }
+.app-btn .sub { font-size: 10px; font-weight: 400; color: rgba(255,255,255,.6); }
+.app-btn .store { font-size: 14px; font-weight: 700; }
+.app-mockup { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.app-feature { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius); padding: 18px; }
+.app-feature .emoji { font-size: 24px; margin-bottom: 8px; }
+.app-feature .ttl { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.app-feature .dsc { font-size: 12px; color: rgba(255,255,255,.5); }
+
+/* FOOTER */
+.footer { background: var(--dark); color: rgba(255,255,255,.65); padding: 56px 0 32px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+.footer-brand .logo { font-family:'Syne',sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+.footer-brand .logo span { color: var(--green); }
+.footer-brand p { font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+.footer-socials { display: flex; gap: 10px; }
+.footer-social { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.6); font-size: 14px; transition: var(--t); }
+.footer-social:hover { background: var(--green); color: #fff; }
+.footer-col h4 { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: var(--t); }
+.footer-col a:hover { color: var(--green); padding-left: 4px; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; }
+.footer-bottom p { font-size: 12px; }
+.footer-badges { display: flex; gap: 8px; }
+.footer-badge { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 4px 10px; font-size: 11px; color: rgba(255,255,255,.5); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .25s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal {
+  background: #fff; border-radius: var(--radius-xl); padding: 36px;
+  width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
+  transform: translateY(20px) scale(.97); transition: transform .25s ease;
+  position: relative;
+}
+.modal-overlay.open .modal { transform: none; }
+.modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); transition: var(--t); }
+.modal-close:hover { background: var(--border); color: var(--dark); }
+.modal h2 { font-family:'Syne',sans-serif; font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+.modal p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+.modal-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 10px; padding: 4px; margin-bottom: 24px; }
+.modal-tab { flex: 1; padding: 8px; border-radius: 7px; font-size: 13px; font-weight: 600; color: var(--muted); transition: var(--t); border: none; cursor: pointer; background: none; text-align: center; }
+.modal-tab.active { background: #fff; color: var(--dark); box-shadow: var(--shadow-sm); }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; outline: none; transition: var(--t); color: var(--dark); background: #fff; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-l); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-footer-link { text-align: center; margin-top: 16px; font-size: 13px; color: var(--muted); }
+.modal-footer-link a { color: var(--green); font-weight: 600; }
+
+/* TOAST */
+#toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; background: var(--dark); color: #fff; padding: 12px 18px; border-radius: var(--radius); font-size: 14px; font-weight: 500; box-shadow: var(--shadow-lg); animation: slideUp .3s ease; min-width: 260px; }
+.toast.success { border-left: 4px solid var(--green); }
+.toast.error { border-left: 4px solid #ef4444; }
+.toast.info { border-left: 4px solid var(--gold); }
+@keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+/* ═══════════════════════════════════════════════
+   ████  ADMIN PANEL  ████
+═══════════════════════════════════════════════ */
+#admin-panel {
+  background: var(--adark); min-height: calc(100vh - 44px); display: none;
+}
+#admin-panel.active { display: flex; }
+
+/* Admin Login */
+.a-login {
+  display: flex; align-items: center; justify-content: center;
+  min-height: calc(100vh - 44px); width: 100%;
+  background: linear-gradient(135deg, var(--adark), var(--adark2), var(--adark3));
+}
+.a-login-box {
+  background: rgba(255,255,255,.05); backdrop-filter: blur(20px);
+  border: 1px solid rgba(108,99,255,.3); border-radius: 20px;
+  padding: 46px 36px; width: 400px; box-shadow: 0 25px 50px rgba(0,0,0,.5);
+}
+.a-login-avatar {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--ap), var(--as));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 800; color: #fff; margin: 0 auto 16px;
+  box-shadow: 0 0 28px rgba(108,99,255,.4);
+}
+.a-login-box h1 { text-align: center; font-size: 22px; background: linear-gradient(135deg, var(--ap), var(--as)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+.a-login-box > p { text-align: center; color: rgba(255,255,255,.4); font-size: 13px; margin-bottom: 28px; }
+.a-err { background: rgba(255,23,68,.12); border: 1px solid rgba(255,23,68,.3); border-radius: 8px; padding: 10px 14px; color: #ff5252; font-size: 13px; margin-bottom: 14px; display: none; }
+.a-fg { margin-bottom: 14px; }
+.a-fg label { display: block; margin-bottom: 6px; color: rgba(255,255,255,.6); font-size: 13px; font-weight: 500; }
+.a-fg input, .a-fg select, .a-fg textarea {
+  width: 100%; padding: 11px 14px;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 9px; color: #fff; font-size: 13px; transition: var(--t); outline: none; font-family: inherit;
+}
+.a-fg input:focus, .a-fg select:focus { border-color: var(--ap); background: rgba(108,99,255,.1); box-shadow: 0 0 14px rgba(108,99,255,.2); }
+.a-fg input::placeholder { color: rgba(255,255,255,.28); }
+.a-btn { padding: 11px 18px; border: none; border-radius: 9px; cursor: pointer; font-size: 13px; font-weight: 600; transition: var(--t); display: inline-flex; align-items: center; gap: 6px; font-family: inherit; }
+.a-btn-p { background: linear-gradient(135deg, var(--ap), #8b85ff); color: #fff; width: 100%; justify-content: center; }
+.a-btn-p:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(108,99,255,.3); }
+.a-btn-g { background: rgba(0,200,83,.15); color: var(--aok); border: 1px solid rgba(0,200,83,.3); }
+.a-btn-g:hover { background: rgba(0,200,83,.25); }
+.a-btn-r { background: rgba(245,0,87,.12); color: var(--as); border: 1px solid rgba(245,0,87,.25); }
+.a-btn-r:hover { background: rgba(245,0,87,.22); }
+.a-btn-s { background: rgba(255,255,255,.07); color: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.1); }
+.a-btn-s:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+/* Admin Dashboard Layout */
+.a-layout { display: flex; min-height: calc(100vh - 44px); width: 100%; }
+.a-sidebar {
+  width: 220px; flex-shrink: 0; background: var(--adark2);
+  border-right: 1px solid rgba(255,255,255,.07); display: flex; flex-direction: column;
+  position: sticky; top: 44px; height: calc(100vh - 44px); overflow-y: auto;
+}
+.a-sb-logo { padding: 20px 18px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.a-sb-logo .lname { font-size: 15px; font-weight: 800; background: linear-gradient(135deg, var(--ap), var(--as)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.a-sb-logo .lsub { font-size: 10px; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .08em; margin-top: 1px; }
+.a-sb-user { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; gap: 10px; }
+.a-sb-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--ap), var(--as)); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.a-sb-uname { font-size: 13px; font-weight: 600; color: #fff; }
+.a-sb-urole { font-size: 11px; color: rgba(255,255,255,.35); }
+.a-sb-nav { padding: 12px 10px; flex: 1; overflow-y: auto; }
+.a-sb-section { margin-bottom: 20px; }
+.a-sb-section-title { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: .1em; padding: 0 8px; margin-bottom: 6px; }
+.a-nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,.55); transition: var(--t); cursor: pointer;
+  margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; font-family: inherit;
+}
+.a-nav-item i { width: 18px; text-align: center; font-size: 13px; }
+.a-nav-item:hover { background: rgba(255,255,255,.07); color: #fff; }
+.a-nav-item.active { background: rgba(108,99,255,.2); color: var(--ap); }
+.a-nav-item .badge-dot { margin-left: auto; background: var(--as); color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+.a-sb-bottom { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,.06); }
+.a-main { flex: 1; overflow-y: auto; }
+.a-topbar {
+  position: sticky; top: 44px; z-index: 100; background: var(--adark2);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; gap: 16px;
+}
+.a-topbar-left { display: flex; flex-direction: column; }
+.a-page-title { font-size: 16px; font-weight: 700; color: #fff; }
+.a-breadcrumb { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 1px; }
+.a-topbar-right { display: flex; align-items: center; gap: 12px; }
+.a-search { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 8px 12px; }
+.a-search input { background: none; border: none; outline: none; color: #fff; font-size: 13px; font-family: inherit; width: 180px; }
+.a-search input::placeholder { color: rgba(255,255,255,.3); }
+.a-search i { color: rgba(255,255,255,.3); font-size: 12px; }
+.a-icon-btn { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.6); font-size: 13px; cursor: pointer; transition: var(--t); position: relative; }
+.a-icon-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
+.a-notif-dot { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: var(--as); border-radius: 50%; border: 2px solid var(--adark2); }
+.a-content { padding: 24px; }
+/* Stats */
+.a-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.a-stat-card { background: var(--adark3); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 20px; }
+.a-stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+.a-stat-val { font-size: 26px; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 4px; }
+.a-stat-label { font-size: 12px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.a-stat-change { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.a-stat-change.up { color: var(--aok); }
+.a-stat-change.down { color: var(--as); }
+/* Charts */
+.a-grid2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+.a-card { background: var(--adark3); border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 20px; }
+.a-card-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.a-card-title { font-size: 14px; font-weight: 700; color: #fff; }
+.a-card-sub { font-size: 12px; color: rgba(255,255,255,.35); margin-top: 2px; }
+/* Revenue chart bars */
+.rev-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+.rev-bar { flex: 1; background: rgba(108,99,255,.15); border-radius: 6px 6px 0 0; position: relative; transition: var(--t); cursor: pointer; min-width: 28px; }
+.rev-bar:hover { background: rgba(108,99,255,.35); }
+.rev-bar.active { background: linear-gradient(0deg, var(--ap) 0%, rgba(108,99,255,.6) 100%); }
+.rev-bar-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: rgba(255,255,255,.35); white-space: nowrap; }
+.rev-chart-wrap { padding-bottom: 24px; }
+/* Donut */
+.donut-wrap { display: flex; flex-direction: column; align-items: center; }
+.donut-svg { width: 100px; height: 100px; margin-bottom: 12px; }
+.donut-legend { width: 100%; }
+.dl-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 6px; }
+.dl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dl-val { margin-left: auto; font-weight: 600; color: #fff; }
+/* Table */
+.a-table { width: 100%; border-collapse: collapse; }
+.a-table th { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .06em; padding: 10px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,.06); white-space: nowrap; }
+.a-table td { padding: 12px 14px; font-size: 13px; color: rgba(255,255,255,.8); border-bottom: 1px solid rgba(255,255,255,.04); }
+.a-table tr:last-child td { border: none; }
+.a-table tr:hover td { background: rgba(255,255,255,.03); }
+.a-badge { padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.a-badge.ok { background: rgba(0,200,83,.15); color: var(--aok); }
+.a-badge.warn { background: rgba(255,214,0,.1); color: #ffd600; }
+.a-badge.err { background: rgba(255,23,68,.12); color: #ff5252; }
+.a-badge.info { background: rgba(108,99,255,.15); color: var(--ap); }
+/* Toggle */
+.a-tgl { width: 40px; height: 22px; border-radius: 11px; background: rgba(255,255,255,.12); border: none; cursor: pointer; position: relative; transition: var(--t); flex-shrink: 0; }
+.a-tgl::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,.5); transition: var(--t); }
+.a-tgl.on { background: var(--aok); }
+.a-tgl.on::after { left: 21px; background: #fff; }
+/* Admin sub-pages */
+.a-page { display: none; }
+.a-page.active { display: block; }
+/* Forms row */
+.a-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Admin modal */
+.a-modal-overlay {
+  position: fixed; inset: 0; z-index: 9500;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.a-modal-overlay.open { opacity: 1; pointer-events: auto; }
+.a-modal {
+  background: var(--adark2); border: 1px solid rgba(108,99,255,.3); border-radius: 16px;
+  padding: 28px; width: 100%; max-width: 480px;
+  transform: translateY(20px); transition: transform .25s;
+}
+.a-modal-overlay.open .a-modal { transform: none; }
+.a-modal h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+/* Toast admin */
+.a-toast-w { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.a-toast { background: var(--adark2); border: 1px solid rgba(255,255,255,.1); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,.4); animation: slideUp .3s ease; min-width: 240px; display: flex; align-items: center; gap: 8px; }
+.a-toast.ok { border-left: 3px solid var(--aok); }
+.a-toast.err { border-left: 3px solid var(--as); }
+.a-toast.info { border-left: 3px solid var(--ap); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { max-width: 400px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .a-stats-grid { grid-template-columns: repeat(2,1fr); }
+  .a-grid2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-search-box { min-width: 160px; }
+  .hero h1 { font-size: 32px; }
+  .hero-stats { grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .pricing-grid { grid-template-columns: 1fr 1fr; }
+  .app-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .a-sidebar { width: 200px; }
+  .a-stats-grid { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .hero-ctas { flex-direction: column; }
+  .pricing-card.popular { transform: none; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .a-sidebar { display: none; }
+  .a-topbar { padding: 10px 16px; }
+  .a-content { padding: 16px; }
+}
+
+/* Scroll animations */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity .5s ease, transform .5s ease; }
+.fade-up.in { opacity: 1; transform: none; }
+
+</style>
+</head>
+<body>
+
+<!-- VIEW SWITCHER -->
+<div id="view-switcher">
+  <div class="vs-left">
+    <div class="vs-logo">🍀 IrishMart</div>
+    <div class="vs-sep">|</div>
+    <span style="color:rgba(255,255,255,.45);font-size:11px;">Unified Platform</span>
+  </div>
+  <div class="vs-tabs">
+    <button class="vs-tab active" onclick="switchView('storefront',this)"><i class="fas fa-store" style="margin-right:5px;"></i>Storefront</button>
+    <button class="vs-tab" onclick="switchView('admin',this)"><i class="fas fa-lock" style="margin-right:5px;"></i>Admin Panel</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STOREFRONT
+══════════════════════════════════════════ -->
+<div id="storefront" class="active">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo"><span class="leaf">🍀</span> Irish<span>Mart</span></a>
+        <div class="nav-links">
+          <a href="#" class="active">Home</a>
+          <a href="#categories">Categories</a>
+          <a href="#products">Products</a>
+          <a href="#suppliers">Suppliers</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="nav-actions">
+          <div class="nav-search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search products, suppliers…" id="mainSearch">
+          </div>
+          <a href="#" class="nav-cart" onclick="showToast('🛒 Cart is empty','info');return false;" title="Cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge">3</span>
+          </a>
+          <button class="btn btn-outline" onclick="openModal('login')">Sign In</button>
+          <button class="btn btn-primary" onclick="openModal('register')">Join Free</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-eyebrow">🇮🇪 Ireland's #1 B2B Marketplace</div>
+          <h1>Where Irish<br><em>Businesses</em><br>Connect & Grow</h1>
+          <p class="hero-desc">IrishMart connects thousands of Irish suppliers, manufacturers, and buyers in one powerful platform. Source local, grow global.</p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary" onclick="openModal('register')" style="padding:13px 28px;font-size:15px;">
+              <i class="fas fa-rocket"></i> Start Selling Free
+            </button>
+            <button class="btn btn-outline" style="padding:13px 28px;font-size:15px;border-color:rgba(255,255,255,.3);color:#fff;" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+              Browse Products <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="hero-stat-num">12,400+</div><div class="hero-stat-label">Verified Suppliers</div></div>
+            <div class="hero-stat"><div class="hero-stat-num">84,000+</div><div class="hero-stat-label">Products Listed</div></div>
+            <div class="hero-stat"><div class="hero-stat-num">€2.1B+</div><div class="hero-stat-label">Trade Facilitated</div></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-cat-card"><div class="icon">🌾</div><div class="name">Agri & Food</div><div class="count">3,200 suppliers</div></div>
+          <div class="hero-cat-card"><div class="icon">💻</div><div class="name">Technology</div><div class="count">1,850 suppliers</div></div>
+          <div class="hero-cat-card"><div class="icon">🏗️</div><div class="name">Construction</div><div class="count">2,100 suppliers</div></div>
+          <div class="hero-cat-card"><div class="icon">🧪</div><div class="name">Pharma</div><div class="count">940 suppliers</div></div>
+          <div class="hero-cat-card"><div class="icon">🚚</div><div class="name">Logistics</div><div class="count">1,300 suppliers</div></div>
+          <div class="hero-cat-card"><div class="icon">♻️</div><div class="name">Green Tech</div><div class="count">780 suppliers</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar-section">
+    <div class="container">
+      <div class="search-bar-wrap">
+        <select class="search-cat-select">
+          <option>All Categories</option>
+          <option>Agriculture & Food</option>
+          <option>Technology & IT</option>
+          <option>Construction</option>
+          <option>Pharmaceuticals</option>
+          <option>Logistics & Transport</option>
+          <option>Green Energy</option>
+          <option>Textiles & Fashion</option>
+          <option>Manufacturing</option>
+        </select>
+        <input class="search-main-input" type="text" placeholder="Search 84,000+ products and 12,400+ verified Irish suppliers…">
+        <button class="search-submit" onclick="showToast('🔍 Searching…','info')"><i class="fas fa-search"></i> Search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <section id="categories">
+    <div class="container">
+      <div class="sec-header fade-up">
+        <div class="sec-badge">🍀 Browse by Category</div>
+        <h2 class="sec-title">What Are You Looking For?</h2>
+        <p class="sec-sub">Explore 32 categories covering every sector of the Irish economy</p>
+      </div>
+      <div class="cats-grid">
+        <div class="cat-card fade-up" onclick="filterCat('Agriculture')"><div class="c-icon">🌾</div><h3>Agriculture & Food</h3><p>3,200 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Technology')"><div class="c-icon">💻</div><h3>Technology & IT</h3><p>1,850 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Construction')"><div class="c-icon">🏗️</div><h3>Construction</h3><p>2,100 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Pharma')"><div class="c-icon">💊</div><h3>Pharmaceuticals</h3><p>940 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Logistics')"><div class="c-icon">🚚</div><h3>Logistics</h3><p>1,300 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Green')"><div class="c-icon">♻️</div><h3>Green Energy</h3><p>780 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Textiles')"><div class="c-icon">👗</div><h3>Textiles & Fashion</h3><p>640 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Manufacturing')"><div class="c-icon">🏭</div><h3>Manufacturing</h3><p>1,970 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Finance')"><div class="c-icon">💼</div><h3>Finance & Insurance</h3><p>520 suppliers</p></div>
+        <div class="cat-card fade-up" onclick="filterCat('Healthcare')"><div class="c-icon">🏥</div><h3>Healthcare</h3><p>860 suppliers</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section id="products">
+    <div class="container">
+      <div class="sec-header fade-up">
+        <div class="sec-badge">⭐ Featured Listings</div>
+        <h2 class="sec-title">Top Products This Week</h2>
+        <p class="sec-sub">Curated selections from Ireland's most trusted verified suppliers</p>
+      </div>
+      <div class="products-grid" id="productsGrid">
+        <!-- Rendered by JS -->
+      </div>
+      <div style="text-align:center;margin-top:40px;">
+        <button class="btn btn-outline" onclick="showToast('Loading more products…','info')">View All Products <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP SUPPLIERS -->
+  <section id="suppliers">
+    <div class="container">
+      <div class="sec-header fade-up">
+        <div class="sec-badge">🏆 Top Suppliers</div>
+        <h2 class="sec-title">Ireland's Most Trusted Businesses</h2>
+        <p class="sec-sub">Fully verified, rated, and ready to trade</p>
+      </div>
+      <div class="suppliers-grid" id="suppliersGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY IRISHMART -->
+  <section>
+    <div class="container">
+      <div class="sec-header fade-up">
+        <div class="sec-badge">💡 Why IrishMart</div>
+        <h2 class="sec-title">Built for Irish Business</h2>
+        <p class="sec-sub">Everything you need to source, sell, and scale across Ireland and beyond</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card fade-up"><div class="why-icon">✅</div><h3>Verified Suppliers</h3><p>Every business is identity-verified with Irish company registration checks before listing.</p></div>
+        <div class="why-card fade-up"><div class="why-icon">🔒</div><h3>Secure Transactions</h3><p>Trade Finance and escrow services protect every deal from enquiry to delivery.</p></div>
+        <div class="why-card fade-up"><div class="why-icon">🇮🇪</div><h3>100% Irish Platform</h3><p>Built in Ireland, taxed in Ireland, staffed in Ireland. Your data stays in Ireland.</p></div>
+        <div class="why-card fade-up"><div class="why-icon">📊</div><h3>Real-time Analytics</h3><p>Understand your leads, track enquiries, and measure ROI from your IrishMart profile.</p></div>
+        <div class="why-card fade-up"><div class="why-icon">🌍</div><h3>Global Reach</h3><p>Export your products to 48 countries through IrishMart's international buyer network.</p></div>
+        <div class="why-card fade-up"><div class="why-icon">🤝</div><h3>Dedicated Support</h3><p>Ireland-based account managers available Monday–Friday by phone, email, or video.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <div class="sec-header fade-up">
+        <div class="sec-badge">💳 Membership Plans</div>
+        <h2 class="sec-title">Simple, Transparent Pricing</h2>
+        <p class="sec-sub">From free listings to enterprise-grade tools — grow at your own pace</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-up">
+          <div class="pricing-name">FREE</div>
+          <div class="pricing-price"><span class="currency">€</span><span class="amount">0</span><div class="period">Forever free</div></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Basic company profile</li>
+            <li><i class="fas fa-check"></i> 5 product listings</li>
+            <li><i class="fas fa-check"></i> 10 buyer enquiries/mo</li>
+            <li><i class="fas fa-check"></i> Basic analytics</li>
+            <li class="off"><i class="fas fa-times"></i> Priority search ranking</li>
+            <li class="off"><i class="fas fa-times"></i> Verified badge</li>
+            <li class="off"><i class="fas fa-times"></i> Phone support</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%;padding:12px;justify-content:center;" onclick="openModal('register')">Get Started Free</button>
+        </div>
+        <div class="pricing-card fade-up">
+          <div class="pricing-name">SILVER</div>
+          <div class="pricing-price"><span class="currency">€</span><span class="amount">99</span><div class="period">per month</div></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Enhanced profile</li>
+            <li><i class="fas fa-check"></i> 50 product listings</li>
+            <li><i class="fas fa-check"></i> Unlimited enquiries</li>
+            <li><i class="fas fa-check"></i> Contact details visible</li>
+            <li><i class="fas fa-check"></i> Basic SEO boost</li>
+            <li><i class="fas fa-check"></i> Email support</li>
+            <li class="off"><i class="fas fa-times"></i> Homepage featured</li>
+          </ul>
+          <button class="btn btn-outline" style="width:100%;padding:12px;justify-content:center;" onclick="showToast('Redirecting to Silver plan…','success')">Choose Silver</button>
+        </div>
+        <div class="pricing-card popular fade-up">
+          <div class="popular-badge">🌟 Most Popular</div>
+          <div class="pricing-name" style="color:var(--muted)">GOLD</div>
+          <div class="pricing-price"><span class="currency" style="color:var(--green)">€</span><span class="amount" style="color:var(--green)">249</span><div class="period">per month</div></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Premium verified profile</li>
+            <li><i class="fas fa-check"></i> Unlimited products</li>
+            <li><i class="fas fa-check"></i> Priority search ranking</li>
+            <li><i class="fas fa-check"></i> Lead management tools</li>
+            <li><i class="fas fa-check"></i> Advanced analytics</li>
+            <li><i class="fas fa-check"></i> Phone & email support</li>
+            <li><i class="fas fa-check"></i> Social media promotion</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%;padding:12px;justify-content:center;" onclick="showToast('Redirecting to Gold plan…','success')">Choose Gold 🍀</button>
+        </div>
+        <div class="pricing-card fade-up">
+          <div class="pricing-name">PLATINUM</div>
+          <div class="pricing-price"><span class="currency">€</span><span class="amount">499</span><div class="period">per month</div></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Everything in Gold</li>
+            <li><i class="fas fa-check"></i> Homepage featured slot</li>
+            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+            <li><i class="fas fa-check"></i> Export/import support</li>
+            <li><i class="fas fa-check"></i> Custom micro-website</li>
+            <li><i class="fas fa-check"></i> Trade show access</li>
+            <li><i class="fas fa-check"></i> WhatsApp integration</li>
+          </ul>
+          <button class="btn btn-orange" style="width:100%;padding:12px;justify-content:center;" onclick="showToast('Redirecting to Platinum plan…','success')">Choose Platinum</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section>
+    <div class="container">
+      <div class="sec-header fade-up">
+        <div class="sec-badge">💬 Success Stories</div>
+        <h2 class="sec-title">What Irish Businesses Say</h2>
+        <p class="sec-sub">Real results from real Irish businesses using IrishMart</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up">
+          <div class="quote-mark">"</div>
+          <p class="testimonial-text">IrishMart completely transformed how we find new customers. Within 3 months on the Gold plan, we secured 12 new B2B clients worth over €180,000 in contracts.</p>
+          <div class="testimonial-author"><div class="author-avatar">👨‍💼</div><div><div class="author-name">Seamus O'Brien</div><div class="author-company">Cork Valley Meats Ltd.</div></div><div class="stars" style="margin-left:auto;">★★★★★</div></div>
+        </div>
+        <div class="testimonial-card fade-up">
+          <div class="quote-mark">"</div>
+          <p class="testimonial-text">As a tech startup in Galway, we needed visibility fast. IrishMart gave us that platform. The lead generation tools are excellent and analytics help us understand demand.</p>
+          <div class="testimonial-author"><div class="author-avatar">👩‍💻</div><div><div class="author-name">Aoife Murphy</div><div class="author-company">Galway Tech Innovations</div></div><div class="stars" style="margin-left:auto;">★★★★★</div></div>
+        </div>
+        <div class="testimonial-card fade-up">
+          <div class="quote-mark">"</div>
+          <p class="testimonial-text">We export Irish dairy to 14 countries and IrishMart helped us find 6 new international distributors. The export assistance in Platinum is worth every cent.</p>
+          <div class="testimonial-author"><div class="author-avatar">🧑‍🌾</div><div><div class="author-name">Padraig Kelly</div><div class="author-company">Kerry Gold Dairy Co.</div></div><div class="stars" style="margin-left:auto;">★★★★★</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <div class="partners-strip">
+    <div class="container">
+      <div class="partners-label">🤝 Trusted Partners & Supported By</div>
+      <div class="partners-logos">
+        <div class="partner-logo">🏦 Bank of Ireland</div>
+        <div class="partner-logo">🏦 AIB Group</div>
+        <div class="partner-logo">🇮🇪 Enterprise Ireland</div>
+        <div class="partner-logo">💼 IDA Ireland</div>
+        <div class="partner-logo">📊 Revenue Commissioners</div>
+        <div class="partner-logo">🏛️ Dublin Chamber</div>
+        <div class="partner-logo">🎓 UCD Innovation</div>
+        <div class="partner-logo">🌿 Bord Bia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP CTA -->
+  <div class="app-section">
+    <div class="container">
+      <div class="app-grid">
+        <div class="fade-up">
+          <div class="sec-badge" style="background:rgba(22,155,98,.2);color:#4ade80;">📱 Mobile App</div>
+          <h2>Manage Your Business Anywhere in Ireland</h2>
+          <p>Get real-time enquiry alerts, manage your listings, and close deals from your phone. The IrishMart app is available on iOS and Android.</p>
+          <div class="app-btns">
+            <a href="#" class="app-btn" onclick="showToast('App Store coming soon!','info');return false;">
+              <i class="fab fa-apple"></i><div><div class="sub">Download on the</div><div class="store">App Store</div></div>
+            </a>
+            <a href="#" class="app-btn" onclick="showToast('Google Play coming soon!','info');return false;">
+              <i class="fab fa-google-play"></i><div><div class="sub">Get it on</div><div class="store">Google Play</div></div>
+            </a>
+          </div>
+        </div>
+        <div class="app-mockup fade-up">
+          <div class="app-feature"><div class="emoji">🔔</div><div class="ttl">Live Enquiry Alerts</div><div class="dsc">Instant push notifications when buyers contact you</div></div>
+          <div class="app-feature"><div class="emoji">📊</div><div class="ttl">Analytics Dashboard</div><div class="dsc">Track views, clicks and enquiries in real time</div></div>
+          <div class="app-feature"><div class="emoji">💬</div><div class="ttl">In-App Messaging</div><div class="dsc">Negotiate and close deals without leaving the app</div></div>
+          <div class="app-feature"><div class="emoji">📦</div><div class="ttl">Listing Manager</div><div class="dsc">Add and update products directly from mobile</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🍀 Irish<span>Mart</span></div>
+          <p>Ireland's premier B2B marketplace connecting local suppliers, manufacturers, and buyers since 2019. GDPR compliant, Irish-owned and operated.</p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="footer-social"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="footer-social"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <a href="#">Browse Products</a>
+          <a href="#">Find Suppliers</a>
+          <a href="#">Post a Requirement</a>
+          <a href="#">Trade Shows</a>
+          <a href="#">Industry Reports</a>
+        </div>
+        <div class="footer-col">
+          <h4>For Sellers</h4>
+          <a href="#">List Your Business</a>
+          <a href="#">Pricing Plans</a>
+          <a href="#">Seller Dashboard</a>
+          <a href="#">Lead Management</a>
+          <a href="#">Export Support</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About IrishMart</a>
+          <a href="#">Press & Media</a>
+          <a href="#">Careers</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 IrishMart Ltd. Registered in Ireland · CRO No. 648201 · Proud to be Irish 🇮🇪</p>
+        <div class="footer-badges">
+          <div class="footer-badge">🔒 GDPR Compliant</div>
+          <div class="footer-badge">🇮🇪 Irish Owned</div>
+          <div class="footer-badge">SSL Secured</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="modalLogin">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modalLogin')"><i class="fas fa-times"></i></button>
+      <h2>Welcome back</h2>
+      <p>Sign in to your IrishMart account</p>
+      <div class="form-group"><label>Email address</label><input type="email" placeholder="you@company.ie"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn btn-primary" style="width:100%;padding:13px;justify-content:center;margin-top:8px;" onclick="closeModal('modalLogin');showToast('✅ Signed in successfully!','success')">Sign In</button>
+      <div class="modal-footer-link">Don't have an account? <a href="#" onclick="closeModal('modalLogin');openModal('register');return false;">Join free</a></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modalRegister">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('register')"><i class="fas fa-times"></i></button>
+      <h2>Join IrishMart Free</h2>
+      <p>Create your business account and start trading today</p>
+      <div class="modal-tabs">
+        <button class="modal-tab active" onclick="this.parentElement.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">🛒 Buyer</button>
+        <button class="modal-tab" onclick="this.parentElement.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">🏭 Supplier</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>First name</label><input type="text" placeholder="Seamus"></div>
+        <div class="form-group"><label>Last name</label><input type="text" placeholder="O'Brien"></div>
+      </div>
+      <div class="form-group"><label>Company name</label><input type="text" placeholder="Your Company Ltd."></div>
+      <div class="form-group"><label>Business email</label><input type="email" placeholder="you@company.ie"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="Create a strong password"></div>
+      <button class="btn btn-primary" style="width:100%;padding:13px;justify-content:center;margin-top:8px;" onclick="closeModal('register');showToast('🎉 Account created! Welcome to IrishMart!','success')">Create Free Account</button>
+      <div class="modal-footer-link">Already a member? <a href="#" onclick="closeModal('register');openModal('login');return false;">Sign in</a></div>
+    </div>
+  </div>
+  <div id="toast-container"></div>
+
+</div><!-- /storefront -->
+
+
+<!-- ══════════════════════════════════════════
+     ADMIN PANEL
+══════════════════════════════════════════ -->
+<div id="admin-panel">
+
+  <!-- Login Screen -->
+  <div class="a-login" id="aLogin">
+    <div class="a-login-box">
+      <div class="a-login-avatar">IM</div>
+      <h1>IrishMart Admin</h1>
+      <p>Marketplace Control Panel</p>
+      <div class="a-err" id="aErr">Invalid credentials. Try admin / admin123</div>
+      <div class="a-fg"><label>Username</label><input type="text" id="aUser" placeholder="admin" value="admin"></div>
+      <div class="a-fg"><label>Password</label><input type="password" id="aPass" placeholder="••••••••" value="admin123" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="a-btn a-btn-p" onclick="doLogin()" style="margin-top:8px;">
+        <i class="fas fa-sign-in-alt"></i> Sign In to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="a-layout" id="aDash" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside class="a-sidebar" id="aSidebar">
+      <div class="a-sb-logo"><div class="lname">🍀 IrishMart</div><div class="lsub">Admin Panel v2.0</div></div>
+      <div class="a-sb-user"><div class="a-sb-avatar">A</div><div><div class="a-sb-uname">Admin</div><div class="a-sb-urole">Super Admin</div></div></div>
+      <div class="a-sb-nav">
+        <div class="a-sb-section">
+          <div class="a-sb-section-title">Overview</div>
+          <button class="a-nav-item active" onclick="aNav('dashboard',this)"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+          <button class="a-nav-item" onclick="aNav('analytics',this)"><i class="fas fa-chart-line"></i> Analytics</button>
+        </div>
+        <div class="a-sb-section">
+          <div class="a-sb-section-title">Marketplace</div>
+          <button class="a-nav-item" onclick="aNav('suppliers',this)"><i class="fas fa-store"></i> Suppliers <span class="badge-dot">12</span></button>
+          <button class="a-nav-item" onclick="aNav('products',this)"><i class="fas fa-box"></i> Products</button>
+          <button class="a-nav-item" onclick="aNav('orders',this)"><i class="fas fa-receipt"></i> Orders <span class="badge-dot">5</span></button>
+          <button class="a-nav-item" onclick="aNav('enquiries',this)"><i class="fas fa-envelope"></i> Enquiries <span class="badge-dot">28</span></button>
+        </div>
+        <div class="a-sb-section">
+          <div class="a-sb-section-title">Content</div>
+          <button class="a-nav-item" onclick="aNav('categories',this)"><i class="fas fa-th-large"></i> Categories</button>
+          <button class="a-nav-item" onclick="aNav('banners',this)"><i class="fas fa-images"></i> Banners</button>
+          <button class="a-nav-item" onclick="aNav('seo',this)"><i class="fas fa-search"></i> SEO</button>
+        </div>
+        <div class="a-sb-section">
+          <div class="a-sb-section-title">System</div>
+          <button class="a-nav-item" onclick="aNav('users',this)"><i class="fas fa-users"></i> Users</button>
+          <button class="a-nav-item" onclick="aNav('settings',this)"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+      </div>
+      <div class="a-sb-bottom">
+        <button class="a-nav-item" onclick="doLogout()" style="color:rgba(255,100,100,.7)"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="a-main">
+      <!-- Topbar -->
+      <div class="a-topbar">
+        <div class="a-topbar-left">
+          <div class="a-page-title" id="aPageTitle">Dashboard</div>
+          <div class="a-breadcrumb" id="aBreadcrumb">Home / Dashboard</div>
+        </div>
+        <div class="a-topbar-right">
+          <div class="a-search"><i class="fas fa-search"></i><input type="text" placeholder="Search… (Ctrl+K)"></div>
+          <button class="a-icon-btn" onclick="aToast('📊 Report generated!','ok')"><i class="fas fa-download"></i></button>
+          <button class="a-icon-btn" onclick="toggleNotifs()"><i class="fas fa-bell"></i><span class="a-notif-dot"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--ap),var(--as));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;cursor:pointer;" onclick="aToast('Profile settings coming soon','info')">A</div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="a-content">
+
+        <!-- ── DASHBOARD PAGE ── -->
+        <div class="a-page active" id="page-dashboard">
+          <!-- Stat Cards -->
+          <div class="a-stats-grid">
+            <div class="a-stat-card">
+              <div class="a-stat-icon" style="background:rgba(108,99,255,.15);color:var(--ap)"><i class="fas fa-store"></i></div>
+              <div class="a-stat-val">12,438</div>
+              <div class="a-stat-label">Active Suppliers</div>
+              <div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +8.2% this month</div>
+            </div>
+            <div class="a-stat-card">
+              <div class="a-stat-icon" style="background:rgba(0,200,83,.12);color:var(--aok)"><i class="fas fa-euro-sign"></i></div>
+              <div class="a-stat-val">€847K</div>
+              <div class="a-stat-label">Platform Revenue</div>
+              <div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +14.5% this month</div>
+            </div>
+            <div class="a-stat-card">
+              <div class="a-stat-icon" style="background:rgba(245,0,87,.1);color:var(--as)"><i class="fas fa-envelope-open"></i></div>
+              <div class="a-stat-val">3,291</div>
+              <div class="a-stat-label">New Enquiries</div>
+              <div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +22% this month</div>
+            </div>
+            <div class="a-stat-card">
+              <div class="a-stat-icon" style="background:rgba(255,214,0,.1);color:#ffd600"><i class="fas fa-users"></i></div>
+              <div class="a-stat-val">84,129</div>
+              <div class="a-stat-label">Registered Users</div>
+              <div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +5.1% this month</div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="a-grid2">
+            <div class="a-card">
+              <div class="a-card-hdr">
+                <div><div class="a-card-title">Monthly Revenue</div><div class="a-card-sub">Platform subscription income (€)</div></div>
+                <button class="a-btn a-btn-s" style="padding:6px 12px;" onclick="aToast('Exporting report…','info')"><i class="fas fa-download"></i> Export</button>
+              </div>
+              <div class="rev-chart-wrap">
+                <div class="rev-chart" id="revChart">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+            </div>
+            <div class="a-card">
+              <div class="a-card-hdr"><div class="a-card-title">Plan Distribution</div></div>
+              <div class="donut-wrap" id="donutWrap">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Orders -->
+          <div class="a-card" style="margin-bottom:16px;">
+            <div class="a-card-hdr">
+              <div><div class="a-card-title">Recent Orders</div><div class="a-card-sub">Latest supplier subscription payments</div></div>
+              <button class="a-btn a-btn-s" style="padding:6px 12px;" onclick="aNav('orders',null)">View All</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="a-table">
+                <thead><tr><th>#</th><th>Company</th><th>Plan</th><th>Amount</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="aOrdersTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Actions + Recent Enquiries -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="a-card">
+              <div class="a-card-title" style="margin-bottom:16px;">Quick Actions</div>
+              <div style="display:grid;gap:8px;">
+                <button class="a-btn a-btn-g" onclick="aNav('suppliers',null);aToast('Reviewing pending suppliers…','info')"><i class="fas fa-check-circle"></i> Verify Pending Suppliers (12)</button>
+                <button class="a-btn a-btn-s" onclick="aNav('products',null)"><i class="fas fa-box"></i> Review New Products</button>
+                <button class="a-btn a-btn-s" onclick="aNav('enquiries',null)"><i class="fas fa-envelope"></i> Manage Enquiries (28)</button>
+                <button class="a-btn a-btn-s" onclick="aNav('banners',null)"><i class="fas fa-images"></i> Update Homepage Banners</button>
+                <button class="a-btn a-btn-r" onclick="aToast('Generating platform report…','info')"><i class="fas fa-file-pdf"></i> Generate Monthly Report</button>
+              </div>
+            </div>
+            <div class="a-card">
+              <div class="a-card-title" style="margin-bottom:16px;">Latest Enquiries</div>
+              <div id="aEnqList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ANALYTICS PAGE ── -->
+        <div class="a-page" id="page-analytics">
+          <div class="a-stats-grid" style="margin-bottom:20px;">
+            <div class="a-stat-card"><div class="a-stat-icon" style="background:rgba(108,99,255,.15);color:var(--ap)"><i class="fas fa-eye"></i></div><div class="a-stat-val">1.2M</div><div class="a-stat-label">Page Views</div><div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +18% vs last month</div></div>
+            <div class="a-stat-card"><div class="a-stat-icon" style="background:rgba(0,200,83,.12);color:var(--aok)"><i class="fas fa-mouse-pointer"></i></div><div class="a-stat-val">4.3%</div><div class="a-stat-label">Enquiry Rate</div><div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +0.4%</div></div>
+            <div class="a-stat-card"><div class="a-stat-icon" style="background:rgba(255,214,0,.1);color:#ffd600"><i class="fas fa-clock"></i></div><div class="a-stat-val">4m 32s</div><div class="a-stat-label">Avg Session</div><div class="a-stat-change up"><i class="fas fa-arrow-up"></i> +12s</div></div>
+            <div class="a-stat-card"><div class="a-stat-icon" style="background:rgba(245,0,87,.1);color:var(--as)"><i class="fas fa-undo"></i></div><div class="a-stat-val">28.4%</div><div class="a-stat-label">Bounce Rate</div><div class="a-stat-change down"><i class="fas fa-arrow-down"></i> -3.1%</div></div>
+          </div>
+          <div class="a-card">
+            <div class="a-card-hdr"><div class="a-card-title">Traffic by Category</div></div>
+            <div style="display:grid;gap:10px;margin-top:8px;">
+              <div style="display:flex;align-items:center;gap:12px;font-size:13px;">
+                <span style="width:120px;color:rgba(255,255,255,.6);">Agriculture & Food</span>
+                <div style="flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;"><div style="width:72%;height:100%;background:var(--ap);border-radius:4px;"></div></div>
+                <span style="color:#fff;font-weight:600;min-width:40px;text-align:right;">72%</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;font-size:13px;">
+                <span style="width:120px;color:rgba(255,255,255,.6);">Technology</span>
+                <div style="flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;"><div style="width:58%;height:100%;background:var(--as);border-radius:4px;"></div></div>
+                <span style="color:#fff;font-weight:600;min-width:40px;text-align:right;">58%</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;font-size:13px;">
+                <span style="width:120px;color:rgba(255,255,255,.6);">Construction</span>
+                <div style="flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;"><div style="width:44%;height:100%;background:var(--aok);border-radius:4px;"></div></div>
+                <span style="color:#fff;font-weight:600;min-width:40px;text-align:right;">44%</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;font-size:13px;">
+                <span style="width:120px;color:rgba(255,255,255,.6);">Pharma</span>
+                <div style="flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;"><div style="width:29%;height:100%;background:#ffd600;border-radius:4px;"></div></div>
+                <span style="color:#fff;font-weight:600;min-width:40px;text-align:right;">29%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SUPPLIERS PAGE ── -->
+        <div class="a-page" id="page-suppliers">
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="a-btn a-btn-p" onclick="openAMod('addSupplier')"><i class="fas fa-plus"></i> Add Supplier</button>
+            <button class="a-btn a-btn-s"><i class="fas fa-filter"></i> Filter</button>
+            <button class="a-btn a-btn-s"><i class="fas fa-download"></i> Export CSV</button>
+          </div>
+          <div class="a-card">
+            <div style="overflow-x:auto;">
+              <table class="a-table">
+                <thead><tr><th>Company</th><th>Category</th><th>Plan</th><th>Location</th><th>Verified</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="aSuppTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PRODUCTS PAGE ── -->
+        <div class="a-page" id="page-products">
+          <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="a-btn a-btn-p" onclick="openAMod('addProduct')"><i class="fas fa-plus"></i> Add Product</button>
+            <button class="a-btn a-btn-s"><i class="fas fa-filter"></i> Filter</button>
+          </div>
+          <div class="a-card">
+            <div style="overflow-x:auto;">
+              <table class="a-table">
+                <thead><tr><th>Product</th><th>Supplier</th><th>Category</th><th>Price</th><th>MOQ</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="aProdTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ORDERS PAGE ── -->
+        <div class="a-page" id="page-orders">
+          <div class="a-card">
+            <div style="overflow-x:auto;">
+              <table class="a-table">
+                <thead><tr><th>Order #</th><th>Company</th><th>Plan</th><th>Amount</th><th>Date</th><th>Status</th><th>Invoice</th></tr></thead>
+                <tbody id="aAllOrdersTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ENQUIRIES PAGE ── -->
+        <div class="a-page" id="page-enquiries">
+          <div class="a-card">
+            <div style="overflow-x:auto;">
+              <table class="a-table">
+                <thead><tr><th>From</th><th>To (Supplier)</th><th>Subject</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="aEnqTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CATEGORIES PAGE ── -->
+        <div class="a-page" id="page-categories">
+          <div style="display:flex;gap:10px;margin-bottom:16px;">
+            <button class="a-btn a-btn-p" onclick="aToast('Add category modal — coming soon','info')"><i class="fas fa-plus"></i> Add Category</button>
+          </div>
+          <div class="a-card">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;" id="aCatGrid"></div>
+          </div>
+        </div>
+
+        <!-- ── BANNERS PAGE ── -->
+        <div class="a-page" id="page-banners">
+          <div class="a-card">
+            <div class="a-card-title" style="margin-bottom:16px;">Homepage Banner Management</div>
+            <div style="display:grid;gap:12px;" id="aBannerList"></div>
+          </div>
+        </div>
+
+        <!-- ── SEO PAGE ── -->
+        <div class="a-page" id="page-seo">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="a-card">
+              <div class="a-card-title" style="margin-bottom:16px;">Meta Tags</div>
+              <div class="a-fg"><label>Page Title</label><input type="text" id="seoTitle" value="IrishMart — Ireland's Premier B2B Marketplace" oninput="updSerp()"></div>
+              <div class="a-fg"><label>Meta Description</label><textarea id="seoDesc" rows="3" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;padding:10px 13px;font-size:13px;font-family:inherit;width:100%;outline:none;resize:vertical;" oninput="updSerp()">Connect with Ireland's verified B2B suppliers, manufacturers, and buyers on IrishMart.</textarea></div>
+              <div class="a-fg"><label>Keywords</label><input type="text" value="Ireland B2B marketplace, Irish suppliers, Irish manufacturers"></div>
+              <button class="a-btn a-btn-p" style="margin-top:8px;" onclick="aToast('✅ SEO settings saved!','ok')"><i class="fas fa-save"></i> Save SEO Settings</button>
+            </div>
+            <div class="a-card">
+              <div class="a-card-title" style="margin-bottom:16px;">Google SERP Preview</div>
+              <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:16px;">
+                <div style="font-size:12px;color:rgba(255,255,255,.35);margin-bottom:8px;">irishmart.ie</div>
+                <div style="font-size:18px;color:#6ea8fe;margin-bottom:4px;" id="serpTitle">IrishMart — Ireland's Premier B2B Marketplace</div>
+                <div style="font-size:13px;color:rgba(255,255,255,.55);" id="serpDesc">Connect with Ireland's verified B2B suppliers, manufacturers, and buyers on IrishMart.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── USERS PAGE ── -->
+        <div class="a-page" id="page-users">
+          <div class="a-card">
+            <div style="overflow-x:auto;">
+              <table class="a-table">
+                <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="aUsersTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SETTINGS PAGE ── -->
+        <div class="a-page" id="page-settings">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="a-card">
+              <div class="a-card-title" style="margin-bottom:16px;">Platform Settings</div>
+              <div style="display:grid;gap:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                  <div><div style="font-size:13px;font-weight:600;color:#fff;">Maintenance Mode</div><div style="font-size:11px;color:rgba(255,255,255,.35);">Take site offline for updates</div></div>
+                  <button class="a-tgl" onclick="this.classList.toggle('on');aToast(this.classList.contains('on')?'⚠️ Maintenance mode ON':'✅ Site is live','info')"></button>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                  <div><div style="font-size:13px;font-weight:600;color:#fff;">New Registrations</div><div style="font-size:11px;color:rgba(255,255,255,.35);">Allow new suppliers to sign up</div></div>
+                  <button class="a-tgl on" onclick="this.classList.toggle('on')"></button>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+                  <div><div style="font-size:13px;font-weight:600;color:#fff;">Email Notifications</div><div style="font-size:11px;color:rgba(255,255,255,.35);">Send alerts on new enquiries</div></div>
+                  <button class="a-tgl on" onclick="this.classList.toggle('on')"></button>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+                  <div><div style="font-size:13px;font-weight:600;color:#fff;">Auto-verify Suppliers</div><div style="font-size:11px;color:rgba(255,255,255,.35);">Skip manual review for CRO-verified companies</div></div>
+                  <button class="a-tgl" onclick="this.classList.toggle('on')"></button>
+                </div>
+              </div>
+            </div>
+            <div class="a-card">
+              <div class="a-card-title" style="margin-bottom:16px;">Danger Zone</div>
+              <div style="display:grid;gap:10px;">
+                <button class="a-btn a-btn-s" style="justify-content:flex-start;" onclick="aToast('📤 Data exported!','ok')"><i class="fas fa-file-export"></i> Export All Platform Data</button>
+                <button class="a-btn a-btn-s" style="justify-content:flex-start;" onclick="aToast('🔄 Cache cleared!','ok')"><i class="fas fa-broom"></i> Clear Cache</button>
+                <button class="a-btn a-btn-r" style="justify-content:flex-start;" onclick="aToast('⚠️ This action cannot be undone','info')"><i class="fas fa-trash"></i> Reset Platform Data</button>
+              </div>
+              <div style="margin-top:20px;">
+                <div class="a-card-title" style="margin-bottom:12px;">System Info</div>
+                <div style="font-size:12px;color:rgba(255,255,255,.45);display:grid;gap:6px;">
+                  <div>Platform Version: <span style="color:#fff;">v2.4.1</span></div>
+                  <div>Database: <span style="color:var(--aok);">● Connected</span></div>
+                  <div>Last Backup: <span style="color:#fff;">Today, 03:00 AM</span></div>
+                  <div>Server: <span style="color:#fff;">Dublin DC1 (IE)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /a-content -->
+    </div><!-- /a-main -->
+  </div><!-- /a-layout -->
+
+  <!-- Admin Modals -->
+  <div class="a-modal-overlay" id="aModAddSupplier">
+    <div class="a-modal">
+      <h3><i class="fas fa-store" style="margin-right:8px;color:var(--ap)"></i>Add Supplier</h3>
+      <div class="a-form-grid">
+        <div class="a-fg"><label>Company Name</label><input type="text" placeholder="Company Ltd."></div>
+        <div class="a-fg"><label>Category</label><select><option>Agriculture & Food</option><option>Technology</option><option>Construction</option><option>Pharmaceuticals</option></select></div>
+        <div class="a-fg"><label>Contact Email</label><input type="email" placeholder="contact@company.ie"></div>
+        <div class="a-fg"><label>Plan</label><select><option>Free</option><option>Silver</option><option>Gold</option><option>Platinum</option></select></div>
+        <div class="a-fg"><label>Location</label><input type="text" placeholder="Dublin, Ireland"></div>
+        <div class="a-fg"><label>CRO Number</label><input type="text" placeholder="648201"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="a-btn a-btn-s" onclick="closeAMod('addSupplier')">Cancel</button>
+        <button class="a-btn a-btn-p" onclick="closeAMod('addSupplier');aToast('✅ Supplier added!','ok')"><i class="fas fa-check"></i> Add Supplier</button>
+      </div>
+    </div>
+  </div>
+  <div class="a-modal-overlay" id="aModAddProduct">
+    <div class="a-modal">
+      <h3><i class="fas fa-box" style="margin-right:8px;color:var(--ap)"></i>Add Product</h3>
+      <div class="a-form-grid">
+        <div class="a-fg"><label>Product Name</label><input type="text" placeholder="Organic Irish Honey 500g"></div>
+        <div class="a-fg"><label>Supplier</label><select><option>Cork Valley Meats</option><option>Galway Tech</option><option>Kerry Gold Dairy</option></select></div>
+        <div class="a-fg"><label>Category</label><select><option>Agriculture & Food</option><option>Technology</option></select></div>
+        <div class="a-fg"><label>Price (€/unit)</label><input type="number" placeholder="12.99"></div>
+        <div class="a-fg"><label>MOQ</label><input type="text" placeholder="50 units"></div>
+        <div class="a-fg"><label>Status</label><select><option>Active</option><option>Pending Review</option><option>Inactive</option></select></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="a-btn a-btn-s" onclick="closeAMod('addProduct')">Cancel</button>
+        <button class="a-btn a-btn-p" onclick="closeAMod('addProduct');aToast('✅ Product added!','ok')"><i class="fas fa-check"></i> Add Product</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Toast -->
+  <div class="a-toast-w" id="aToastW"></div>
+
+</div><!-- /admin-panel -->
+
+
+<script>
+/* ═══════════════════════════════════════════════
+   SHARED DATA
+═══════════════════════════════════════════════ */
+const products = [
+  { emoji:'🌾', name:'Organic Irish Oats (25kg Bulk)', company:'Connacht Gold Mills', cat:'Agriculture', price:'€28', unit:'/25kg bag', moq:'50 bags', rating:4.9, reviews:128, verified:true, badge:'New' },
+  { emoji:'💻', name:'Enterprise Cloud Hosting — IE Region', company:'Dublin Data Systems', cat:'Technology', price:'€199', unit:'/month', moq:'1 server', rating:4.8, reviews:87, verified:true, badge:null },
+  { emoji:'🧱', name:'Precast Concrete Panels (Custom)', company:'Limerick Build Corp', cat:'Construction', price:'€4.50', unit:'/sq ft', moq:'500 sq ft', rating:4.7, reviews:63, verified:true, badge:'Popular' },
+  { emoji:'🧴', name:'Irish Spring Water 500ml (Pallet)', company:'Wicklow Springs Ltd', cat:'Food & Bev', price:'€0.18', unit:'/bottle', moq:'2,400 bottles', rating:4.9, reviews:215, verified:true, badge:null },
+  { emoji:'🐄', name:'Premium Irish Cheddar (5kg Block)', company:'Kerry Gold Dairy Co.', cat:'Dairy', price:'€38', unit:'/5kg', moq:'10 blocks', rating:5.0, reviews:304, verified:true, badge:'Featured' },
+  { emoji:'🌿', name:'Pharmaceutical-Grade Rosemary Extract', company:'Sligo BioPharm Ltd', cat:'Pharma', price:'€285', unit:'/kg', moq:'5 kg', rating:4.6, reviews:41, verified:true, badge:null },
+];
+const suppliers = [
+  { emoji:'🌾', name:'Connacht Gold Mills', location:'Galway', tags:['Organic Grains','Flour','Milling'], revenue:'€8.4M', products:142, rating:4.9 },
+  { emoji:'💻', name:'Dublin Data Systems', location:'Dublin', tags:['Cloud','Hosting','Security'], revenue:'€3.2M', products:28, rating:4.8 },
+  { emoji:'🏗️', name:'Limerick Build Corp', location:'Limerick', tags:['Concrete','Steel','Precast'], revenue:'€12.1M', products:87, rating:4.7 },
+  { emoji:'🥛', name:'Kerry Gold Dairy Co.', location:'Tralee', tags:['Dairy','Cheese','Butter'], revenue:'€22.6M', products:64, rating:5.0 },
+  { emoji:'💊', name:'Sligo BioPharm Ltd', location:'Sligo', tags:['APIs','Extracts','GMP'], revenue:'€6.8M', products:31, rating:4.6 },
+  { emoji:'🚚', name:'Trans-Éire Logistics', location:'Athlone', tags:['Freight','Storage','Cold Chain'], revenue:'€9.3M', products:15, rating:4.8 },
+];
+const aOrders = [
+  { id:'ORD-2847', company:'Cork Valley Meats Ltd.', plan:'Gold', amount:'€249', date:'12 Jun 2024', status:'paid' },
+  { id:'ORD-2846', company:'Galway Tech Innovations', plan:'Silver', amount:'€99', date:'11 Jun 2024', status:'paid' },
+  { id:'ORD-2845', company:'Sligo BioPharm Ltd.', plan:'Platinum', amount:'€499', date:'10 Jun 2024', status:'pending' },
+  { id:'ORD-2844', company:'Trans-Éire Logistics', plan:'Gold', amount:'€249', date:'09 Jun 2024', status:'paid' },
+  { id:'ORD-2843', company:'Shannon Textiles', plan:'Free', amount:'€0', date:'08 Jun 2024', status:'active' },
+];
+const aEnquiries = [
+  { from:'Buy-Rite Foods PLC', supplier:'Connacht Gold Mills', subject:'Bulk oats pricing Q3', date:'2h ago', status:'new' },
+  { from:'TechCorp Dublin', supplier:'Dublin Data Systems', subject:'Enterprise server quote', date:'4h ago', status:'new' },
+  { from:'UK Import Group', supplier:'Kerry Gold Dairy Co.', subject:'Export volumes 2025', date:'Yesterday', status:'read' },
+  { from:'Leinster Builders', supplier:'Limerick Build Corp', subject:'Custom panel spec sheet', date:'Yesterday', status:'read' },
+];
+
+/* ═══════════════════════════════════════════════
+   VIEW SWITCHER
+═══════════════════════════════════════════════ */
+function switchView(view, btn) {
+  document.querySelectorAll('.vs-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('storefront').classList.toggle('active', view === 'storefront');
+  document.getElementById('admin-panel').classList.toggle('active', view === 'admin');
+}
+
+/* ═══════════════════════════════════════════════
+   STOREFRONT JS
+═══════════════════════════════════════════════ */
+function renderProducts() {
+  const g = document.getElementById('productsGrid');
+  if (!g) return;
+  g.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img">${p.emoji}
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+        ${p.verified ? '<span class="product-verified"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
+      </div>
+      <div class="product-body">
+        <div class="product-cat">${p.cat}</div>
+        <div class="product-stars">${'★'.repeat(Math.floor(p.rating))}${p.rating % 1 ? '½' : ''} <span>(${p.reviews})</span></div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-company"><i class="fas fa-building" style="font-size:11px;"></i> ${p.company}</div>
+        <div class="product-footer">
+          <div><div class="product-price">${p.price}<span>${p.unit}</span></div><div class="product-moq">MOQ: ${p.moq}</div></div>
+          <button class="product-action" onclick="showToast('✅ Enquiry sent to ${p.company.replace(/'/g,'')}!','success')"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderSuppliers() {
+  const g = document.getElementById('suppliersGrid');
+  if (!g) return;
+  g.innerHTML = suppliers.map(s => `
+    <div class="supplier-card">
+      <div class="supplier-header">
+        <div class="supplier-logo">${s.emoji}</div>
+        <div class="supplier-info">
+          <h3>${s.name}</h3>
+          <div class="location"><i class="fas fa-map-marker-alt"></i> ${s.location}, Ireland <span class="loc-badge">🇮🇪 Verified</span></div>
+        </div>
+      </div>
+      <div class="supplier-tags">${s.tags.map(t => `<span class="supplier-tag">${t}</span>`).join('')}</div>
+      <div class="supplier-meta">
+        <div class="supplier-meta-item"><div class="val">${s.products}</div><div class="key">Products</div></div>
+        <div class="supplier-meta-item"><div class="val">${s.rating}⭐</div><div class="key">Rating</div></div>
+        <div class="supplier-meta-item"><div class="val">${s.revenue}</div><div class="key">Revenue</div></div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;padding:10px;justify-content:center;font-size:13px;" onclick="showToast('Opening ${s.name} profile…','info')">
+        View Profile <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>`).join('');
+}
+
+function openModal(type) {
+  if (type === 'login') document.getElementById('modalLogin').classList.add('open');
+  if (type === 'register') document.getElementById('modalRegister').classList.add('open');
+}
+function closeModal(type) {
+  if (type === 'login' || type === 'modalLogin') document.getElementById('modalLogin').classList.remove('open');
+  if (type === 'register' || type === 'modalRegister') document.getElementById('modalRegister').classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+function showToast(msg, type = 'info') {
+  const w = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = msg;
+  w.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+function filterCat(cat) { showToast(`🔍 Browsing ${cat} category…`, 'info'); }
+
+/* Scroll fade-in */
+const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ═══════════════════════════════════════════════
+   ADMIN JS
+═══════════════════════════════════════════════ */
+function doLogin() {
+  const u = document.getElementById('aUser').value;
+  const p = document.getElementById('aPass').value;
+  if (u === 'admin' && p === 'admin123') {
+    document.getElementById('aLogin').style.display = 'none';
+    document.getElementById('aDash').style.display = 'flex';
+    renderAdmin();
+  } else {
+    document.getElementById('aErr').style.display = 'block';
+    setTimeout(() => document.getElementById('aErr').style.display = 'none', 3000);
+  }
+}
+
+function doLogout() {
+  document.getElementById('aDash').style.display = 'none';
+  document.getElementById('aLogin').style.display = 'flex';
+  document.getElementById('aUser').value = 'admin';
+  document.getElementById('aPass').value = 'admin123';
+}
+
+function aNav(page, btn) {
+  document.querySelectorAll('.a-nav-item').forEach(i => i.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else {
+    const found = [...document.querySelectorAll('.a-nav-item')].find(i => i.getAttribute('onclick') && i.getAttribute('onclick').includes(`'${page}'`));
+    if (found) found.classList.add('active');
+  }
+  document.querySelectorAll('.a-page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  const titles = { dashboard:'Dashboard', analytics:'Analytics', suppliers:'Suppliers', products:'Products', orders:'Orders', enquiries:'Enquiries', categories:'Categories', banners:'Banners', seo:'SEO Settings', users:'Users', settings:'Settings' };
+  document.getElementById('aPageTitle').textContent = titles[page] || page;
+  document.getElementById('aBreadcrumb').textContent = 'Home / ' + (titles[page] || page);
+}
+
+function renderAdmin() {
+  renderRevChart(); renderDonut(); renderAOrders(); renderAEnqList();
+  renderASuppTable(); renderAProdTable(); renderAAllOrders(); renderAEnqTable();
+  renderACategories(); renderABanners(); renderAUsers();
+}
+
+function renderRevChart() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const vals = [42,58,51,74,68,92,88,104,96,112,127,143];
+  const max = Math.max(...vals);
+  document.getElementById('revChart').innerHTML = vals.map((v, i) => `
+    <div class="rev-bar ${i === 5 ? 'active' : ''}" style="height:${(v/max*100)}%" title="€${v}K">
+      <span class="rev-bar-label">${months[i]}</span>
+    </div>`).join('');
+}
+
+function renderDonut() {
+  const plans = [{name:'Gold',pct:38,color:'#169b62'},{name:'Platinum',pct:22,color:'#6c63ff'},{name:'Silver',pct:28,color:'#ffd600'},{name:'Free',pct:12,color:'#444'}];
+  let offset = 25; const r = 30; const circ = 2 * Math.PI * r;
+  const paths = plans.map(p => {
+    const dash = (p.pct / 100) * circ;
+    const path = `<circle cx="50" cy="50" r="${r}" fill="none" stroke="${p.color}" stroke-width="10" stroke-dasharray="${dash} ${circ - dash}" stroke-dashoffset="${-offset * circ / 100}" stroke-linecap="round"/>`;
+    offset += p.pct;
+    return path;
+  }).join('');
+  document.getElementById('donutWrap').innerHTML = `
+    <svg class="donut-svg" viewBox="0 0 100 100">${paths}</svg>
+    <div class="donut-legend">${plans.map(p => `<div class="dl-item"><div class="dl-dot" style="background:${p.color}"></div>${p.name}<div class="dl-val">${p.pct}%</div></div>`).join('')}</div>`;
+}
+
+const statusBadge = s => ({ paid:'ok', active:'ok', pending:'warn', rejected:'err', inactive:'err', new:'info', read:'ok', verified:'ok', suspended:'err' })[s] || 'info';
+const statusLabel = s => ({ paid:'Paid', active:'Active', pending:'Pending', rejected:'Rejected', inactive:'Inactive', new:'New', read:'Read', verified:'Verified', suspended:'Suspended' })[s] || s;
+
+function renderAOrders() {
+  document.getElementById('aOrdersTable').innerHTML = aOrders.map(o => `
+    <tr><td style="font-weight:600;color:var(--ap)">${o.id}</td>
+    <td>${o.company}</td>
+    <td><span class="a-badge info">${o.plan}</span></td>
+    <td style="font-weight:600;color:#fff">${o.amount}</td>
+    <td style="color:rgba(255,255,255,.45)">${o.date}</td>
+    <td><span class="a-badge ${statusBadge(o.status)}">${statusLabel(o.status)}</span></td>
+    <td><button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Invoice for ${o.id} downloaded','ok')"><i class="fas fa-download"></i></button></td></tr>`).join('');
+}
+
+function renderAEnqList() {
+  document.getElementById('aEnqList').innerHTML = aEnquiries.map(e => `
+    <div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:10px;">
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:600;color:#fff;">${e.from}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);">${e.subject} · ${e.date}</div>
+      </div>
+      <span class="a-badge ${statusBadge(e.status)}">${statusLabel(e.status)}</span>
+    </div>`).join('');
+}
+
+function renderASuppTable() {
+  const rows = [
+    { name:'Cork Valley Meats Ltd.', cat:'Agriculture', plan:'Gold', loc:'Cork', verified:true, status:'active' },
+    { name:'Galway Tech Innovations', cat:'Technology', plan:'Silver', loc:'Galway', verified:true, status:'active' },
+    { name:'Sligo BioPharm Ltd.', cat:'Pharma', plan:'Platinum', loc:'Sligo', verified:true, status:'active' },
+    { name:'Shannon Textiles', cat:'Textiles', plan:'Free', loc:'Shannon', verified:false, status:'pending' },
+    { name:'Trans-Éire Logistics', cat:'Logistics', plan:'Gold', loc:'Athlone', verified:true, status:'active' },
+    { name:'Wicklow Springs Ltd.', cat:'Food & Bev', plan:'Silver', loc:'Wicklow', verified:false, status:'pending' },
+  ];
+  document.getElementById('aSuppTable').innerHTML = rows.map(r => `
+    <tr><td style="font-weight:600;color:#fff">${r.name}</td>
+    <td>${r.cat}</td>
+    <td><span class="a-badge info">${r.plan}</span></td>
+    <td>${r.loc}, IE</td>
+    <td>${r.verified ? '<span class="a-badge ok">✓ Verified</span>' : '<span class="a-badge warn">Pending</span>'}</td>
+    <td><span class="a-badge ${statusBadge(r.status)}">${statusLabel(r.status)}</span></td>
+    <td style="display:flex;gap:6px;padding:12px 14px;">
+      <button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Viewing ${r.name}…','info')"><i class="fas fa-eye"></i></button>
+      <button class="a-btn a-btn-g" style="padding:5px 10px;" onclick="aToast('${r.name} verified!','ok')"><i class="fas fa-check"></i></button>
+      <button class="a-btn a-btn-r" style="padding:5px 10px;" onclick="aToast('${r.name} suspended','info')"><i class="fas fa-ban"></i></button>
+    </td></tr>`).join('');
+}
+
+function renderAProdTable() {
+  document.getElementById('aProdTable').innerHTML = products.map(p => `
+    <tr><td style="display:flex;align-items:center;gap:8px;padding:12px 14px;"><span style="font-size:20px;">${p.emoji}</span><span style="font-weight:600;color:#fff;">${p.name}</span></td>
+    <td>${p.company}</td>
+    <td>${p.cat}</td>
+    <td style="font-weight:600;color:#fff;">${p.price}</td>
+    <td>${p.moq}</td>
+    <td><span class="a-badge ok">Active</span></td>
+    <td style="display:flex;gap:6px;padding:12px 14px;">
+      <button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Editing product…','info')"><i class="fas fa-edit"></i></button>
+      <button class="a-btn a-btn-r" style="padding:5px 10px;" onclick="aToast('Product removed','info')"><i class="fas fa-trash"></i></button>
+    </td></tr>`).join('');
+}
+
+function renderAAllOrders() {
+  const allOrders = [...aOrders, ...aOrders.map(o => ({...o, id:'ORD-'+(parseInt(o.id.slice(4))-5), date:'Jun 2024'}))];
+  document.getElementById('aAllOrdersTable').innerHTML = allOrders.map(o => `
+    <tr><td style="color:var(--ap);font-weight:600;">${o.id}</td>
+    <td>${o.company}</td>
+    <td><span class="a-badge info">${o.plan}</span></td>
+    <td style="color:#fff;font-weight:600;">${o.amount}</td>
+    <td style="color:rgba(255,255,255,.4);">${o.date}</td>
+    <td><span class="a-badge ${statusBadge(o.status)}">${statusLabel(o.status)}</span></td>
+    <td><button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Invoice downloaded','ok')"><i class="fas fa-file-pdf"></i></button></td></tr>`).join('');
+}
+
+function renderAEnqTable() {
+  document.getElementById('aEnqTable').innerHTML = aEnquiries.map(e => `
+    <tr><td style="font-weight:600;color:#fff;">${e.from}</td>
+    <td>${e.supplier}</td>
+    <td>${e.subject}</td>
+    <td style="color:rgba(255,255,255,.4);">${e.date}</td>
+    <td><span class="a-badge ${statusBadge(e.status)}">${statusLabel(e.status)}</span></td>
+    <td><button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Opening enquiry…','info')"><i class="fas fa-eye"></i></button></td></tr>`).join('');
+}
+
+function renderACategories() {
+  const cats = [
+    {emoji:'🌾',name:'Agriculture & Food',count:3200},{emoji:'💻',name:'Technology',count:1850},
+    {emoji:'🏗️',name:'Construction',count:2100},{emoji:'💊',name:'Pharmaceuticals',count:940},
+    {emoji:'🚚',name:'Logistics',count:1300},{emoji:'♻️',name:'Green Energy',count:780},
+    {emoji:'👗',name:'Textiles',count:640},{emoji:'🏭',name:'Manufacturing',count:1970},
+  ];
+  document.getElementById('aCatGrid').innerHTML = cats.map(c => `
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='rgba(108,99,255,.4)'" onmouseout="this.style.borderColor='rgba(255,255,255,.07)'">
+      <span style="font-size:22px;">${c.emoji}</span>
+      <div><div style="font-size:13px;font-weight:600;color:#fff;">${c.name}</div><div style="font-size:11px;color:rgba(255,255,255,.35);">${c.count.toLocaleString()} suppliers</div></div>
+      <button class="a-btn a-btn-s" style="padding:4px 8px;margin-left:auto;" onclick="aToast('Editing ${c.name}…','info')"><i class="fas fa-edit"></i></button>
+    </div>`).join('');
+}
+
+function renderABanners() {
+  const banners = [
+    { name:'Hero Banner — Summer Sale', active: true, slot: 'Homepage Hero' },
+    { name:'Sidebar Promo — Gold Plan', active: true, slot: 'Sidebar Right' },
+    { name:'Footer Banner — Export Webinar', active: false, slot: 'Footer' },
+  ];
+  document.getElementById('aBannerList').innerHTML = banners.map(b => `
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">${b.name}</div><div style="font-size:11px;color:rgba(255,255,255,.35);">Slot: ${b.slot}</div></div>
+      <button class="a-tgl ${b.active ? 'on' : ''}" onclick="this.classList.toggle('on');aToast('Banner updated','ok')"></button>
+      <button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Editing banner…','info')"><i class="fas fa-edit"></i></button>
+      <button class="a-btn a-btn-r" style="padding:5px 10px;" onclick="aToast('Banner deleted','info')"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+}
+
+function renderAUsers() {
+  const users = [
+    {name:'Seamus O\'Brien',email:'s.obrien@corkvalley.ie',role:'Supplier',joined:'Jan 2024',status:'active'},
+    {name:'Aoife Murphy',email:'aoife@galwaytech.io',role:'Supplier',joined:'Mar 2024',status:'active'},
+    {name:'Padraig Kelly',email:'p.kelly@kerrydairy.ie',role:'Supplier',joined:'Feb 2024',status:'active'},
+    {name:'Niamh Walsh',email:'niamh@buyrite.com',role:'Buyer',joined:'Apr 2024',status:'active'},
+    {name:'Ciarán Brennan',email:'c.brennan@leinster.build',role:'Buyer',joined:'May 2024',status:'pending'},
+  ];
+  document.getElementById('aUsersTable').innerHTML = users.map(u => `
+    <tr><td style="color:#fff;font-weight:600;">${u.name}</td>
+    <td style="color:rgba(255,255,255,.55);">${u.email}</td>
+    <td><span class="a-badge ${u.role === 'Supplier' ? 'info' : 'ok'}">${u.role}</span></td>
+    <td style="color:rgba(255,255,255,.4);">${u.joined}</td>
+    <td><span class="a-badge ${statusBadge(u.status)}">${statusLabel(u.status)}</span></td>
+    <td style="display:flex;gap:6px;padding:12px 14px;">
+      <button class="a-btn a-btn-s" style="padding:5px 10px;" onclick="aToast('Viewing user…','info')"><i class="fas fa-eye"></i></button>
+      <button class="a-btn a-btn-r" style="padding:5px 10px;" onclick="aToast('User action taken','info')"><i class="fas fa-ban"></i></button>
+    </td></tr>`).join('');
+}
+
+function openAMod(name) { document.getElementById('aMod' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('open'); }
+function closeAMod(name) { document.getElementById('aMod' + name.charAt(0).toUpperCase() + name.slice(1)).classList.remove('open'); }
+document.querySelectorAll('.a-modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+function toggleNotifs() { aToast('💬 28 new enquiries, 12 pending verifications', 'info'); }
+
+function updSerp() {
+  const t = document.getElementById('seoTitle');
+  const d = document.getElementById('seoDesc');
+  if (t) document.getElementById('serpTitle').textContent = t.value || 'Page Title';
+  if (d) document.getElementById('serpDesc').textContent = d.value || 'Page description…';
+}
+
+function aToast(msg, type = 'info') {
+  const w = document.getElementById('aToastW');
+  const t = document.createElement('div');
+  t.className = 'a-toast ' + type;
+  t.innerHTML = msg;
+  w.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+renderProducts();
+renderSuppliers();
+
+/* Observe new fade-up after render */
+setTimeout(() => document.querySelectorAll('.fade-up').forEach(el => observer.observe(el)), 100);
+
+/* Keyboard shortcut */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('open'));
+    document.querySelectorAll('.a-modal-overlay').forEach(o => o.classList.remove('open'));
+  }
+});
+</script>
+</body>
+</html>
